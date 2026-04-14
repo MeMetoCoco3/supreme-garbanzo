@@ -1,0 +1,36 @@
+cmake_minimum_required(VERSION 3.13)
+
+project(rp)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON CACHE INTERNAL "")
+
+set(CMAKE_MSVC_RUNTIME_LIBRARY 
+    "MultiThreaded$<$<CONFIG:Debug>:Debug>")
+
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)   
+set(CMAKE_CXX_EXTENSIONS OFF)  
+
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include/raylib/)
+
+link_directories(${CMAKE_CURRENT_SOURCE_DIR}/libraries/)
+
+file(GLOB_RECURSE MY_SOURCES CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp")
+
+if (MSVC)
+    add_compile_options(/MP)
+endif()
+
+add_executable(rp ${MY_SOURCES})
+
+if (MSVC)
+    add_compile_options(/MP)
+    target_compile_options(rp PRIVATE /WX)
+    target_link_options(rp PRIVATE /VERBOSE) # LINKER OPTIONS
+endif()
+
+target_link_libraries(rp PRIVATE 
+    raylib
+    winmm
+    gdi32
+    opengl32
+)

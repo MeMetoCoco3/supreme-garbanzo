@@ -1,0 +1,3 @@
+G:/rotatos_potatos/build/CMakeFiles/rp.dir
+G:/rotatos_potatos/build/CMakeFiles/edit_cache.dir
+G:/rotatos_potatos/build/CMakeFiles/rebuild_cache.dir
