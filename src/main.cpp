@@ -12,7 +12,7 @@ constexpr i32 WIN_HEIGHT = 800;
 constexpr f32 CENTER_RADIUS = 100.0f;
 constexpr auto TITLE = "ROTATOS\n";
 
-constexpr f32 FLOOR_FRICTION = 0.90f;
+constexpr f32 FLOOR_FRICTION = 0.80f;
 constexpr f32 E_RADIUS = 20.0f;
 constexpr Color E_COLOR = YELLOW;
 constexpr f32 BULLET_RADIUS = E_RADIUS * 0.8f;
@@ -44,7 +44,7 @@ struct Entity {
     f32 speed = 0;
     i32 direction = 0;
     Color color = BLANK;
-    
+    bool is_alive = true;
     enum e_Kind { 
         PLAYER, 
         BULLET,
@@ -69,17 +69,19 @@ struct Entity {
     }
     
     void Update(f32 dt) {
-        speed += Acceleration() * (f32)direction * dt;
-        if(direction == 0 || direction != Signf32((f32)speed)) speed *= FLOOR_FRICTION;
-        speed = Clampf32(speed, -Max_Speed(), Max_Speed());
-        f32 delta = speed / polar.length;
-        
-        polar.rad += delta * dt;
-        position = PolarToCartesian(polar.length, polar.rad);
+        if (is_alive) {
+            speed += Acceleration() * (f32)direction * dt;
+            if(direction == 0 || direction != Signf32((f32)speed)) speed *= FLOOR_FRICTION;
+            speed = Clampf32(speed, -Max_Speed(), Max_Speed());
+            f32 delta = speed / polar.length;
+            
+            polar.rad += delta * dt;
+            position = PolarToCartesian(polar.length, polar.rad);
 
 
-        polar.rad = fmodf(polar.rad, 2.0f * PI);
-        if (polar.rad < 0) polar.rad += 2.0f * PI;
+            polar.rad = fmodf(polar.rad, 2.0f * PI);
+            if (polar.rad < 0) polar.rad += 2.0f * PI;
+        }
     }
 
     constexpr f32 Radius_Speed() {
@@ -120,14 +122,15 @@ struct EnemySystem {
         i32 row_count = 0;
         i32 entities_in_row = 0;
         for(int i = 1; i < enemy_capacity; i++) {
-
             if (entities_in_row >= Row::rows_length[row_count]){
                 row_count += 1;
                 row_polar_length += 30;   
                 entities_in_row = 0;
+                printf("new row%d with capcaity for %d\n", row_count, Row::rows_length[row_count]);
+                if (row_count == 3) break;
             }
 
-            entities_in_row +=1;
+            printf("i = %d n = %d\n", i, entities_in_row);
 
             f32 radians = GetNextRadians(row_polar_length, ENEMY_RADIUS, ENEMY_RADIUS);
 
@@ -135,6 +138,7 @@ struct EnemySystem {
             current_e.position = PolarToCartesian(current_e.polar.length, current_e.polar.rad);
             current_e.direction = 1;
             enemies.push_back(current_e);
+            entities_in_row +=1;
             
         }
 
@@ -206,6 +210,24 @@ f32 GetNextRadians(f32 radius_main, f32 radius1, f32 radius2) {
     return radians;
 }
 
+void CheckCollisions(std::vector<Entity>& bullets, std::vector<Entity>& enemies)
+{
+    for (Entity& bullet: bullets){
+        if (!bullet.is_alive) continue;
+        for (Entity& enemy: enemies) {
+            if (!enemy.is_alive) continue;
+            if(CheckCollisionCircles(
+                {bullet.position.x, bullet.position.y}, bullet.radius, 
+                {enemy.position.x, enemy.position.y}, enemy.radius
+            )){
+                bullet.is_alive = false;
+                enemy.is_alive = false;
+                break;
+            }
+        }
+    }
+}
+
 
 
 
@@ -257,17 +279,19 @@ int main(void){
         }
             
         enemy_sys.UpdateEnemies(dt);
-
+        CheckCollisions(bullets, enemy_sys.enemies);
         BeginDrawing();
             BeginMode2D(c);
             ClearBackground(RAYWHITE);
             DrawBg();
             DrawCircle((i32)e.position.x, (i32)e.position.y, e.radius, e.color);
             for (const auto& bullet: bullets){
-                DrawCircle((i32)bullet.position.x, (i32)bullet.position.y, bullet.radius, bullet.color);
+                if(bullet.is_alive)
+                    DrawCircle((i32)bullet.position.x, (i32)bullet.position.y, bullet.radius, bullet.color);
             }
             for (const auto& enemy: enemy_sys.enemies){
-                DrawCircle((i32)enemy.position.x, (i32)enemy.position.y, enemy.radius, enemy.color);
+                if(enemy.is_alive)
+                    DrawCircle((i32)enemy.position.x, (i32)enemy.position.y, enemy.radius, enemy.color);
             }
             EndMode2D();
         EndDrawing();
