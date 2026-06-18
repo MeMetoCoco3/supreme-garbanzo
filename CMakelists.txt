@@ -28,6 +28,8 @@ if (MSVC)
     target_link_options(rp PRIVATE /VERBOSE) # LINKER OPTIONS
 endif()
 
+target_compile_definitions("${CMAKE_PROJECT_NAME}" PUBLIC RESOURCES_PATH="${CMAKE_CURRENT_SOURCE_DIR}/assets/")
+
 target_link_libraries(rp PRIVATE 
     raylib
     winmm

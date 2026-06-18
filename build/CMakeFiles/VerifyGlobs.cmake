@@ -4,7 +4,10 @@
 # MY_SOURCES at CMakeLists.txt:17 (file)
 file(GLOB_RECURSE NEW_GLOB LIST_DIRECTORIES false "G:/rotatos_potatos/src/*.cpp")
 set(OLD_GLOB
+  "G:/rotatos_potatos/src/entity.cpp"
   "G:/rotatos_potatos/src/main.cpp"
+  "G:/rotatos_potatos/src/resources.cpp"
+  "G:/rotatos_potatos/src/vstd/file_reader.cpp"
   "G:/rotatos_potatos/src/vstd/vgeneral.cpp"
   "G:/rotatos_potatos/src/vstd/vmath.cpp"
   "G:/rotatos_potatos/src/vstd/vtypes.cpp"

@@ -1,25 +1,43 @@
 [
 {
   "directory": "G:/rotatos_potatos/build",
-  "command": "C:\\PROGRA~1\\MICROS~1\\2022\\COMMUN~1\\VC\\Tools\\MSVC\\1444~1.352\\bin\\Hostx64\\x64\\cl.exe  /nologo /TP -IG:\\rotatos_potatos\\include\\raylib /DWIN32 /D_WINDOWS /W3 /GR /EHsc /MDd /Zi /Ob0 /Od /RTC1 -std:c++20 /MP /WX /FoCMakeFiles\\rp.dir\\src\\main.cpp.obj /FdCMakeFiles\\rp.dir\\ /FS -c G:\\rotatos_potatos\\src\\main.cpp",
+  "command": "C:\\PROGRA~1\\MICROS~1\\2022\\COMMUN~1\\VC\\Tools\\MSVC\\1444~1.352\\bin\\Hostx64\\x64\\cl.exe  /nologo /TP -DRESOURCES_PATH=\\\"G:/rotatos_potatos/assets/\\\" -IG:\\rotatos_potatos\\include\\raylib /DWIN32 /D_WINDOWS /W3 /GR /EHsc /MDd /Zi /Ob0 /Od /RTC1 -std:c++20 /MP /WX /FoCMakeFiles\\rp.dir\\src\\entity.cpp.obj /FdCMakeFiles\\rp.dir\\ /FS -c G:\\rotatos_potatos\\src\\entity.cpp",
+  "file": "G:/rotatos_potatos/src/entity.cpp",
+  "output": "G:/rotatos_potatos/build/CMakeFiles/rp.dir/src/entity.cpp.obj"
+},
+{
+  "directory": "G:/rotatos_potatos/build",
+  "command": "C:\\PROGRA~1\\MICROS~1\\2022\\COMMUN~1\\VC\\Tools\\MSVC\\1444~1.352\\bin\\Hostx64\\x64\\cl.exe  /nologo /TP -DRESOURCES_PATH=\\\"G:/rotatos_potatos/assets/\\\" -IG:\\rotatos_potatos\\include\\raylib /DWIN32 /D_WINDOWS /W3 /GR /EHsc /MDd /Zi /Ob0 /Od /RTC1 -std:c++20 /MP /WX /FoCMakeFiles\\rp.dir\\src\\main.cpp.obj /FdCMakeFiles\\rp.dir\\ /FS -c G:\\rotatos_potatos\\src\\main.cpp",
   "file": "G:/rotatos_potatos/src/main.cpp",
   "output": "G:/rotatos_potatos/build/CMakeFiles/rp.dir/src/main.cpp.obj"
 },
 {
   "directory": "G:/rotatos_potatos/build",
-  "command": "C:\\PROGRA~1\\MICROS~1\\2022\\COMMUN~1\\VC\\Tools\\MSVC\\1444~1.352\\bin\\Hostx64\\x64\\cl.exe  /nologo /TP -IG:\\rotatos_potatos\\include\\raylib /DWIN32 /D_WINDOWS /W3 /GR /EHsc /MDd /Zi /Ob0 /Od /RTC1 -std:c++20 /MP /WX /FoCMakeFiles\\rp.dir\\src\\vstd\\vgeneral.cpp.obj /FdCMakeFiles\\rp.dir\\ /FS -c G:\\rotatos_potatos\\src\\vstd\\vgeneral.cpp",
+  "command": "C:\\PROGRA~1\\MICROS~1\\2022\\COMMUN~1\\VC\\Tools\\MSVC\\1444~1.352\\bin\\Hostx64\\x64\\cl.exe  /nologo /TP -DRESOURCES_PATH=\\\"G:/rotatos_potatos/assets/\\\" -IG:\\rotatos_potatos\\include\\raylib /DWIN32 /D_WINDOWS /W3 /GR /EHsc /MDd /Zi /Ob0 /Od /RTC1 -std:c++20 /MP /WX /FoCMakeFiles\\rp.dir\\src\\resources.cpp.obj /FdCMakeFiles\\rp.dir\\ /FS -c G:\\rotatos_potatos\\src\\resources.cpp",
+  "file": "G:/rotatos_potatos/src/resources.cpp",
+  "output": "G:/rotatos_potatos/build/CMakeFiles/rp.dir/src/resources.cpp.obj"
+},
+{
+  "directory": "G:/rotatos_potatos/build",
+  "command": "C:\\PROGRA~1\\MICROS~1\\2022\\COMMUN~1\\VC\\Tools\\MSVC\\1444~1.352\\bin\\Hostx64\\x64\\cl.exe  /nologo /TP -DRESOURCES_PATH=\\\"G:/rotatos_potatos/assets/\\\" -IG:\\rotatos_potatos\\include\\raylib /DWIN32 /D_WINDOWS /W3 /GR /EHsc /MDd /Zi /Ob0 /Od /RTC1 -std:c++20 /MP /WX /FoCMakeFiles\\rp.dir\\src\\vstd\\file_reader.cpp.obj /FdCMakeFiles\\rp.dir\\ /FS -c G:\\rotatos_potatos\\src\\vstd\\file_reader.cpp",
+  "file": "G:/rotatos_potatos/src/vstd/file_reader.cpp",
+  "output": "G:/rotatos_potatos/build/CMakeFiles/rp.dir/src/vstd/file_reader.cpp.obj"
+},
+{
+  "directory": "G:/rotatos_potatos/build",
+  "command": "C:\\PROGRA~1\\MICROS~1\\2022\\COMMUN~1\\VC\\Tools\\MSVC\\1444~1.352\\bin\\Hostx64\\x64\\cl.exe  /nologo /TP -DRESOURCES_PATH=\\\"G:/rotatos_potatos/assets/\\\" -IG:\\rotatos_potatos\\include\\raylib /DWIN32 /D_WINDOWS /W3 /GR /EHsc /MDd /Zi /Ob0 /Od /RTC1 -std:c++20 /MP /WX /FoCMakeFiles\\rp.dir\\src\\vstd\\vgeneral.cpp.obj /FdCMakeFiles\\rp.dir\\ /FS -c G:\\rotatos_potatos\\src\\vstd\\vgeneral.cpp",
   "file": "G:/rotatos_potatos/src/vstd/vgeneral.cpp",
   "output": "G:/rotatos_potatos/build/CMakeFiles/rp.dir/src/vstd/vgeneral.cpp.obj"
 },
 {
   "directory": "G:/rotatos_potatos/build",
-  "command": "C:\\PROGRA~1\\MICROS~1\\2022\\COMMUN~1\\VC\\Tools\\MSVC\\1444~1.352\\bin\\Hostx64\\x64\\cl.exe  /nologo /TP -IG:\\rotatos_potatos\\include\\raylib /DWIN32 /D_WINDOWS /W3 /GR /EHsc /MDd /Zi /Ob0 /Od /RTC1 -std:c++20 /MP /WX /FoCMakeFiles\\rp.dir\\src\\vstd\\vmath.cpp.obj /FdCMakeFiles\\rp.dir\\ /FS -c G:\\rotatos_potatos\\src\\vstd\\vmath.cpp",
+  "command": "C:\\PROGRA~1\\MICROS~1\\2022\\COMMUN~1\\VC\\Tools\\MSVC\\1444~1.352\\bin\\Hostx64\\x64\\cl.exe  /nologo /TP -DRESOURCES_PATH=\\\"G:/rotatos_potatos/assets/\\\" -IG:\\rotatos_potatos\\include\\raylib /DWIN32 /D_WINDOWS /W3 /GR /EHsc /MDd /Zi /Ob0 /Od /RTC1 -std:c++20 /MP /WX /FoCMakeFiles\\rp.dir\\src\\vstd\\vmath.cpp.obj /FdCMakeFiles\\rp.dir\\ /FS -c G:\\rotatos_potatos\\src\\vstd\\vmath.cpp",
   "file": "G:/rotatos_potatos/src/vstd/vmath.cpp",
   "output": "G:/rotatos_potatos/build/CMakeFiles/rp.dir/src/vstd/vmath.cpp.obj"
 },
 {
   "directory": "G:/rotatos_potatos/build",
-  "command": "C:\\PROGRA~1\\MICROS~1\\2022\\COMMUN~1\\VC\\Tools\\MSVC\\1444~1.352\\bin\\Hostx64\\x64\\cl.exe  /nologo /TP -IG:\\rotatos_potatos\\include\\raylib /DWIN32 /D_WINDOWS /W3 /GR /EHsc /MDd /Zi /Ob0 /Od /RTC1 -std:c++20 /MP /WX /FoCMakeFiles\\rp.dir\\src\\vstd\\vtypes.cpp.obj /FdCMakeFiles\\rp.dir\\ /FS -c G:\\rotatos_potatos\\src\\vstd\\vtypes.cpp",
+  "command": "C:\\PROGRA~1\\MICROS~1\\2022\\COMMUN~1\\VC\\Tools\\MSVC\\1444~1.352\\bin\\Hostx64\\x64\\cl.exe  /nologo /TP -DRESOURCES_PATH=\\\"G:/rotatos_potatos/assets/\\\" -IG:\\rotatos_potatos\\include\\raylib /DWIN32 /D_WINDOWS /W3 /GR /EHsc /MDd /Zi /Ob0 /Od /RTC1 -std:c++20 /MP /WX /FoCMakeFiles\\rp.dir\\src\\vstd\\vtypes.cpp.obj /FdCMakeFiles\\rp.dir\\ /FS -c G:\\rotatos_potatos\\src\\vstd\\vtypes.cpp",
   "file": "G:/rotatos_potatos/src/vstd/vtypes.cpp",
   "output": "G:/rotatos_potatos/build/CMakeFiles/rp.dir/src/vstd/vtypes.cpp.obj"
 }

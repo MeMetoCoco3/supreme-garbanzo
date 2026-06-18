@@ -49,8 +49,9 @@ cmake_ninja_workdir = G$:\rotatos_potatos\build\
 
 build cmake_object_order_depends_target_rp: phony || .
 
-build CMakeFiles\rp.dir\src\main.cpp.obj: CXX_COMPILER__rp_unscanned_Debug G$:\rotatos_potatos\src\main.cpp || cmake_object_order_depends_target_rp
+build CMakeFiles\rp.dir\src\entity.cpp.obj: CXX_COMPILER__rp_unscanned_Debug G$:\rotatos_potatos\src\entity.cpp || cmake_object_order_depends_target_rp
   CONFIG = Debug
+  DEFINES = -DRESOURCES_PATH=\"G:/rotatos_potatos/assets/\"
   FLAGS = /DWIN32 /D_WINDOWS /W3 /GR /EHsc /MDd /Zi /Ob0 /Od /RTC1 -std:c++20 /MP /WX
   INCLUDES = -IG:\rotatos_potatos\include\raylib
   OBJECT_DIR = CMakeFiles\rp.dir
@@ -59,8 +60,42 @@ build CMakeFiles\rp.dir\src\main.cpp.obj: CXX_COMPILER__rp_unscanned_Debug G$:\r
   TARGET_PDB = rp.pdb
   TARGET_SUPPORT_DIR = CMakeFiles\rp.dir
 
+build CMakeFiles\rp.dir\src\main.cpp.obj: CXX_COMPILER__rp_unscanned_Debug G$:\rotatos_potatos\src\main.cpp || cmake_object_order_depends_target_rp
+  CONFIG = Debug
+  DEFINES = -DRESOURCES_PATH=\"G:/rotatos_potatos/assets/\"
+  FLAGS = /DWIN32 /D_WINDOWS /W3 /GR /EHsc /MDd /Zi /Ob0 /Od /RTC1 -std:c++20 /MP /WX
+  INCLUDES = -IG:\rotatos_potatos\include\raylib
+  OBJECT_DIR = CMakeFiles\rp.dir
+  OBJECT_FILE_DIR = CMakeFiles\rp.dir\src
+  TARGET_COMPILE_PDB = CMakeFiles\rp.dir\
+  TARGET_PDB = rp.pdb
+  TARGET_SUPPORT_DIR = CMakeFiles\rp.dir
+
+build CMakeFiles\rp.dir\src\resources.cpp.obj: CXX_COMPILER__rp_unscanned_Debug G$:\rotatos_potatos\src\resources.cpp || cmake_object_order_depends_target_rp
+  CONFIG = Debug
+  DEFINES = -DRESOURCES_PATH=\"G:/rotatos_potatos/assets/\"
+  FLAGS = /DWIN32 /D_WINDOWS /W3 /GR /EHsc /MDd /Zi /Ob0 /Od /RTC1 -std:c++20 /MP /WX
+  INCLUDES = -IG:\rotatos_potatos\include\raylib
+  OBJECT_DIR = CMakeFiles\rp.dir
+  OBJECT_FILE_DIR = CMakeFiles\rp.dir\src
+  TARGET_COMPILE_PDB = CMakeFiles\rp.dir\
+  TARGET_PDB = rp.pdb
+  TARGET_SUPPORT_DIR = CMakeFiles\rp.dir
+
+build CMakeFiles\rp.dir\src\vstd\file_reader.cpp.obj: CXX_COMPILER__rp_unscanned_Debug G$:\rotatos_potatos\src\vstd\file_reader.cpp || cmake_object_order_depends_target_rp
+  CONFIG = Debug
+  DEFINES = -DRESOURCES_PATH=\"G:/rotatos_potatos/assets/\"
+  FLAGS = /DWIN32 /D_WINDOWS /W3 /GR /EHsc /MDd /Zi /Ob0 /Od /RTC1 -std:c++20 /MP /WX
+  INCLUDES = -IG:\rotatos_potatos\include\raylib
+  OBJECT_DIR = CMakeFiles\rp.dir
+  OBJECT_FILE_DIR = CMakeFiles\rp.dir\src\vstd
+  TARGET_COMPILE_PDB = CMakeFiles\rp.dir\
+  TARGET_PDB = rp.pdb
+  TARGET_SUPPORT_DIR = CMakeFiles\rp.dir
+
 build CMakeFiles\rp.dir\src\vstd\vgeneral.cpp.obj: CXX_COMPILER__rp_unscanned_Debug G$:\rotatos_potatos\src\vstd\vgeneral.cpp || cmake_object_order_depends_target_rp
   CONFIG = Debug
+  DEFINES = -DRESOURCES_PATH=\"G:/rotatos_potatos/assets/\"
   FLAGS = /DWIN32 /D_WINDOWS /W3 /GR /EHsc /MDd /Zi /Ob0 /Od /RTC1 -std:c++20 /MP /WX
   INCLUDES = -IG:\rotatos_potatos\include\raylib
   OBJECT_DIR = CMakeFiles\rp.dir
@@ -71,6 +106,7 @@ build CMakeFiles\rp.dir\src\vstd\vgeneral.cpp.obj: CXX_COMPILER__rp_unscanned_De
 
 build CMakeFiles\rp.dir\src\vstd\vmath.cpp.obj: CXX_COMPILER__rp_unscanned_Debug G$:\rotatos_potatos\src\vstd\vmath.cpp || cmake_object_order_depends_target_rp
   CONFIG = Debug
+  DEFINES = -DRESOURCES_PATH=\"G:/rotatos_potatos/assets/\"
   FLAGS = /DWIN32 /D_WINDOWS /W3 /GR /EHsc /MDd /Zi /Ob0 /Od /RTC1 -std:c++20 /MP /WX
   INCLUDES = -IG:\rotatos_potatos\include\raylib
   OBJECT_DIR = CMakeFiles\rp.dir
@@ -81,6 +117,7 @@ build CMakeFiles\rp.dir\src\vstd\vmath.cpp.obj: CXX_COMPILER__rp_unscanned_Debug
 
 build CMakeFiles\rp.dir\src\vstd\vtypes.cpp.obj: CXX_COMPILER__rp_unscanned_Debug G$:\rotatos_potatos\src\vstd\vtypes.cpp || cmake_object_order_depends_target_rp
   CONFIG = Debug
+  DEFINES = -DRESOURCES_PATH=\"G:/rotatos_potatos/assets/\"
   FLAGS = /DWIN32 /D_WINDOWS /W3 /GR /EHsc /MDd /Zi /Ob0 /Od /RTC1 -std:c++20 /MP /WX
   INCLUDES = -IG:\rotatos_potatos\include\raylib
   OBJECT_DIR = CMakeFiles\rp.dir
@@ -97,7 +134,7 @@ build CMakeFiles\rp.dir\src\vstd\vtypes.cpp.obj: CXX_COMPILER__rp_unscanned_Debu
 #############################################
 # Link the executable rp.exe
 
-build rp.exe: CXX_EXECUTABLE_LINKER__rp_Debug CMakeFiles\rp.dir\src\main.cpp.obj CMakeFiles\rp.dir\src\vstd\vgeneral.cpp.obj CMakeFiles\rp.dir\src\vstd\vmath.cpp.obj CMakeFiles\rp.dir\src\vstd\vtypes.cpp.obj
+build rp.exe: CXX_EXECUTABLE_LINKER__rp_Debug CMakeFiles\rp.dir\src\entity.cpp.obj CMakeFiles\rp.dir\src\main.cpp.obj CMakeFiles\rp.dir\src\resources.cpp.obj CMakeFiles\rp.dir\src\vstd\file_reader.cpp.obj CMakeFiles\rp.dir\src\vstd\vgeneral.cpp.obj CMakeFiles\rp.dir\src\vstd\vmath.cpp.obj CMakeFiles\rp.dir\src\vstd\vtypes.cpp.obj
   CONFIG = Debug
   FLAGS = /DWIN32 /D_WINDOWS /W3 /GR /EHsc /MDd /Zi /Ob0 /Od /RTC1
   LINK_FLAGS = /machine:x64 /debug /INCREMENTAL /subsystem:console /VERBOSE

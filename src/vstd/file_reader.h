@@ -1,10 +1,12 @@
-
-#include <filesystem>
-#include <fstream>
-#include <iostream>
 #include <string_view>
 #include <optional>
 #include <string>
+
+
+
+std::string remove_double_slash(const char* path);
+bool is_correct_extension(const char* file_path, std::initializer_list<const char*> extensions);
+const char* get_file_extension(const char* filename);
 
 // Code from @ChShers
 // This struct is meant to be used on Small files
@@ -18,21 +20,4 @@ struct FileReader {
         std::string m_contents;
 };
 
-FileReader::FileReader(std::string contents) : m_contents(std::move(contents)) {};
-
-std::string_view FileReader::contents() const noexcept {
-    return std::string_view{m_contents};
-}
-
-std::optional<FileReader> FileReader::open(std::string_view file_name) {
-    std::filesystem::path path{file_name};
-    // ifstream closes file on destruction.
-    std::ifstream file{path};
-    if(!file) return std::nullopt;
-
-
-    std::stringstream buffer;
-    buffer << file.rdbuf();
-    return FileReader{std::move(buffer).str()};
-}
 

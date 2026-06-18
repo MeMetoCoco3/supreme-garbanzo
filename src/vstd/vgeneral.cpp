@@ -3,6 +3,7 @@
 #include "vgeneral.h"
 #include <fstream>
 
+// WARN: DEPRECATED
 std::string LoadFile(const std::string& path)
 {
 	std::ifstream file(path);

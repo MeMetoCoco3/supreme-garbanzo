@@ -5,6 +5,10 @@
 constexpr auto PI = 3.14159265359f;
 
 
+f32 fLerp(f32 a, f32 b, f32 t)
+{
+    return (1-t) * a + t * b; 
+}
 f32 fPow(f32 val, f32 power)
 {
     f32 ret = 1.0f;
