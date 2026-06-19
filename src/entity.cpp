@@ -62,38 +62,39 @@ void Bullet::UpdateBullet(f32 dt){
     if (time_to_die >= TIME_TO_DIE) is_alive = false;
 }
 
-EnemyCloud::EnemyCloud(size_t enemy_capacity, f32 distance_from_surface, i32 dir){
+EnemyCloud::EnemyCloud(size_t enemy_capacity, f32 distance_from_surface, i32 dir, size_t idx):
+    direction(dir) 
+{
     if (enemy_capacity > MAX_ENEMIES_PER_CLOUD) {
         enemy_capacity = MAX_ENEMIES_PER_CLOUD;
     }
+    count = enemy_capacity;
 
-    f32 row_polar_length = distance_from_surface + CENTER_RADIUS;
-
-    Entity e1(ENEMY_RADIUS, PINK, 0.0f, row_polar_length, e_EntityKind::ENEMY, e_MovementKind::CIRCULAR, dir);
+    EntityFromCloud e1(ENEMY_RADIUS, PINK, 0.0f, distance_from_surface, e_EntityKind::ENEMY, e_MovementKind::CIRCULAR, dir, idx);
     enemies[0] = e1;
 
     i32 row_count = 0;
     i32 entities_in_row = 0;
     for(int i = 1; i < enemy_capacity; i++) {
-
         if (entities_in_row >= Row::rows_length[row_count]){
             row_count += 1;
-            row_polar_length += 30;   
+            distance_from_surface += 30;   
             entities_in_row = 0;
         }
 
         entities_in_row +=1;
 
-        f32 radians = GetNextRadians(row_polar_length, ENEMY_RADIUS, ENEMY_RADIUS);
+        f32 radians = GetNextRadians(distance_from_surface, ENEMY_RADIUS, ENEMY_RADIUS);
 
-        Entity current_e (
+        EntityFromCloud current_e (
             ENEMY_RADIUS, PINK, radians * entities_in_row, 
-            row_polar_length, e_EntityKind::ENEMY, 
-            e_MovementKind::CIRCULAR, dir
+            distance_from_surface, e_EntityKind::ENEMY, 
+            e_MovementKind::CIRCULAR, dir, idx
         );
         enemies[i] = current_e;
-        
     }
+
+    is_alive = true;
 }
 
 
@@ -108,7 +109,7 @@ void EnemyCloud::UpdateEnemies(f32 dt) {
                 for(int i = 0; i < enemies.size(); i++)
                 {
                     const Entity& e = enemies[i];
-                    new_angle[i] = E_ANGLE_STEP + e.polar.rad;
+                    new_angle[i] = (direction * E_ANGLE_STEP) + e.polar.rad;
                 }
             } else {
                 delay += dt;
@@ -118,11 +119,6 @@ void EnemyCloud::UpdateEnemies(f32 dt) {
             for(int i = 0; i < enemies.size(); i++)
             {
                 Entity& e = enemies[i];
-                // f32 delta = new_angle[i] - e.polar.rad;
-                // while (delta > PI)  delta -= 2.0f * PI;
-                // while (delta < -PI) delta += 2.0f * PI;
-                //
-                // f32 target = e.polar.rad + delta;
                 e.polar.rad = fLerp(e.polar.rad, new_angle[i], lerp_factor);
             }
 
@@ -138,4 +134,6 @@ void EnemyCloud::UpdateEnemies(f32 dt) {
     }
 }
 
-
+EntityFromCloud::EntityFromCloud(f32 radius, Color c, f32 radians, f32 polar_length, e_EntityKind kind, e_MovementKind movement, i32 dir, size_t cloud_idx):
+    Entity(radius, c, radians, polar_length, kind, movement, dir), cloud_idx(cloud_idx)
+{}

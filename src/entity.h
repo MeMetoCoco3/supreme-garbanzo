@@ -4,25 +4,26 @@
 #include <array>
 #include <cstdio>
 
-constexpr f32 E_RADIUS = 20.0f;
-constexpr Color E_COLOR = YELLOW;
-constexpr f32 BULLET_RADIUS = E_RADIUS * 0.8f;
-constexpr Color BULLET_COLOR = BLUE;
-constexpr f32 BULLET_SPEED_CIRCULAR = 3.0f;
-constexpr f32 BULLET_SPEED_OUTER = 220.0f;
-constexpr i32 NUM_BULLETS = 100;
-constexpr f32 TIME_TO_DIE = 1.0f;
-constexpr f32 CENTER_RADIUS = 400.0f;
-constexpr f32 FLOOR_FRICTION = 0.90f;
-constexpr f32 ENEMY_RADIUS = 10.0f;
-constexpr i32 MAX_ENEMIES = 100;
-
 namespace Row{
     constexpr i32 ROW_0 = 10,
                 ROW_1 = 12,
                 ROW_2 = 6;
     constexpr i32 rows_length[3] {ROW_0, ROW_1, ROW_2};
 }
+
+constexpr Color E_COLOR = YELLOW;
+constexpr f32 CENTER_RADIUS = 400.0f;
+constexpr f32 FLOOR_FRICTION = 0.90f;
+
+constexpr f32 E_RADIUS = 20.0f;
+constexpr f32 BULLET_RADIUS = E_RADIUS * 0.8f;
+constexpr Color BULLET_COLOR = BLUE;
+constexpr f32 BULLET_SPEED_CIRCULAR = 3.0f;
+constexpr f32 BULLET_SPEED_OUTER = 220.0f;
+constexpr f32 TIME_TO_DIE = 1.0f;
+
+constexpr f32 ENEMY_RADIUS = 10.0f;
+constexpr i32 MAX_ENEMIES = 100;
 
 
 
@@ -86,6 +87,14 @@ struct Entity {
     constexpr f32 Acceleration();
 };
 
+// Entity that knows the state of the cloud it belongs
+struct EntityFromCloud: public Entity {
+    size_t cloud_idx;
+
+    EntityFromCloud() = default;
+    EntityFromCloud(f32 radius, Color c, f32 radians, f32 polar_length, e_EntityKind kind, e_MovementKind movement, i32 dir, size_t cloud_idx);
+};
+
 struct Bullet: public Entity {
     e_Team team;
     f32 time_to_die = 0.0f;
@@ -96,27 +105,31 @@ struct Bullet: public Entity {
 
 
 constexpr size_t MAX_ENEMIES_PER_CLOUD = 24;
+
 struct EnemyCloud {
-    std::array<Entity, MAX_ENEMIES_PER_CLOUD> enemies{};
+    std::array<EntityFromCloud, MAX_ENEMIES_PER_CLOUD> enemies{};
     std::array<f32, MAX_ENEMIES_PER_CLOUD> new_angle{};
+
+    size_t count = 0;
+    bool is_alive = false;
 
     // Movement
     f32 delay = 0.0f;
     f32 lerp_factor = 0.0f;
+    i32 direction;
 
     // Shooting
     f32 time_till_shoot = 1.0f;
-
-    i32 direction;
 
     enum {
         WAITING, 
         MOVING
     } action = WAITING;
+    
+    // If this was const, it could NOT be copied, because that would delete it.
+    static constexpr f32 E_ANGLE_STEP = 0.5f;
+    static constexpr f32 E_TIME_STEP = 1.0f;
 
-    const f32 E_ANGLE_STEP = 1.0f;
-    const f32 E_TIME_STEP = 1.0f;
-
-    EnemyCloud(size_t enemy_capacity, f32 distance_from_surface, i32 direction);
+    EnemyCloud(size_t enemy_capacity, f32 distance_from_surface, i32 direction, size_t idx);
     void UpdateEnemies(f32 dt);
 };
