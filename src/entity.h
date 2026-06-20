@@ -4,13 +4,7 @@
 #include <array>
 #include <cstdio>
 
-namespace Row{
-    constexpr i32 ROW_0 = 10,
-                ROW_1 = 12,
-                ROW_2 = 6;
-    constexpr i32 rows_length[3] {ROW_0, ROW_1, ROW_2};
-}
-
+constexpr i32 NUM_BULLETS = 100;
 constexpr Color E_COLOR = YELLOW;
 constexpr f32 CENTER_RADIUS = 400.0f;
 constexpr f32 FLOOR_FRICTION = 0.90f;
@@ -80,7 +74,7 @@ struct Entity {
     Entity() = default;
     Entity(f32 radius, Color c, f32 radians, f32 polar_length, e_EntityKind kind, e_MovementKind movement, i32 dir);
 
-    Bullet Shoot(e_MovementKind kind, e_Team team, i32 dir);   
+    Bullet Shoot(e_MovementKind kind, f32 speed_rad, f32 speed_length, e_Team team, i32 dir);   
     
     constexpr f32 Radius_Speed();
     constexpr f32 Max_Speed();
@@ -104,12 +98,14 @@ struct Bullet: public Entity {
 };
 
 
-constexpr size_t MAX_ENEMIES_PER_CLOUD = 24;
+constexpr size_t MAX_ENEMIES_PER_CLOUD = 12;
+constexpr i32 ENEMY_CLOUD_DEFAULT_APPROACH_TIMER = 5;
 
 struct EnemyCloud {
     std::array<EntityFromCloud, MAX_ENEMIES_PER_CLOUD> enemies{};
-    std::array<f32, MAX_ENEMIES_PER_CLOUD> new_angle{};
-
+    std::array<f32, MAX_ENEMIES_PER_CLOUD> new_pos{};
+    
+    size_t initial_count = 0;
     size_t count = 0;
     bool is_alive = false;
 
@@ -117,13 +113,15 @@ struct EnemyCloud {
     f32 delay = 0.0f;
     f32 lerp_factor = 0.0f;
     i32 direction;
+    i32 time_till_approach = ENEMY_CLOUD_DEFAULT_APPROACH_TIMER;
 
     // Shooting
     f32 time_till_shoot = 1.0f;
 
     enum {
         WAITING, 
-        MOVING
+        MOVING,
+        APPROACH,
     } action = WAITING;
     
     // If this was const, it could NOT be copied, because that would delete it.
@@ -132,4 +130,5 @@ struct EnemyCloud {
 
     EnemyCloud(size_t enemy_capacity, f32 distance_from_surface, i32 direction, size_t idx);
     void UpdateEnemies(f32 dt);
+    void Shoot(std::array<Bullet, NUM_BULLETS>& bullets, size_t& bullet_count, f32 dt);
 };

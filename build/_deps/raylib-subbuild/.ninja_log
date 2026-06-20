@@ -1,0 +1,21 @@
+# ninja log v7
+2	51	8036500861719413	raylib-populate-prefix/src/raylib-populate-stamp/raylib-populate-mkdir	5b43b731575c7638
+2	51	8036500861719413	G:/rotatos_potatos/build/_deps/raylib-subbuild/raylib-populate-prefix/src/raylib-populate-stamp/raylib-populate-mkdir	5b43b731575c7638
+52	16541	8036501026591376	raylib-populate-prefix/src/raylib-populate-stamp/raylib-populate-download	696c3eb37d43934
+52	16541	8036501026591376	G:/rotatos_potatos/build/_deps/raylib-subbuild/raylib-populate-prefix/src/raylib-populate-stamp/raylib-populate-download	696c3eb37d43934
+16541	16663	8036501026662210	raylib-populate-prefix/src/raylib-populate-stamp/raylib-populate-update	c8a25aad73542436
+16541	16663	8036501026662210	G:/rotatos_potatos/build/_deps/raylib-subbuild/raylib-populate-prefix/src/raylib-populate-stamp/raylib-populate-update	c8a25aad73542436
+16663	16711	8036501028262171	raylib-populate-prefix/src/raylib-populate-stamp/raylib-populate-patch	6f3f10bbb15eabd
+16663	16711	8036501028262171	G:/rotatos_potatos/build/_deps/raylib-subbuild/raylib-populate-prefix/src/raylib-populate-stamp/raylib-populate-patch	6f3f10bbb15eabd
+16711	16759	8036501028760801	raylib-populate-prefix/src/raylib-populate-stamp/raylib-populate-configure	5ff517e4030c1164
+16711	16759	8036501028760801	G:/rotatos_potatos/build/_deps/raylib-subbuild/raylib-populate-prefix/src/raylib-populate-stamp/raylib-populate-configure	5ff517e4030c1164
+16759	16808	8036501029262183	raylib-populate-prefix/src/raylib-populate-stamp/raylib-populate-build	52c7789f23ab0b2d
+16759	16808	8036501029262183	G:/rotatos_potatos/build/_deps/raylib-subbuild/raylib-populate-prefix/src/raylib-populate-stamp/raylib-populate-build	52c7789f23ab0b2d
+16808	16855	8036501029760896	raylib-populate-prefix/src/raylib-populate-stamp/raylib-populate-install	7f362025c80b327
+16808	16855	8036501029760896	G:/rotatos_potatos/build/_deps/raylib-subbuild/raylib-populate-prefix/src/raylib-populate-stamp/raylib-populate-install	7f362025c80b327
+16855	16904	8036501030171591	raylib-populate-prefix/src/raylib-populate-stamp/raylib-populate-test	fd1a015af0a453f6
+16855	16904	8036501030171591	G:/rotatos_potatos/build/_deps/raylib-subbuild/raylib-populate-prefix/src/raylib-populate-stamp/raylib-populate-test	fd1a015af0a453f6
+16904	16968	8036501030860217	CMakeFiles/raylib-populate-complete	7c892e052a276f30
+16904	16968	8036501030860217	raylib-populate-prefix/src/raylib-populate-stamp/raylib-populate-done	7c892e052a276f30
+16904	16968	8036501030860217	G:/rotatos_potatos/build/_deps/raylib-subbuild/CMakeFiles/raylib-populate-complete	7c892e052a276f30
+16904	16968	8036501030860217	G:/rotatos_potatos/build/_deps/raylib-subbuild/raylib-populate-prefix/src/raylib-populate-stamp/raylib-populate-done	7c892e052a276f30

@@ -1,0 +1,21 @@
+cmake --build build --parallel
+[0/2] Re-checking globbed directories...
+[1/2] Re-running CMake...
+-- Configuring done (0.1s)
+-- Generating done (0.1s)
+-- Build files have been written to: G:/rotatos_potatos/build
+[0/4] Re-checking globbed directories...
+[1/12] Building CXX object CMakeFiles\rp.dir\src\vstd\vmath.cpp.obj
+[2/12] Building CXX object CMakeFiles\rp.dir\src\vstd\vtypes.cpp.obj
+[3/12] Building CXX object CMakeFiles\rp.dir\src\main.cpp.obj
+[4/12] Building CXX object CMakeFiles\rp.dir\src\vstd\vgeneral.cpp.obj
+[5/12] Building CXX object CMakeFiles\rp.dir\src\game.cpp.obj
+[6/12] Building CXX object CMakeFiles\rp.dir\src\entity.cpp.obj
+[7/12] Building CXX object CMakeFiles\rp.dir\src\vstd\file_reader.cpp.obj
+[8/12] Building CXX object CMakeFiles\rp.dir\src\resources.cpp.obj
+[9/12] Linking CXX executable rp.exe
+FAILED: [code=4294967295] rp.exe 
+C:\Windows\system32\cmd.exe /C "cd . && "C:\Program Files\CMake\bin\cmake.exe" -E vs_link_exe --msvc-ver=1944 --intdir=CMakeFiles\rp.dir --rc=C:\PROGRA~2\WI3CF2~1\10\bin\100261~1.0\x64\rc.exe --mt=C:\PROGRA~2\WI3CF2~1\10\bin\100261~1.0\x64\mt.exe --manifests  -- C:\PROGRA~1\MICROS~1\2022\COMMUN~1\VC\Tools\MSVC\1444~1.352\bin\Hostx64\x64\link.exe /nologo CMakeFiles\rp.dir\src\entity.cpp.obj CMakeFiles\rp.dir\src\game.cpp.obj CMakeFiles\rp.dir\src\main.cpp.obj CMakeFiles\rp.dir\src\resources.cpp.obj CMakeFiles\rp.dir\src\vstd\file_reader.cpp.obj CMakeFiles\rp.dir\src\vstd\vgeneral.cpp.obj CMakeFiles\rp.dir\src\vstd\vmath.cpp.obj CMakeFiles\rp.dir\src\vstd\vtypes.cpp.obj  /out:rp.exe /implib:rp.lib /pdb:rp.pdb /version:0.0 /machine:x64 /debug /INCREMENTAL /subsystem:console /VERBOSE -LIBPATH:G:\rotatos_potatos\libraries raylib.lib  winmm.lib  gdi32.lib  opengl32.lib  glu32.lib  winmm.lib  glfw.lib  kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib && cd ."
+LINK Pass 1: command "C:\PROGRA~1\MICROS~1\2022\COMMUN~1\VC\Tools\MSVC\1444~1.352\bin\Hostx64\x64\link.exe /nologo CMakeFiles\rp.dir\src\entity.cpp.obj CMakeFiles\rp.dir\src\game.cpp.obj CMakeFiles\rp.dir\src\main.cpp.obj CMakeFiles\rp.dir\src\resources.cpp.obj CMakeFiles\rp.dir\src\vstd\file_reader.cpp.obj CMakeFiles\rp.dir\src\vstd\vgeneral.cpp.obj CMakeFiles\rp.dir\src\vstd\vmath.cpp.obj CMakeFiles\rp.dir\src\vstd\vtypes.cpp.obj /out:rp.exe /implib:rp.lib /pdb:rp.pdb /version:0.0 /machine:x64 /debug /INCREMENTAL /subsystem:console /VERBOSE -LIBPATH:G:\rotatos_potatos\libraries raylib.lib winmm.lib gdi32.lib opengl32.lib glu32.lib winmm.lib glfw.lib kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTFILE:CMakeFiles\rp.dir/intermediate.manifest CMakeFiles\rp.dir/manifest.res" failed (exit code 1104) with the following output:
+LINK : fatal error LNK1104: no se puede abrir el archivo 'glfw.lib'
+ninja: build stopped: subcommand failed.

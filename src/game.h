@@ -5,7 +5,6 @@
 #include <raylib.h>
 #include <vector>
 
-constexpr i32 NUM_BULLETS = 100;
 
 struct CameraState {
     enum State {

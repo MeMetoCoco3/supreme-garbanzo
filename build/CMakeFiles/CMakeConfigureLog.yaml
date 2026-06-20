@@ -11,506 +11,6 @@ events:
   -
     kind: "find-v1"
     backtrace:
-      - "C:/Program Files/CMake/share/cmake-4.2/Modules/CMakeNinjaFindMake.cmake:5 (find_program)"
-      - "CMakeLists.txt:3 (project)"
-    mode: "program"
-    variable: "CMAKE_MAKE_PROGRAM"
-    description: "Program used to build from build.ninja files."
-    settings:
-      SearchFramework: "NEVER"
-      SearchAppBundle: "NEVER"
-      CMAKE_FIND_USE_CMAKE_PATH: true
-      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: true
-      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
-      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
-      CMAKE_FIND_USE_INSTALL_PREFIX: true
-    names:
-      - "ninja-build"
-      - "ninja"
-      - "samu"
-    candidate_directories:
-      - "C:/Users/torre/AppData/Local/nvim-data/mason/bin/"
-      - "C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.44.35207/bin/Hostx64/x64/"
-      - "C:/Program Files/Microsoft Visual Studio/2022/Community/Common7/IDE/VC/vcpackages/"
-      - "C:/Program Files/Microsoft Visual Studio/2022/Community/Common7/IDE/CommonExtensions/Microsoft/TestWindow/"
-      - "C:/Program Files/Microsoft Visual Studio/2022/Community/Common7/IDE/CommonExtensions/Microsoft/TeamFoundation/Team Explorer/"
-      - "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/Roslyn/"
-      - "C:/Program Files (x86)/Microsoft SDKs/Windows/v10.0A/bin/NETFX 4.8 Tools/x64/"
-      - "C:/Program Files/Microsoft Visual Studio/2022/Community/Team Tools/DiagnosticsHub/Collector/"
-      - "C:/Program Files (x86)/Windows Kits/10/bin/10.0.26100.0/x64/"
-      - "C:/Program Files (x86)/Windows Kits/10/bin/x64/"
-      - "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/"
-      - "C:/Windows/Microsoft.NET/Framework64/v4.0.30319/"
-      - "C:/Program Files/Microsoft Visual Studio/2022/Community/Common7/IDE/"
-      - "C:/Program Files/Microsoft Visual Studio/2022/Community/Common7/Tools/"
-      - "C:/Program Files/PowerShell/7/"
-      - "C:/VulkanSDK/1.4.341.1/Bin/"
-      - "C:/Program Files (x86)/Common Files/Oracle/Java/java8path/"
-      - "C:/Program Files (x86)/Common Files/Oracle/Java/javapath/"
-      - "C:/Windows/System32/"
-      - "C:/Windows/"
-      - "C:/Windows/System32/wbem/"
-      - "C:/Windows/System32/WindowsPowerShell/v1.0/"
-      - "C:/Windows/System32/OpenSSH/"
-      - "C:/Program Files (x86)/NVIDIA Corporation/PhysX/Common/"
-      - "C:/Program Files/NVIDIA Corporation/NVIDIA NvDLISR/"
-      - "C:/ProgramData/chocolatey/bin/"
-      - "C:/Program Files/Git/cmd/"
-      - "C:/Program Files/LLVM/bin/"
-      - "C:/Program Files (x86)/LLVM/bin/"
-      - "C:/Program Files/CMake/bin/"
-      - "C:/Program Files (x86)/Lua/5.1/"
-      - "C:/Program Files (x86)/Lua/5.1/clibs/"
-      - "C:/Users/torre/AppData/Local/Muse Hub/lib/"
-      - "C:/Program Files/Neovim/bin/"
-      - "C:/Program Files (x86)/Windows Kits/10/Windows Performance Toolkit/"
-      - "C:/Program Files/dotnet/"
-      - "C:/Program Files/swipl/bin/"
-      - "C:/Program Files/Calibre2/"
-      - "C:/Users/torre/AppData/Local/Microsoft/WindowsApps/"
-      - "C:/tools/neovim/nvim-win64/bin/"
-      - "C:/Users/torre/.dotnet/tools/"
-      - "C:/Program Files/Microsoft Visual Studio/2022/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/bin/"
-      - "C:/Program Files/Microsoft Visual Studio/2022/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/Ninja/"
-      - "C:/Program Files/Microsoft Visual Studio/2022/Community/Common7/IDE/VC/Linux/bin/ConnectionManagerExe/"
-      - "C:/Program Files/Microsoft Visual Studio/2022/Community/VC/vcpkg/"
-    searched_directories:
-      - "C:/Users/torre/AppData/Local/nvim-data/mason/bin/ninja-build.com"
-      - "C:/Users/torre/AppData/Local/nvim-data/mason/bin/ninja-build.exe"
-      - "C:/Users/torre/AppData/Local/nvim-data/mason/bin/ninja-build"
-      - "C:/Users/torre/AppData/Local/nvim-data/mason/bin/ninja.com"
-      - "C:/Users/torre/AppData/Local/nvim-data/mason/bin/ninja.exe"
-      - "C:/Users/torre/AppData/Local/nvim-data/mason/bin/ninja"
-      - "C:/Users/torre/AppData/Local/nvim-data/mason/bin/samu.com"
-      - "C:/Users/torre/AppData/Local/nvim-data/mason/bin/samu.exe"
-      - "C:/Users/torre/AppData/Local/nvim-data/mason/bin/samu"
-      - "C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.44.35207/bin/Hostx64/x64/ninja-build.com"
-      - "C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.44.35207/bin/Hostx64/x64/ninja-build.exe"
-      - "C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.44.35207/bin/Hostx64/x64/ninja-build"
-      - "C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.44.35207/bin/Hostx64/x64/ninja.com"
-      - "C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.44.35207/bin/Hostx64/x64/ninja.exe"
-      - "C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.44.35207/bin/Hostx64/x64/ninja"
-      - "C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.44.35207/bin/Hostx64/x64/samu.com"
-      - "C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.44.35207/bin/Hostx64/x64/samu.exe"
-      - "C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.44.35207/bin/Hostx64/x64/samu"
-      - "C:/Program Files/Microsoft Visual Studio/2022/Community/Common7/IDE/VC/vcpackages/ninja-build.com"
-      - "C:/Program Files/Microsoft Visual Studio/2022/Community/Common7/IDE/VC/vcpackages/ninja-build.exe"
-      - "C:/Program Files/Microsoft Visual Studio/2022/Community/Common7/IDE/VC/vcpackages/ninja-build"
-      - "C:/Program Files/Microsoft Visual Studio/2022/Community/Common7/IDE/VC/vcpackages/ninja.com"
-      - "C:/Program Files/Microsoft Visual Studio/2022/Community/Common7/IDE/VC/vcpackages/ninja.exe"
-      - "C:/Program Files/Microsoft Visual Studio/2022/Community/Common7/IDE/VC/vcpackages/ninja"
-      - "C:/Program Files/Microsoft Visual Studio/2022/Community/Common7/IDE/VC/vcpackages/samu.com"
-      - "C:/Program Files/Microsoft Visual Studio/2022/Community/Common7/IDE/VC/vcpackages/samu.exe"
-      - "C:/Program Files/Microsoft Visual Studio/2022/Community/Common7/IDE/VC/vcpackages/samu"
-      - "C:/Program Files/Microsoft Visual Studio/2022/Community/Common7/IDE/CommonExtensions/Microsoft/TestWindow/ninja-build.com"
-      - "C:/Program Files/Microsoft Visual Studio/2022/Community/Common7/IDE/CommonExtensions/Microsoft/TestWindow/ninja-build.exe"
-      - "C:/Program Files/Microsoft Visual Studio/2022/Community/Common7/IDE/CommonExtensions/Microsoft/TestWindow/ninja-build"
-      - "C:/Program Files/Microsoft Visual Studio/2022/Community/Common7/IDE/CommonExtensions/Microsoft/TestWindow/ninja.com"
-      - "C:/Program Files/Microsoft Visual Studio/2022/Community/Common7/IDE/CommonExtensions/Microsoft/TestWindow/ninja.exe"
-      - "C:/Program Files/Microsoft Visual Studio/2022/Community/Common7/IDE/CommonExtensions/Microsoft/TestWindow/ninja"
-      - "C:/Program Files/Microsoft Visual Studio/2022/Community/Common7/IDE/CommonExtensions/Microsoft/TestWindow/samu.com"
-      - "C:/Program Files/Microsoft Visual Studio/2022/Community/Common7/IDE/CommonExtensions/Microsoft/TestWindow/samu.exe"
-      - "C:/Program Files/Microsoft Visual Studio/2022/Community/Common7/IDE/CommonExtensions/Microsoft/TestWindow/samu"
-      - "C:/Program Files/Microsoft Visual Studio/2022/Community/Common7/IDE/CommonExtensions/Microsoft/TeamFoundation/Team Explorer/ninja-build.com"
-      - "C:/Program Files/Microsoft Visual Studio/2022/Community/Common7/IDE/CommonExtensions/Microsoft/TeamFoundation/Team Explorer/ninja-build.exe"
-      - "C:/Program Files/Microsoft Visual Studio/2022/Community/Common7/IDE/CommonExtensions/Microsoft/TeamFoundation/Team Explorer/ninja-build"
-      - "C:/Program Files/Microsoft Visual Studio/2022/Community/Common7/IDE/CommonExtensions/Microsoft/TeamFoundation/Team Explorer/ninja.com"
-      - "C:/Program Files/Microsoft Visual Studio/2022/Community/Common7/IDE/CommonExtensions/Microsoft/TeamFoundation/Team Explorer/ninja.exe"
-      - "C:/Program Files/Microsoft Visual Studio/2022/Community/Common7/IDE/CommonExtensions/Microsoft/TeamFoundation/Team Explorer/ninja"
-      - "C:/Program Files/Microsoft Visual Studio/2022/Community/Common7/IDE/CommonExtensions/Microsoft/TeamFoundation/Team Explorer/samu.com"
-      - "C:/Program Files/Microsoft Visual Studio/2022/Community/Common7/IDE/CommonExtensions/Microsoft/TeamFoundation/Team Explorer/samu.exe"
-      - "C:/Program Files/Microsoft Visual Studio/2022/Community/Common7/IDE/CommonExtensions/Microsoft/TeamFoundation/Team Explorer/samu"
-      - "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/Roslyn/ninja-build.com"
-      - "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/Roslyn/ninja-build.exe"
-      - "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/Roslyn/ninja-build"
-      - "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/Roslyn/ninja.com"
-      - "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/Roslyn/ninja.exe"
-      - "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/Roslyn/ninja"
-      - "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/Roslyn/samu.com"
-      - "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/Roslyn/samu.exe"
-      - "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/Roslyn/samu"
-      - "C:/Program Files (x86)/Microsoft SDKs/Windows/v10.0A/bin/NETFX 4.8 Tools/x64/ninja-build.com"
-      - "C:/Program Files (x86)/Microsoft SDKs/Windows/v10.0A/bin/NETFX 4.8 Tools/x64/ninja-build.exe"
-      - "C:/Program Files (x86)/Microsoft SDKs/Windows/v10.0A/bin/NETFX 4.8 Tools/x64/ninja-build"
-      - "C:/Program Files (x86)/Microsoft SDKs/Windows/v10.0A/bin/NETFX 4.8 Tools/x64/ninja.com"
-      - "C:/Program Files (x86)/Microsoft SDKs/Windows/v10.0A/bin/NETFX 4.8 Tools/x64/ninja.exe"
-      - "C:/Program Files (x86)/Microsoft SDKs/Windows/v10.0A/bin/NETFX 4.8 Tools/x64/ninja"
-      - "C:/Program Files (x86)/Microsoft SDKs/Windows/v10.0A/bin/NETFX 4.8 Tools/x64/samu.com"
-      - "C:/Program Files (x86)/Microsoft SDKs/Windows/v10.0A/bin/NETFX 4.8 Tools/x64/samu.exe"
-      - "C:/Program Files (x86)/Microsoft SDKs/Windows/v10.0A/bin/NETFX 4.8 Tools/x64/samu"
-      - "C:/Program Files/Microsoft Visual Studio/2022/Community/Team Tools/DiagnosticsHub/Collector/ninja-build.com"
-      - "C:/Program Files/Microsoft Visual Studio/2022/Community/Team Tools/DiagnosticsHub/Collector/ninja-build.exe"
-      - "C:/Program Files/Microsoft Visual Studio/2022/Community/Team Tools/DiagnosticsHub/Collector/ninja-build"
-      - "C:/Program Files/Microsoft Visual Studio/2022/Community/Team Tools/DiagnosticsHub/Collector/ninja.com"
-      - "C:/Program Files/Microsoft Visual Studio/2022/Community/Team Tools/DiagnosticsHub/Collector/ninja.exe"
-      - "C:/Program Files/Microsoft Visual Studio/2022/Community/Team Tools/DiagnosticsHub/Collector/ninja"
-      - "C:/Program Files/Microsoft Visual Studio/2022/Community/Team Tools/DiagnosticsHub/Collector/samu.com"
-      - "C:/Program Files/Microsoft Visual Studio/2022/Community/Team Tools/DiagnosticsHub/Collector/samu.exe"
-      - "C:/Program Files/Microsoft Visual Studio/2022/Community/Team Tools/DiagnosticsHub/Collector/samu"
-      - "C:/Program Files (x86)/Windows Kits/10/bin/10.0.26100.0/x64/ninja-build.com"
-      - "C:/Program Files (x86)/Windows Kits/10/bin/10.0.26100.0/x64/ninja-build.exe"
-      - "C:/Program Files (x86)/Windows Kits/10/bin/10.0.26100.0/x64/ninja-build"
-      - "C:/Program Files (x86)/Windows Kits/10/bin/10.0.26100.0/x64/ninja.com"
-      - "C:/Program Files (x86)/Windows Kits/10/bin/10.0.26100.0/x64/ninja.exe"
-      - "C:/Program Files (x86)/Windows Kits/10/bin/10.0.26100.0/x64/ninja"
-      - "C:/Program Files (x86)/Windows Kits/10/bin/10.0.26100.0/x64/samu.com"
-      - "C:/Program Files (x86)/Windows Kits/10/bin/10.0.26100.0/x64/samu.exe"
-      - "C:/Program Files (x86)/Windows Kits/10/bin/10.0.26100.0/x64/samu"
-      - "C:/Program Files (x86)/Windows Kits/10/bin/x64/ninja-build.com"
-      - "C:/Program Files (x86)/Windows Kits/10/bin/x64/ninja-build.exe"
-      - "C:/Program Files (x86)/Windows Kits/10/bin/x64/ninja-build"
-      - "C:/Program Files (x86)/Windows Kits/10/bin/x64/ninja.com"
-      - "C:/Program Files (x86)/Windows Kits/10/bin/x64/ninja.exe"
-      - "C:/Program Files (x86)/Windows Kits/10/bin/x64/ninja"
-      - "C:/Program Files (x86)/Windows Kits/10/bin/x64/samu.com"
-      - "C:/Program Files (x86)/Windows Kits/10/bin/x64/samu.exe"
-      - "C:/Program Files (x86)/Windows Kits/10/bin/x64/samu"
-      - "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/ninja-build.com"
-      - "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/ninja-build.exe"
-      - "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/ninja-build"
-      - "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/ninja.com"
-      - "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/ninja.exe"
-      - "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/ninja"
-      - "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/samu.com"
-      - "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/samu.exe"
-      - "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/samu"
-      - "C:/Windows/Microsoft.NET/Framework64/v4.0.30319/ninja-build.com"
-      - "C:/Windows/Microsoft.NET/Framework64/v4.0.30319/ninja-build.exe"
-      - "C:/Windows/Microsoft.NET/Framework64/v4.0.30319/ninja-build"
-      - "C:/Windows/Microsoft.NET/Framework64/v4.0.30319/ninja.com"
-      - "C:/Windows/Microsoft.NET/Framework64/v4.0.30319/ninja.exe"
-      - "C:/Windows/Microsoft.NET/Framework64/v4.0.30319/ninja"
-      - "C:/Windows/Microsoft.NET/Framework64/v4.0.30319/samu.com"
-      - "C:/Windows/Microsoft.NET/Framework64/v4.0.30319/samu.exe"
-      - "C:/Windows/Microsoft.NET/Framework64/v4.0.30319/samu"
-      - "C:/Program Files/Microsoft Visual Studio/2022/Community/Common7/IDE/ninja-build.com"
-      - "C:/Program Files/Microsoft Visual Studio/2022/Community/Common7/IDE/ninja-build.exe"
-      - "C:/Program Files/Microsoft Visual Studio/2022/Community/Common7/IDE/ninja-build"
-      - "C:/Program Files/Microsoft Visual Studio/2022/Community/Common7/IDE/ninja.com"
-      - "C:/Program Files/Microsoft Visual Studio/2022/Community/Common7/IDE/ninja.exe"
-      - "C:/Program Files/Microsoft Visual Studio/2022/Community/Common7/IDE/ninja"
-      - "C:/Program Files/Microsoft Visual Studio/2022/Community/Common7/IDE/samu.com"
-      - "C:/Program Files/Microsoft Visual Studio/2022/Community/Common7/IDE/samu.exe"
-      - "C:/Program Files/Microsoft Visual Studio/2022/Community/Common7/IDE/samu"
-      - "C:/Program Files/Microsoft Visual Studio/2022/Community/Common7/Tools/ninja-build.com"
-      - "C:/Program Files/Microsoft Visual Studio/2022/Community/Common7/Tools/ninja-build.exe"
-      - "C:/Program Files/Microsoft Visual Studio/2022/Community/Common7/Tools/ninja-build"
-      - "C:/Program Files/Microsoft Visual Studio/2022/Community/Common7/Tools/ninja.com"
-      - "C:/Program Files/Microsoft Visual Studio/2022/Community/Common7/Tools/ninja.exe"
-      - "C:/Program Files/Microsoft Visual Studio/2022/Community/Common7/Tools/ninja"
-      - "C:/Program Files/Microsoft Visual Studio/2022/Community/Common7/Tools/samu.com"
-      - "C:/Program Files/Microsoft Visual Studio/2022/Community/Common7/Tools/samu.exe"
-      - "C:/Program Files/Microsoft Visual Studio/2022/Community/Common7/Tools/samu"
-      - "C:/Program Files/PowerShell/7/ninja-build.com"
-      - "C:/Program Files/PowerShell/7/ninja-build.exe"
-      - "C:/Program Files/PowerShell/7/ninja-build"
-      - "C:/Program Files/PowerShell/7/ninja.com"
-      - "C:/Program Files/PowerShell/7/ninja.exe"
-      - "C:/Program Files/PowerShell/7/ninja"
-      - "C:/Program Files/PowerShell/7/samu.com"
-      - "C:/Program Files/PowerShell/7/samu.exe"
-      - "C:/Program Files/PowerShell/7/samu"
-      - "C:/VulkanSDK/1.4.341.1/Bin/ninja-build.com"
-      - "C:/VulkanSDK/1.4.341.1/Bin/ninja-build.exe"
-      - "C:/VulkanSDK/1.4.341.1/Bin/ninja-build"
-      - "C:/VulkanSDK/1.4.341.1/Bin/ninja.com"
-      - "C:/VulkanSDK/1.4.341.1/Bin/ninja.exe"
-      - "C:/VulkanSDK/1.4.341.1/Bin/ninja"
-      - "C:/VulkanSDK/1.4.341.1/Bin/samu.com"
-      - "C:/VulkanSDK/1.4.341.1/Bin/samu.exe"
-      - "C:/VulkanSDK/1.4.341.1/Bin/samu"
-      - "C:/Program Files (x86)/Common Files/Oracle/Java/java8path/ninja-build.com"
-      - "C:/Program Files (x86)/Common Files/Oracle/Java/java8path/ninja-build.exe"
-      - "C:/Program Files (x86)/Common Files/Oracle/Java/java8path/ninja-build"
-      - "C:/Program Files (x86)/Common Files/Oracle/Java/java8path/ninja.com"
-      - "C:/Program Files (x86)/Common Files/Oracle/Java/java8path/ninja.exe"
-      - "C:/Program Files (x86)/Common Files/Oracle/Java/java8path/ninja"
-      - "C:/Program Files (x86)/Common Files/Oracle/Java/java8path/samu.com"
-      - "C:/Program Files (x86)/Common Files/Oracle/Java/java8path/samu.exe"
-      - "C:/Program Files (x86)/Common Files/Oracle/Java/java8path/samu"
-      - "C:/Program Files (x86)/Common Files/Oracle/Java/javapath/ninja-build.com"
-      - "C:/Program Files (x86)/Common Files/Oracle/Java/javapath/ninja-build.exe"
-      - "C:/Program Files (x86)/Common Files/Oracle/Java/javapath/ninja-build"
-      - "C:/Program Files (x86)/Common Files/Oracle/Java/javapath/ninja.com"
-      - "C:/Program Files (x86)/Common Files/Oracle/Java/javapath/ninja.exe"
-      - "C:/Program Files (x86)/Common Files/Oracle/Java/javapath/ninja"
-      - "C:/Program Files (x86)/Common Files/Oracle/Java/javapath/samu.com"
-      - "C:/Program Files (x86)/Common Files/Oracle/Java/javapath/samu.exe"
-      - "C:/Program Files (x86)/Common Files/Oracle/Java/javapath/samu"
-      - "C:/Windows/System32/ninja-build.com"
-      - "C:/Windows/System32/ninja-build.exe"
-      - "C:/Windows/System32/ninja-build"
-      - "C:/Windows/System32/ninja.com"
-      - "C:/Windows/System32/ninja.exe"
-      - "C:/Windows/System32/ninja"
-      - "C:/Windows/System32/samu.com"
-      - "C:/Windows/System32/samu.exe"
-      - "C:/Windows/System32/samu"
-      - "C:/Windows/ninja-build.com"
-      - "C:/Windows/ninja-build.exe"
-      - "C:/Windows/ninja-build"
-      - "C:/Windows/ninja.com"
-      - "C:/Windows/ninja.exe"
-      - "C:/Windows/ninja"
-      - "C:/Windows/samu.com"
-      - "C:/Windows/samu.exe"
-      - "C:/Windows/samu"
-      - "C:/Windows/System32/wbem/ninja-build.com"
-      - "C:/Windows/System32/wbem/ninja-build.exe"
-      - "C:/Windows/System32/wbem/ninja-build"
-      - "C:/Windows/System32/wbem/ninja.com"
-      - "C:/Windows/System32/wbem/ninja.exe"
-      - "C:/Windows/System32/wbem/ninja"
-      - "C:/Windows/System32/wbem/samu.com"
-      - "C:/Windows/System32/wbem/samu.exe"
-      - "C:/Windows/System32/wbem/samu"
-      - "C:/Windows/System32/WindowsPowerShell/v1.0/ninja-build.com"
-      - "C:/Windows/System32/WindowsPowerShell/v1.0/ninja-build.exe"
-      - "C:/Windows/System32/WindowsPowerShell/v1.0/ninja-build"
-      - "C:/Windows/System32/WindowsPowerShell/v1.0/ninja.com"
-      - "C:/Windows/System32/WindowsPowerShell/v1.0/ninja.exe"
-      - "C:/Windows/System32/WindowsPowerShell/v1.0/ninja"
-      - "C:/Windows/System32/WindowsPowerShell/v1.0/samu.com"
-      - "C:/Windows/System32/WindowsPowerShell/v1.0/samu.exe"
-      - "C:/Windows/System32/WindowsPowerShell/v1.0/samu"
-      - "C:/Windows/System32/OpenSSH/ninja-build.com"
-      - "C:/Windows/System32/OpenSSH/ninja-build.exe"
-      - "C:/Windows/System32/OpenSSH/ninja-build"
-      - "C:/Windows/System32/OpenSSH/ninja.com"
-      - "C:/Windows/System32/OpenSSH/ninja.exe"
-      - "C:/Windows/System32/OpenSSH/ninja"
-      - "C:/Windows/System32/OpenSSH/samu.com"
-      - "C:/Windows/System32/OpenSSH/samu.exe"
-      - "C:/Windows/System32/OpenSSH/samu"
-      - "C:/Program Files (x86)/NVIDIA Corporation/PhysX/Common/ninja-build.com"
-      - "C:/Program Files (x86)/NVIDIA Corporation/PhysX/Common/ninja-build.exe"
-      - "C:/Program Files (x86)/NVIDIA Corporation/PhysX/Common/ninja-build"
-      - "C:/Program Files (x86)/NVIDIA Corporation/PhysX/Common/ninja.com"
-      - "C:/Program Files (x86)/NVIDIA Corporation/PhysX/Common/ninja.exe"
-      - "C:/Program Files (x86)/NVIDIA Corporation/PhysX/Common/ninja"
-      - "C:/Program Files (x86)/NVIDIA Corporation/PhysX/Common/samu.com"
-      - "C:/Program Files (x86)/NVIDIA Corporation/PhysX/Common/samu.exe"
-      - "C:/Program Files (x86)/NVIDIA Corporation/PhysX/Common/samu"
-      - "C:/Program Files/NVIDIA Corporation/NVIDIA NvDLISR/ninja-build.com"
-      - "C:/Program Files/NVIDIA Corporation/NVIDIA NvDLISR/ninja-build.exe"
-      - "C:/Program Files/NVIDIA Corporation/NVIDIA NvDLISR/ninja-build"
-      - "C:/Program Files/NVIDIA Corporation/NVIDIA NvDLISR/ninja.com"
-      - "C:/Program Files/NVIDIA Corporation/NVIDIA NvDLISR/ninja.exe"
-      - "C:/Program Files/NVIDIA Corporation/NVIDIA NvDLISR/ninja"
-      - "C:/Program Files/NVIDIA Corporation/NVIDIA NvDLISR/samu.com"
-      - "C:/Program Files/NVIDIA Corporation/NVIDIA NvDLISR/samu.exe"
-      - "C:/Program Files/NVIDIA Corporation/NVIDIA NvDLISR/samu"
-      - "C:/ProgramData/chocolatey/bin/ninja-build.com"
-      - "C:/ProgramData/chocolatey/bin/ninja-build.exe"
-      - "C:/ProgramData/chocolatey/bin/ninja-build"
-      - "C:/ProgramData/chocolatey/bin/ninja.com"
-    found: "C:/ProgramData/chocolatey/bin/ninja.exe"
-    search_context:
-      ENV{PATH}:
-        - "C:\\Users\\torre\\AppData\\Local\\nvim-data\\mason\\bin"
-        - "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64"
-        - "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Common7\\IDE\\VC\\VCPackages"
-        - "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\TestWindow"
-        - "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\TeamFoundation\\Team Explorer"
-        - "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\MSBuild\\Current\\bin\\Roslyn"
-        - "C:\\Program Files (x86)\\Microsoft SDKs\\Windows\\v10.0A\\bin\\NETFX 4.8 Tools\\x64\\"
-        - "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Team Tools\\DiagnosticsHub\\Collector"
-        - "C:\\Program Files (x86)\\Windows Kits\\10\\bin\\10.0.26100.0\\\\x64"
-        - "C:\\Program Files (x86)\\Windows Kits\\10\\bin\\\\x64"
-        - "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\\\MSBuild\\Current\\Bin\\amd64"
-        - "C:\\Windows\\Microsoft.NET\\Framework64\\v4.0.30319"
-        - "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Common7\\IDE\\"
-        - "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Common7\\Tools\\"
-        - "C:\\Program Files\\PowerShell\\7"
-        - "C:\\VulkanSDK\\1.4.341.1\\Bin"
-        - "C:\\Program Files (x86)\\Common Files\\Oracle\\Java\\java8path"
-        - "C:\\Program Files (x86)\\Common Files\\Oracle\\Java\\javapath"
-        - "C:\\Windows\\system32"
-        - "C:\\Windows"
-        - "C:\\Windows\\System32\\Wbem"
-        - "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\"
-        - "C:\\Windows\\System32\\OpenSSH\\"
-        - "C:\\Program Files (x86)\\NVIDIA Corporation\\PhysX\\Common"
-        - "C:\\Program Files\\NVIDIA Corporation\\NVIDIA NvDLISR"
-        - "C:\\ProgramData\\chocolatey\\bin"
-        - "C:\\Program Files\\Git\\cmd"
-        - "C:\\Program Files\\LLVM\\bin"
-        - "C:\\Program Files (x86)\\LLVM\\bin"
-        - "C:\\Program Files\\CMake\\bin"
-        - "C:\\Program Files (x86)\\Lua\\5.1"
-        - "C:\\Program Files (x86)\\Lua\\5.1\\clibs"
-        - "C:\\Users\\torre\\AppData\\Local\\Muse Hub\\lib"
-        - "C:\\Program Files\\Neovim\\bin"
-        - "C:\\Program Files (x86)\\Windows Kits\\10\\Windows Performance Toolkit\\"
-        - "C:\\Program Files\\dotnet\\"
-        - "C:\\Program Files\\swipl\\bin"
-        - "C:\\Program Files\\Calibre2\\"
-        - "C:\\Program Files\\PowerShell\\7\\"
-        - "C:\\Users\\torre\\AppData\\Local\\Microsoft\\WindowsApps"
-        - "C:\\tools\\neovim\\nvim-win64\\bin"
-        - "C:\\Users\\torre\\.dotnet\\tools"
-        - "C:\\Users\\torre\\AppData\\Local\\Muse Hub\\lib"
-        - "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\bin"
-        - "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\Ninja"
-        - "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Common7\\IDE\\VC\\Linux\\bin\\ConnectionManagerExe"
-        - "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\vcpkg"
-        - "C:\\Program Files\\Neovim\\bin"
-        - "C:\\Program Files\\Neovim\\bin"
-  -
-    kind: "find-v1"
-    backtrace:
-      - "C:/Program Files/CMake/share/cmake-4.2/Modules/CMakeDetermineCompiler.cmake:63 (find_program)"
-      - "C:/Program Files/CMake/share/cmake-4.2/Modules/CMakeDetermineCCompiler.cmake:64 (_cmake_find_compiler)"
-      - "CMakeLists.txt:3 (project)"
-    mode: "program"
-    variable: "CMAKE_C_COMPILER"
-    description: "C compiler"
-    settings:
-      SearchFramework: "NEVER"
-      SearchAppBundle: "NEVER"
-      CMAKE_FIND_USE_CMAKE_PATH: false
-      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: false
-      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
-      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: false
-      CMAKE_FIND_USE_INSTALL_PREFIX: true
-    names:
-      - "cc"
-      - "gcc"
-      - "cl"
-      - "bcc"
-      - "xlc"
-      - "icx"
-      - "clang"
-    candidate_directories:
-      - "C:/Users/torre/AppData/Local/nvim-data/mason/bin/"
-      - "C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.44.35207/bin/Hostx64/x64/"
-      - "C:/Program Files/Microsoft Visual Studio/2022/Community/Common7/IDE/VC/vcpackages/"
-      - "C:/Program Files/Microsoft Visual Studio/2022/Community/Common7/IDE/CommonExtensions/Microsoft/TestWindow/"
-      - "C:/Program Files/Microsoft Visual Studio/2022/Community/Common7/IDE/CommonExtensions/Microsoft/TeamFoundation/Team Explorer/"
-      - "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/Roslyn/"
-      - "C:/Program Files (x86)/Microsoft SDKs/Windows/v10.0A/bin/NETFX 4.8 Tools/x64/"
-      - "C:/Program Files/Microsoft Visual Studio/2022/Community/Team Tools/DiagnosticsHub/Collector/"
-      - "C:/Program Files (x86)/Windows Kits/10/bin/10.0.26100.0/x64/"
-      - "C:/Program Files (x86)/Windows Kits/10/bin/x64/"
-      - "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/"
-      - "C:/Windows/Microsoft.NET/Framework64/v4.0.30319/"
-      - "C:/Program Files/Microsoft Visual Studio/2022/Community/Common7/IDE/"
-      - "C:/Program Files/Microsoft Visual Studio/2022/Community/Common7/Tools/"
-      - "C:/Program Files/PowerShell/7/"
-      - "C:/VulkanSDK/1.4.341.1/Bin/"
-      - "C:/Program Files (x86)/Common Files/Oracle/Java/java8path/"
-      - "C:/Program Files (x86)/Common Files/Oracle/Java/javapath/"
-      - "C:/Windows/System32/"
-      - "C:/Windows/"
-      - "C:/Windows/System32/wbem/"
-      - "C:/Windows/System32/WindowsPowerShell/v1.0/"
-      - "C:/Windows/System32/OpenSSH/"
-      - "C:/Program Files (x86)/NVIDIA Corporation/PhysX/Common/"
-      - "C:/Program Files/NVIDIA Corporation/NVIDIA NvDLISR/"
-      - "C:/ProgramData/chocolatey/bin/"
-      - "C:/Program Files/Git/cmd/"
-      - "C:/Program Files/LLVM/bin/"
-      - "C:/Program Files (x86)/LLVM/bin/"
-      - "C:/Program Files/CMake/bin/"
-      - "C:/Program Files (x86)/Lua/5.1/"
-      - "C:/Program Files (x86)/Lua/5.1/clibs/"
-      - "C:/Users/torre/AppData/Local/Muse Hub/lib/"
-      - "C:/Program Files/Neovim/bin/"
-      - "C:/Program Files (x86)/Windows Kits/10/Windows Performance Toolkit/"
-      - "C:/Program Files/dotnet/"
-      - "C:/Program Files/swipl/bin/"
-      - "C:/Program Files/Calibre2/"
-      - "C:/Users/torre/AppData/Local/Microsoft/WindowsApps/"
-      - "C:/tools/neovim/nvim-win64/bin/"
-      - "C:/Users/torre/.dotnet/tools/"
-      - "C:/Program Files/Microsoft Visual Studio/2022/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/bin/"
-      - "C:/Program Files/Microsoft Visual Studio/2022/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/Ninja/"
-      - "C:/Program Files/Microsoft Visual Studio/2022/Community/Common7/IDE/VC/Linux/bin/ConnectionManagerExe/"
-      - "C:/Program Files/Microsoft Visual Studio/2022/Community/VC/vcpkg/"
-    searched_directories:
-      - "C:/Users/torre/AppData/Local/nvim-data/mason/bin/cc.com"
-      - "C:/Users/torre/AppData/Local/nvim-data/mason/bin/cc.exe"
-      - "C:/Users/torre/AppData/Local/nvim-data/mason/bin/cc"
-      - "C:/Users/torre/AppData/Local/nvim-data/mason/bin/gcc.com"
-      - "C:/Users/torre/AppData/Local/nvim-data/mason/bin/gcc.exe"
-      - "C:/Users/torre/AppData/Local/nvim-data/mason/bin/gcc"
-      - "C:/Users/torre/AppData/Local/nvim-data/mason/bin/cl.com"
-      - "C:/Users/torre/AppData/Local/nvim-data/mason/bin/cl.exe"
-      - "C:/Users/torre/AppData/Local/nvim-data/mason/bin/cl"
-      - "C:/Users/torre/AppData/Local/nvim-data/mason/bin/bcc.com"
-      - "C:/Users/torre/AppData/Local/nvim-data/mason/bin/bcc.exe"
-      - "C:/Users/torre/AppData/Local/nvim-data/mason/bin/bcc"
-      - "C:/Users/torre/AppData/Local/nvim-data/mason/bin/xlc.com"
-      - "C:/Users/torre/AppData/Local/nvim-data/mason/bin/xlc.exe"
-      - "C:/Users/torre/AppData/Local/nvim-data/mason/bin/xlc"
-      - "C:/Users/torre/AppData/Local/nvim-data/mason/bin/icx.com"
-      - "C:/Users/torre/AppData/Local/nvim-data/mason/bin/icx.exe"
-      - "C:/Users/torre/AppData/Local/nvim-data/mason/bin/icx"
-      - "C:/Users/torre/AppData/Local/nvim-data/mason/bin/clang.com"
-      - "C:/Users/torre/AppData/Local/nvim-data/mason/bin/clang.exe"
-      - "C:/Users/torre/AppData/Local/nvim-data/mason/bin/clang"
-      - "C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.44.35207/bin/Hostx64/x64/cc.com"
-      - "C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.44.35207/bin/Hostx64/x64/cc.exe"
-      - "C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.44.35207/bin/Hostx64/x64/cc"
-      - "C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.44.35207/bin/Hostx64/x64/gcc.com"
-      - "C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.44.35207/bin/Hostx64/x64/gcc.exe"
-      - "C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.44.35207/bin/Hostx64/x64/gcc"
-      - "C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.44.35207/bin/Hostx64/x64/cl.com"
-    found: "C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.44.35207/bin/Hostx64/x64/cl.exe"
-    search_context:
-      ENV{PATH}:
-        - "C:\\Users\\torre\\AppData\\Local\\nvim-data\\mason\\bin"
-        - "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64"
-        - "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Common7\\IDE\\VC\\VCPackages"
-        - "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\TestWindow"
-        - "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\TeamFoundation\\Team Explorer"
-        - "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\MSBuild\\Current\\bin\\Roslyn"
-        - "C:\\Program Files (x86)\\Microsoft SDKs\\Windows\\v10.0A\\bin\\NETFX 4.8 Tools\\x64\\"
-        - "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Team Tools\\DiagnosticsHub\\Collector"
-        - "C:\\Program Files (x86)\\Windows Kits\\10\\bin\\10.0.26100.0\\\\x64"
-        - "C:\\Program Files (x86)\\Windows Kits\\10\\bin\\\\x64"
-        - "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\\\MSBuild\\Current\\Bin\\amd64"
-        - "C:\\Windows\\Microsoft.NET\\Framework64\\v4.0.30319"
-        - "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Common7\\IDE\\"
-        - "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Common7\\Tools\\"
-        - "C:\\Program Files\\PowerShell\\7"
-        - "C:\\VulkanSDK\\1.4.341.1\\Bin"
-        - "C:\\Program Files (x86)\\Common Files\\Oracle\\Java\\java8path"
-        - "C:\\Program Files (x86)\\Common Files\\Oracle\\Java\\javapath"
-        - "C:\\Windows\\system32"
-        - "C:\\Windows"
-        - "C:\\Windows\\System32\\Wbem"
-        - "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\"
-        - "C:\\Windows\\System32\\OpenSSH\\"
-        - "C:\\Program Files (x86)\\NVIDIA Corporation\\PhysX\\Common"
-        - "C:\\Program Files\\NVIDIA Corporation\\NVIDIA NvDLISR"
-        - "C:\\ProgramData\\chocolatey\\bin"
-        - "C:\\Program Files\\Git\\cmd"
-        - "C:\\Program Files\\LLVM\\bin"
-        - "C:\\Program Files (x86)\\LLVM\\bin"
-        - "C:\\Program Files\\CMake\\bin"
-        - "C:\\Program Files (x86)\\Lua\\5.1"
-        - "C:\\Program Files (x86)\\Lua\\5.1\\clibs"
-        - "C:\\Users\\torre\\AppData\\Local\\Muse Hub\\lib"
-        - "C:\\Program Files\\Neovim\\bin"
-        - "C:\\Program Files (x86)\\Windows Kits\\10\\Windows Performance Toolkit\\"
-        - "C:\\Program Files\\dotnet\\"
-        - "C:\\Program Files\\swipl\\bin"
-        - "C:\\Program Files\\Calibre2\\"
-        - "C:\\Program Files\\PowerShell\\7\\"
-        - "C:\\Users\\torre\\AppData\\Local\\Microsoft\\WindowsApps"
-        - "C:\\tools\\neovim\\nvim-win64\\bin"
-        - "C:\\Users\\torre\\.dotnet\\tools"
-        - "C:\\Users\\torre\\AppData\\Local\\Muse Hub\\lib"
-        - "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\bin"
-        - "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\Ninja"
-        - "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Common7\\IDE\\VC\\Linux\\bin\\ConnectionManagerExe"
-        - "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\vcpkg"
-        - "C:\\Program Files\\Neovim\\bin"
-        - "C:\\Program Files\\Neovim\\bin"
-  -
-    kind: "find-v1"
-    backtrace:
       - "C:/Program Files/CMake/share/cmake-4.2/Modules/CMakeDetermineCompilerId.cmake:462 (find_file)"
       - "C:/Program Files/CMake/share/cmake-4.2/Modules/CMakeDetermineCompilerId.cmake:500 (CMAKE_DETERMINE_COMPILER_ID_WRITE)"
       - "C:/Program Files/CMake/share/cmake-4.2/Modules/CMakeDetermineCompilerId.cmake:8 (CMAKE_DETERMINE_COMPILER_ID_BUILD)"
@@ -574,6 +74,7 @@ events:
         - "C:\\Program Files\\swipl\\bin"
         - "C:\\Program Files\\Calibre2\\"
         - "C:\\Program Files\\PowerShell\\7\\"
+        - "C:\\Users\\torre\\AppData\\Local\\Muse Hub\\lib"
         - "C:\\Users\\torre\\AppData\\Local\\Microsoft\\WindowsApps"
         - "C:\\tools\\neovim\\nvim-win64\\bin"
         - "C:\\Users\\torre\\.dotnet\\tools"
@@ -603,43 +104,52 @@ events:
       - "CMakeLists.txt:3 (project)"
     message: |
       Compiling the C compiler identification source file "CMakeCCompilerId.c" succeeded.
-      Compiler: C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.44.35207/bin/Hostx64/x64/cl.exe 
+      Compiler:  
       Build flags: 
       Id flags:  
       
       The output was:
       0
-      Compilador de optimización de C/C++ de Microsoft (R) versión 19.44.35222 para x64
-      (C) Microsoft Corporation. Todos los derechos reservados.
+      Versi├│n de MSBuild 17.14.40+3e7442088 para .NET Framework
+      Compilaci├│n iniciada a las 20/06/2026 11:24:26.
       
-      CMakeCCompilerId.c
-      Microsoft (R) Incremental Linker Version 14.44.35222.0
-      Copyright (C) Microsoft Corporation.  All rights reserved.
+      Proyecto "G:\\rotatos_potatos\\build\\CMakeFiles\\4.2.0-rc3\\CompilerIdC\\CompilerIdC.vcxproj" en nodo 1 (destinos predeterminados).
+      PrepareForBuild:
+        Creando directorio "Debug\\".
+        La salida estructurada est├í habilitada. El formato del diagn├│stico del compilador reflejar├í la jerarqu├¡a de errores. Consulte https://aka.ms/cpp/structured-output para obtener m├ís detalles.
+        Creando directorio "Debug\\CompilerIdC.tlog\\".
+      InitializeBuildStatus:
+        Se crear├í "Debug\\CompilerIdC.tlog\\unsuccessfulbuild" porque se especific├│ "AlwaysCreate".
+        Aplicando tarea Touch a "Debug\\CompilerIdC.tlog\\unsuccessfulbuild".
+      ClCompile:
+        C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\CL.exe /c /nologo /W0 /WX- /diagnostics:column /Od /D _MBCS /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Debug\\\\" /Fd"Debug\\vc143.pdb" /external:W0 /Gd /TC /FC /errorReport:queue CMakeCCompilerId.c
+        CMakeCCompilerId.c
+      Link:
+        C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:".\\CompilerIdC.exe" /INCREMENTAL:NO /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /PDB:".\\CompilerIdC.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:".\\CompilerIdC.lib" /MACHINE:X64 Debug\\CMakeCCompilerId.obj
+        CompilerIdC.vcxproj -> G:\\rotatos_potatos\\build\\CMakeFiles\\4.2.0-rc3\\CompilerIdC\\CompilerIdC.exe
+      PostBuildEvent:
+        for %%i in (cl.exe) do @echo CMAKE_C_COMPILER=%%~$PATH:i
+        :VCEnd
+        CMAKE_C_COMPILER=C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\cl.exe
+      FinalizeBuildStatus:
+        Se eliminar├í el archivo "Debug\\CompilerIdC.tlog\\unsuccessfulbuild".
+        Aplicando tarea Touch a "Debug\\CompilerIdC.tlog\\CompilerIdC.lastbuildstate".
+      Compilaci├│n del proyecto terminada "G:\\rotatos_potatos\\build\\CMakeFiles\\4.2.0-rc3\\CompilerIdC\\CompilerIdC.vcxproj" (destinos predeterminados).
       
-      /out:CMakeCCompilerId.exe 
-      CMakeCCompilerId.obj 
+      Compilaci├│n correcta.
+          0 Advertencia(s)
+          0 Errores
+      
+      Tiempo transcurrido 00:00:00.51
       
       
-      Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "CMakeCCompilerId.exe"
+      Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "CompilerIdC.exe"
       
-      Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "CMakeCCompilerId.obj"
+      Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "CompilerIdC.vcxproj"
       
       The C compiler identification is MSVC, found in:
-        C:/Users/torre/Documents/games/rotatos_potatos/build/CMakeFiles/4.2.0-rc3/CompilerIdC/CMakeCCompilerId.exe
+        G:/rotatos_potatos/build/CMakeFiles/4.2.0-rc3/CompilerIdC/CompilerIdC.exe
       
-  -
-    kind: "message-v1"
-    backtrace:
-      - "C:/Program Files/CMake/share/cmake-4.2/Modules/CMakeDetermineCompilerId.cmake:1341 (message)"
-      - "C:/Program Files/CMake/share/cmake-4.2/Modules/CMakeDetermineCompilerId.cmake:250 (CMAKE_DETERMINE_MSVC_SHOWINCLUDES_PREFIX)"
-      - "C:/Program Files/CMake/share/cmake-4.2/Modules/CMakeDetermineCCompiler.cmake:122 (CMAKE_DETERMINE_COMPILER_ID)"
-      - "CMakeLists.txt:3 (project)"
-    message: |
-      Detecting C compiler /showIncludes prefix:
-        main.c
-        Nota: inclusión del archivo: C:\\Users\\torre\\Documents\\games\\rotatos_potatos\\build\\CMakeFiles\\ShowIncludes\\foo.h
-        
-      Found prefix "Nota: inclusión del archivo: "
   -
     kind: "find-v1"
     backtrace:
@@ -751,6 +261,7 @@ events:
         - "C:\\Program Files\\swipl\\bin"
         - "C:\\Program Files\\Calibre2\\"
         - "C:\\Program Files\\PowerShell\\7\\"
+        - "C:\\Users\\torre\\AppData\\Local\\Muse Hub\\lib"
         - "C:\\Users\\torre\\AppData\\Local\\Microsoft\\WindowsApps"
         - "C:\\tools\\neovim\\nvim-win64\\bin"
         - "C:\\Users\\torre\\.dotnet\\tools"
@@ -953,6 +464,7 @@ events:
         - "C:\\Program Files\\swipl\\bin"
         - "C:\\Program Files\\Calibre2\\"
         - "C:\\Program Files\\PowerShell\\7\\"
+        - "C:\\Users\\torre\\AppData\\Local\\Muse Hub\\lib"
         - "C:\\Users\\torre\\AppData\\Local\\Microsoft\\WindowsApps"
         - "C:\\tools\\neovim\\nvim-win64\\bin"
         - "C:\\Users\\torre\\.dotnet\\tools"
@@ -1072,6 +584,7 @@ events:
         - "C:\\Program Files\\swipl\\bin"
         - "C:\\Program Files\\Calibre2\\"
         - "C:\\Program Files\\PowerShell\\7\\"
+        - "C:\\Users\\torre\\AppData\\Local\\Muse Hub\\lib"
         - "C:\\Users\\torre\\AppData\\Local\\Microsoft\\WindowsApps"
         - "C:\\tools\\neovim\\nvim-win64\\bin"
         - "C:\\Users\\torre\\.dotnet\\tools"
@@ -1215,6 +728,7 @@ events:
         - "C:\\Program Files\\swipl\\bin"
         - "C:\\Program Files\\Calibre2\\"
         - "C:\\Program Files\\PowerShell\\7\\"
+        - "C:\\Users\\torre\\AppData\\Local\\Muse Hub\\lib"
         - "C:\\Users\\torre\\AppData\\Local\\Microsoft\\WindowsApps"
         - "C:\\tools\\neovim\\nvim-win64\\bin"
         - "C:\\Users\\torre\\.dotnet\\tools"
@@ -1334,92 +848,7 @@ events:
         - "C:\\Program Files\\swipl\\bin"
         - "C:\\Program Files\\Calibre2\\"
         - "C:\\Program Files\\PowerShell\\7\\"
-        - "C:\\Users\\torre\\AppData\\Local\\Microsoft\\WindowsApps"
-        - "C:\\tools\\neovim\\nvim-win64\\bin"
-        - "C:\\Users\\torre\\.dotnet\\tools"
         - "C:\\Users\\torre\\AppData\\Local\\Muse Hub\\lib"
-        - "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\bin"
-        - "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\Ninja"
-        - "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Common7\\IDE\\VC\\Linux\\bin\\ConnectionManagerExe"
-        - "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\vcpkg"
-        - "C:\\Program Files\\Neovim\\bin"
-        - "C:\\Program Files\\Neovim\\bin"
-  -
-    kind: "find-v1"
-    backtrace:
-      - "C:/Program Files/CMake/share/cmake-4.2/Modules/CMakeDetermineCompiler.cmake:54 (find_program)"
-      - "C:/Program Files/CMake/share/cmake-4.2/Modules/CMakeDetermineCXXCompiler.cmake:69 (_cmake_find_compiler)"
-      - "CMakeLists.txt:3 (project)"
-    mode: "program"
-    variable: "CMAKE_CXX_COMPILER"
-    description: "CXX compiler"
-    settings:
-      SearchFramework: "NEVER"
-      SearchAppBundle: "NEVER"
-      CMAKE_FIND_USE_CMAKE_PATH: true
-      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: true
-      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
-      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
-      CMAKE_FIND_USE_INSTALL_PREFIX: true
-    names:
-      - "c++"
-      - "g++"
-      - "cl"
-      - "bcc"
-      - "icx"
-      - "clang++"
-    candidate_directories:
-      - "C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.44.35207/bin/Hostx64/x64/"
-    searched_directories:
-      - "C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.44.35207/bin/Hostx64/x64/c++.com"
-      - "C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.44.35207/bin/Hostx64/x64/c++.exe"
-      - "C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.44.35207/bin/Hostx64/x64/c++"
-      - "C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.44.35207/bin/Hostx64/x64/g++.com"
-      - "C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.44.35207/bin/Hostx64/x64/g++.exe"
-      - "C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.44.35207/bin/Hostx64/x64/g++"
-      - "C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.44.35207/bin/Hostx64/x64/cl.com"
-    found: "C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.44.35207/bin/Hostx64/x64/cl.exe"
-    search_context:
-      ENV{PATH}:
-        - "C:\\Users\\torre\\AppData\\Local\\nvim-data\\mason\\bin"
-        - "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64"
-        - "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Common7\\IDE\\VC\\VCPackages"
-        - "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\TestWindow"
-        - "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\TeamFoundation\\Team Explorer"
-        - "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\MSBuild\\Current\\bin\\Roslyn"
-        - "C:\\Program Files (x86)\\Microsoft SDKs\\Windows\\v10.0A\\bin\\NETFX 4.8 Tools\\x64\\"
-        - "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Team Tools\\DiagnosticsHub\\Collector"
-        - "C:\\Program Files (x86)\\Windows Kits\\10\\bin\\10.0.26100.0\\\\x64"
-        - "C:\\Program Files (x86)\\Windows Kits\\10\\bin\\\\x64"
-        - "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\\\MSBuild\\Current\\Bin\\amd64"
-        - "C:\\Windows\\Microsoft.NET\\Framework64\\v4.0.30319"
-        - "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Common7\\IDE\\"
-        - "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Common7\\Tools\\"
-        - "C:\\Program Files\\PowerShell\\7"
-        - "C:\\VulkanSDK\\1.4.341.1\\Bin"
-        - "C:\\Program Files (x86)\\Common Files\\Oracle\\Java\\java8path"
-        - "C:\\Program Files (x86)\\Common Files\\Oracle\\Java\\javapath"
-        - "C:\\Windows\\system32"
-        - "C:\\Windows"
-        - "C:\\Windows\\System32\\Wbem"
-        - "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\"
-        - "C:\\Windows\\System32\\OpenSSH\\"
-        - "C:\\Program Files (x86)\\NVIDIA Corporation\\PhysX\\Common"
-        - "C:\\Program Files\\NVIDIA Corporation\\NVIDIA NvDLISR"
-        - "C:\\ProgramData\\chocolatey\\bin"
-        - "C:\\Program Files\\Git\\cmd"
-        - "C:\\Program Files\\LLVM\\bin"
-        - "C:\\Program Files (x86)\\LLVM\\bin"
-        - "C:\\Program Files\\CMake\\bin"
-        - "C:\\Program Files (x86)\\Lua\\5.1"
-        - "C:\\Program Files (x86)\\Lua\\5.1\\clibs"
-        - "C:\\Users\\torre\\AppData\\Local\\Muse Hub\\lib"
-        - "C:\\Program Files\\Neovim\\bin"
-        - "C:\\Program Files (x86)\\Windows Kits\\10\\Windows Performance Toolkit\\"
-        - "C:\\Program Files\\dotnet\\"
-        - "C:\\Program Files\\swipl\\bin"
-        - "C:\\Program Files\\Calibre2\\"
-        - "C:\\Program Files\\PowerShell\\7\\"
         - "C:\\Users\\torre\\AppData\\Local\\Microsoft\\WindowsApps"
         - "C:\\tools\\neovim\\nvim-win64\\bin"
         - "C:\\Users\\torre\\.dotnet\\tools"
@@ -1496,6 +925,7 @@ events:
         - "C:\\Program Files\\swipl\\bin"
         - "C:\\Program Files\\Calibre2\\"
         - "C:\\Program Files\\PowerShell\\7\\"
+        - "C:\\Users\\torre\\AppData\\Local\\Muse Hub\\lib"
         - "C:\\Users\\torre\\AppData\\Local\\Microsoft\\WindowsApps"
         - "C:\\tools\\neovim\\nvim-win64\\bin"
         - "C:\\Users\\torre\\.dotnet\\tools"
@@ -1525,43 +955,52 @@ events:
       - "CMakeLists.txt:3 (project)"
     message: |
       Compiling the CXX compiler identification source file "CMakeCXXCompilerId.cpp" succeeded.
-      Compiler: C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.44.35207/bin/Hostx64/x64/cl.exe 
+      Compiler:  
       Build flags: 
       Id flags:  
       
       The output was:
       0
-      Compilador de optimización de C/C++ de Microsoft (R) versión 19.44.35222 para x64
-      (C) Microsoft Corporation. Todos los derechos reservados.
+      Versi├│n de MSBuild 17.14.40+3e7442088 para .NET Framework
+      Compilaci├│n iniciada a las 20/06/2026 11:24:26.
       
-      CMakeCXXCompilerId.cpp
-      Microsoft (R) Incremental Linker Version 14.44.35222.0
-      Copyright (C) Microsoft Corporation.  All rights reserved.
+      Proyecto "G:\\rotatos_potatos\\build\\CMakeFiles\\4.2.0-rc3\\CompilerIdCXX\\CompilerIdCXX.vcxproj" en nodo 1 (destinos predeterminados).
+      PrepareForBuild:
+        Creando directorio "Debug\\".
+        La salida estructurada est├í habilitada. El formato del diagn├│stico del compilador reflejar├í la jerarqu├¡a de errores. Consulte https://aka.ms/cpp/structured-output para obtener m├ís detalles.
+        Creando directorio "Debug\\CompilerIdCXX.tlog\\".
+      InitializeBuildStatus:
+        Se crear├í "Debug\\CompilerIdCXX.tlog\\unsuccessfulbuild" porque se especific├│ "AlwaysCreate".
+        Aplicando tarea Touch a "Debug\\CompilerIdCXX.tlog\\unsuccessfulbuild".
+      ClCompile:
+        C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\CL.exe /c /nologo /W0 /WX- /diagnostics:column /Od /D _MBCS /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Debug\\\\" /Fd"Debug\\vc143.pdb" /external:W0 /Gd /TP /FC /errorReport:queue CMakeCXXCompilerId.cpp
+        CMakeCXXCompilerId.cpp
+      Link:
+        C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:".\\CompilerIdCXX.exe" /INCREMENTAL:NO /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /PDB:".\\CompilerIdCXX.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:".\\CompilerIdCXX.lib" /MACHINE:X64 Debug\\CMakeCXXCompilerId.obj
+        CompilerIdCXX.vcxproj -> G:\\rotatos_potatos\\build\\CMakeFiles\\4.2.0-rc3\\CompilerIdCXX\\CompilerIdCXX.exe
+      PostBuildEvent:
+        for %%i in (cl.exe) do @echo CMAKE_CXX_COMPILER=%%~$PATH:i
+        :VCEnd
+        CMAKE_CXX_COMPILER=C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\cl.exe
+      FinalizeBuildStatus:
+        Se eliminar├í el archivo "Debug\\CompilerIdCXX.tlog\\unsuccessfulbuild".
+        Aplicando tarea Touch a "Debug\\CompilerIdCXX.tlog\\CompilerIdCXX.lastbuildstate".
+      Compilaci├│n del proyecto terminada "G:\\rotatos_potatos\\build\\CMakeFiles\\4.2.0-rc3\\CompilerIdCXX\\CompilerIdCXX.vcxproj" (destinos predeterminados).
       
-      /out:CMakeCXXCompilerId.exe 
-      CMakeCXXCompilerId.obj 
+      Compilaci├│n correcta.
+          0 Advertencia(s)
+          0 Errores
+      
+      Tiempo transcurrido 00:00:00.48
       
       
-      Compilation of the CXX compiler identification source "CMakeCXXCompilerId.cpp" produced "CMakeCXXCompilerId.exe"
+      Compilation of the CXX compiler identification source "CMakeCXXCompilerId.cpp" produced "CompilerIdCXX.exe"
       
-      Compilation of the CXX compiler identification source "CMakeCXXCompilerId.cpp" produced "CMakeCXXCompilerId.obj"
+      Compilation of the CXX compiler identification source "CMakeCXXCompilerId.cpp" produced "CompilerIdCXX.vcxproj"
       
       The CXX compiler identification is MSVC, found in:
-        C:/Users/torre/Documents/games/rotatos_potatos/build/CMakeFiles/4.2.0-rc3/CompilerIdCXX/CMakeCXXCompilerId.exe
+        G:/rotatos_potatos/build/CMakeFiles/4.2.0-rc3/CompilerIdCXX/CompilerIdCXX.exe
       
-  -
-    kind: "message-v1"
-    backtrace:
-      - "C:/Program Files/CMake/share/cmake-4.2/Modules/CMakeDetermineCompilerId.cmake:1341 (message)"
-      - "C:/Program Files/CMake/share/cmake-4.2/Modules/CMakeDetermineCompilerId.cmake:250 (CMAKE_DETERMINE_MSVC_SHOWINCLUDES_PREFIX)"
-      - "C:/Program Files/CMake/share/cmake-4.2/Modules/CMakeDetermineCXXCompiler.cmake:125 (CMAKE_DETERMINE_COMPILER_ID)"
-      - "CMakeLists.txt:3 (project)"
-    message: |
-      Detecting CXX compiler /showIncludes prefix:
-        main.c
-        Nota: inclusión del archivo: C:\\Users\\torre\\Documents\\games\\rotatos_potatos\\build\\CMakeFiles\\ShowIncludes\\foo.h
-        
-      Found prefix "Nota: inclusión del archivo: "
   -
     kind: "find-v1"
     backtrace:
@@ -1639,9 +1078,9 @@ events:
       - "C:/Program Files/CMake/bin/"
       - "C:/Program Files/CMake/sbin/"
       - "C:/Program Files/CMake/"
-      - "C:/Program Files (x86)/ecs/bin/"
-      - "C:/Program Files (x86)/ecs/sbin/"
-      - "C:/Program Files (x86)/ecs/"
+      - "C:/Program Files (x86)/rp/bin/"
+      - "C:/Program Files (x86)/rp/sbin/"
+      - "C:/Program Files (x86)/rp/"
     searched_directories:
       - "C:/Users/torre/AppData/Local/nvim-data/mason/bin/rc.com"
       - "C:/Users/torre/AppData/Local/nvim-data/mason/bin/rc.exe"
@@ -1710,6 +1149,7 @@ events:
         - "C:\\Program Files\\swipl\\bin"
         - "C:\\Program Files\\Calibre2\\"
         - "C:\\Program Files\\PowerShell\\7\\"
+        - "C:\\Users\\torre\\AppData\\Local\\Muse Hub\\lib"
         - "C:\\Users\\torre\\AppData\\Local\\Microsoft\\WindowsApps"
         - "C:\\tools\\neovim\\nvim-win64\\bin"
         - "C:\\Users\\torre\\.dotnet\\tools"
@@ -1720,12 +1160,12 @@ events:
         - "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\vcpkg"
         - "C:\\Program Files\\Neovim\\bin"
         - "C:\\Program Files\\Neovim\\bin"
-      CMAKE_INSTALL_PREFIX: "C:/Program Files (x86)/ecs"
+      CMAKE_INSTALL_PREFIX: "C:/Program Files (x86)/rp"
       CMAKE_SYSTEM_PREFIX_PATH:
         - "C:/Program Files"
         - "C:/Program Files (x86)"
         - "C:/Program Files/CMake"
-        - "C:/Program Files (x86)/ecs"
+        - "C:/Program Files (x86)/rp"
   -
     kind: "try_compile-v1"
     backtrace:
@@ -1735,8 +1175,8 @@ events:
     checks:
       - "Detecting C compiler ABI info"
     directories:
-      source: "C:/Users/torre/Documents/games/rotatos_potatos/build/CMakeFiles/CMakeScratch/TryCompile-s2zibw"
-      binary: "C:/Users/torre/Documents/games/rotatos_potatos/build/CMakeFiles/CMakeScratch/TryCompile-s2zibw"
+      source: "G:/rotatos_potatos/build/CMakeFiles/CMakeScratch/TryCompile-6txf2q"
+      binary: "G:/rotatos_potatos/build/CMakeFiles/CMakeScratch/TryCompile-6txf2q"
     cmakeVariables:
       CMAKE_C_FLAGS: "/DWIN32 /D_WINDOWS /W3"
       CMAKE_C_FLAGS_DEBUG: "/MDd /Zi /Ob0 /Od /RTC1"
@@ -1745,11 +1185,39 @@ events:
       variable: "CMAKE_C_ABI_COMPILED"
       cached: true
       stdout: |
-        Change Dir: 'C:/Users/torre/Documents/games/rotatos_potatos/build/CMakeFiles/CMakeScratch/TryCompile-s2zibw'
+        Change Dir: 'G:/rotatos_potatos/build/CMakeFiles/CMakeScratch/TryCompile-6txf2q'
         
-        Run Build Command(s): C:/ProgramData/chocolatey/bin/ninja.exe -v cmTC_6eff0
-        [1/2] C:\\PROGRA~1\\MICROS~1\\2022\\COMMUN~1\\VC\\Tools\\MSVC\\1444~1.352\\bin\\Hostx64\\x64\\cl.exe  /nologo -D_MBCS  /DWIN32 /D_WINDOWS /W3  /MDd /Zi /Ob0 /Od /RTC1 /showIncludes /FoCMakeFiles\\cmTC_6eff0.dir\\CMakeCCompilerABI.c.obj /FdCMakeFiles\\cmTC_6eff0.dir\\ /FS -c "C:\\Program Files\\CMake\\share\\cmake-4.2\\Modules\\CMakeCCompilerABI.c"
-        [2/2] C:\\Windows\\system32\\cmd.exe /C "cd . && "C:\\Program Files\\CMake\\bin\\cmake.exe" -E vs_link_exe --msvc-ver=1944 --intdir=CMakeFiles\\cmTC_6eff0.dir --rc=C:\\PROGRA~2\\WI3CF2~1\\10\\bin\\100261~1.0\\x64\\rc.exe --mt=C:\\PROGRA~2\\WI3CF2~1\\10\\bin\\100261~1.0\\x64\\mt.exe --manifests  -- C:\\PROGRA~1\\MICROS~1\\2022\\COMMUN~1\\VC\\Tools\\MSVC\\1444~1.352\\bin\\Hostx64\\x64\\link.exe /nologo CMakeFiles\\cmTC_6eff0.dir\\CMakeCCompilerABI.c.obj  /out:cmTC_6eff0.exe /implib:cmTC_6eff0.lib /pdb:cmTC_6eff0.pdb /version:0.0 /machine:x64  /debug /INCREMENTAL /subsystem:console  kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib && cd ."
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_a61e5.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        Versi├│n de MSBuild 17.14.40+3e7442088 para .NET Framework
+        Compilaci├│n iniciada a las 20/06/2026 11:24:27.
+        
+        Proyecto "G:\\rotatos_potatos\\build\\CMakeFiles\\CMakeScratch\\TryCompile-6txf2q\\cmTC_a61e5.vcxproj" en nodo 1 (destinos predeterminados).
+        PrepareForBuild:
+          La salida estructurada est├í habilitada. El formato del diagn├│stico del compilador reflejar├í la jerarqu├¡a de errores. Consulte https://aka.ms/cpp/structured-output para obtener m├ís detalles.
+          Creando directorio "G:\\rotatos_potatos\\build\\CMakeFiles\\CMakeScratch\\TryCompile-6txf2q\\Debug\\".
+          Creando directorio "cmTC_a61e5.dir\\Debug\\cmTC_a61e5.tlog\\".
+        InitializeBuildStatus:
+          Se crear├í "cmTC_a61e5.dir\\Debug\\cmTC_a61e5.tlog\\unsuccessfulbuild" porque se especific├│ "AlwaysCreate".
+          Aplicando tarea Touch a "cmTC_a61e5.dir\\Debug\\cmTC_a61e5.tlog\\unsuccessfulbuild".
+        ClCompile:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\CL.exe /c /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D _MBCS /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /Fo"cmTC_a61e5.dir\\Debug\\\\" /Fd"cmTC_a61e5.dir\\Debug\\vc143.pdb" /external:W3 /TC /errorReport:queue "C:\\Program Files\\CMake\\share\\cmake-4.2\\Modules\\CMakeCCompilerABI.c"
+          Compilador de optimizaci├│n de C/C++ de Microsoft (R) versi├│n 19.44.35222 para x64
+          (C) Microsoft Corporation. Todos los derechos reservados.
+          cl /c /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D _MBCS /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /Fo"cmTC_a61e5.dir\\Debug\\\\" /Fd"cmTC_a61e5.dir\\Debug\\vc143.pdb" /external:W3 /TC /errorReport:queue "C:\\Program Files\\CMake\\share\\cmake-4.2\\Modules\\CMakeCCompilerABI.c"
+          CMakeCCompilerABI.c
+        Link:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\link.exe /OUT:"G:\\rotatos_potatos\\build\\CMakeFiles\\CMakeScratch\\TryCompile-6txf2q\\Debug\\cmTC_a61e5.exe" /INCREMENTAL /ILK:"cmTC_a61e5.dir\\Debug\\cmTC_a61e5.ilk" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"G:/rotatos_potatos/build/CMakeFiles/CMakeScratch/TryCompile-6txf2q/Debug/cmTC_a61e5.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /IMPLIB:"G:/rotatos_potatos/build/CMakeFiles/CMakeScratch/TryCompile-6txf2q/Debug/cmTC_a61e5.lib" /MACHINE:X64  /machine:x64 cmTC_a61e5.dir\\Debug\\CMakeCCompilerABI.obj
+          cmTC_a61e5.vcxproj -> G:\\rotatos_potatos\\build\\CMakeFiles\\CMakeScratch\\TryCompile-6txf2q\\Debug\\cmTC_a61e5.exe
+        FinalizeBuildStatus:
+          Se eliminar├í el archivo "cmTC_a61e5.dir\\Debug\\cmTC_a61e5.tlog\\unsuccessfulbuild".
+          Aplicando tarea Touch a "cmTC_a61e5.dir\\Debug\\cmTC_a61e5.tlog\\cmTC_a61e5.lastbuildstate".
+        Compilaci├│n del proyecto terminada "G:\\rotatos_potatos\\build\\CMakeFiles\\CMakeScratch\\TryCompile-6txf2q\\cmTC_a61e5.vcxproj" (destinos predeterminados).
+        
+        Compilaci├│n correcta.
+            0 Advertencia(s)
+            0 Errores
+        
+        Tiempo transcurrido 00:00:00.44
         
       exitCode: 0
   -
@@ -1762,7 +1230,7 @@ events:
       Parsed C implicit link information:
         link line regex: [^( *|.*[/\\])(ld[0-9]*(|\\.[a-rt-z][a-z]*|\\.s[a-np-z][a-z]*|\\.so[a-z]+)|link\\.exe|lld-link(\\.exe)?|CMAKE_LINK_STARTFILE-NOTFOUND|([^/\\]+-)?ld|collect2)[^/\\]*( |$)]
         linker tool regex: [^[ 	]*(->|"|[0-9]+>[ 	-]*Build:[ 	0-9]+ ms[ 	]*)?[ 	]*(([^"]*[/\\])?(ld[0-9]*(|\\.[a-rt-z][a-z]*|\\.s[a-np-z][a-z]*|\\.so[a-z]+)|link\\.exe|lld-link(\\.exe)?))("|,| |$)]
-        linker tool for 'C': C:/PROGRA~1/MICROS~1/2022/COMMUN~1/VC/Tools/MSVC/1444~1.352/bin/Hostx64/x64/link.exe
+        linker tool for 'C': C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.44.35207/bin/HostX64/x64/link.exe
         implicit libs: []
         implicit objs: []
         implicit dirs: []
@@ -1777,7 +1245,7 @@ events:
       - "C:/Program Files/CMake/share/cmake-4.2/Modules/CMakeTestCCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
       - "CMakeLists.txt:3 (project)"
     message: |
-      Running the C compiler's linker: "C:/PROGRA~1/MICROS~1/2022/COMMUN~1/VC/Tools/MSVC/1444~1.352/bin/Hostx64/x64/link.exe" "-v"
+      Running the C compiler's linker: "C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.44.35207/bin/HostX64/x64/link.exe" "-v"
       Microsoft (R) Incremental Linker Version 14.44.35222.0
       Copyright (C) Microsoft Corporation.  All rights reserved.
   -
@@ -1789,8 +1257,8 @@ events:
     checks:
       - "Detecting CXX compiler ABI info"
     directories:
-      source: "C:/Users/torre/Documents/games/rotatos_potatos/build/CMakeFiles/CMakeScratch/TryCompile-xh5ece"
-      binary: "C:/Users/torre/Documents/games/rotatos_potatos/build/CMakeFiles/CMakeScratch/TryCompile-xh5ece"
+      source: "G:/rotatos_potatos/build/CMakeFiles/CMakeScratch/TryCompile-0t9avz"
+      binary: "G:/rotatos_potatos/build/CMakeFiles/CMakeScratch/TryCompile-0t9avz"
     cmakeVariables:
       CMAKE_CXX_FLAGS: "/DWIN32 /D_WINDOWS /W3 /GR /EHsc"
       CMAKE_CXX_FLAGS_DEBUG: "/MDd /Zi /Ob0 /Od /RTC1"
@@ -1800,11 +1268,39 @@ events:
       variable: "CMAKE_CXX_ABI_COMPILED"
       cached: true
       stdout: |
-        Change Dir: 'C:/Users/torre/Documents/games/rotatos_potatos/build/CMakeFiles/CMakeScratch/TryCompile-xh5ece'
+        Change Dir: 'G:/rotatos_potatos/build/CMakeFiles/CMakeScratch/TryCompile-0t9avz'
         
-        Run Build Command(s): C:/ProgramData/chocolatey/bin/ninja.exe -v cmTC_4a713
-        [1/2] C:\\PROGRA~1\\MICROS~1\\2022\\COMMUN~1\\VC\\Tools\\MSVC\\1444~1.352\\bin\\Hostx64\\x64\\cl.exe  /nologo /TP -D_MBCS  /DWIN32 /D_WINDOWS /W3 /GR /EHsc  /MDd /Zi /Ob0 /Od /RTC1 /showIncludes /FoCMakeFiles\\cmTC_4a713.dir\\CMakeCXXCompilerABI.cpp.obj /FdCMakeFiles\\cmTC_4a713.dir\\ /FS -c "C:\\Program Files\\CMake\\share\\cmake-4.2\\Modules\\CMakeCXXCompilerABI.cpp"
-        [2/2] C:\\Windows\\system32\\cmd.exe /C "cd . && "C:\\Program Files\\CMake\\bin\\cmake.exe" -E vs_link_exe --msvc-ver=1944 --intdir=CMakeFiles\\cmTC_4a713.dir --rc=C:\\PROGRA~2\\WI3CF2~1\\10\\bin\\100261~1.0\\x64\\rc.exe --mt=C:\\PROGRA~2\\WI3CF2~1\\10\\bin\\100261~1.0\\x64\\mt.exe --manifests  -- C:\\PROGRA~1\\MICROS~1\\2022\\COMMUN~1\\VC\\Tools\\MSVC\\1444~1.352\\bin\\Hostx64\\x64\\link.exe /nologo CMakeFiles\\cmTC_4a713.dir\\CMakeCXXCompilerABI.cpp.obj  /out:cmTC_4a713.exe /implib:cmTC_4a713.lib /pdb:cmTC_4a713.pdb /version:0.0 /machine:x64  /debug /INCREMENTAL /subsystem:console  kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib && cd ."
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_0bee0.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        Versi├│n de MSBuild 17.14.40+3e7442088 para .NET Framework
+        Compilaci├│n iniciada a las 20/06/2026 11:24:28.
+        
+        Proyecto "G:\\rotatos_potatos\\build\\CMakeFiles\\CMakeScratch\\TryCompile-0t9avz\\cmTC_0bee0.vcxproj" en nodo 1 (destinos predeterminados).
+        PrepareForBuild:
+          La salida estructurada est├í habilitada. El formato del diagn├│stico del compilador reflejar├í la jerarqu├¡a de errores. Consulte https://aka.ms/cpp/structured-output para obtener m├ís detalles.
+          Creando directorio "G:\\rotatos_potatos\\build\\CMakeFiles\\CMakeScratch\\TryCompile-0t9avz\\Debug\\".
+          Creando directorio "cmTC_0bee0.dir\\Debug\\cmTC_0bee0.tlog\\".
+        InitializeBuildStatus:
+          Se crear├í "cmTC_0bee0.dir\\Debug\\cmTC_0bee0.tlog\\unsuccessfulbuild" porque se especific├│ "AlwaysCreate".
+          Aplicando tarea Touch a "cmTC_0bee0.dir\\Debug\\cmTC_0bee0.tlog\\unsuccessfulbuild".
+        ClCompile:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\CL.exe /c /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D _MBCS /D "CMAKE_INTDIR=\\"Debug\\"" /EHsc /RTC1 /MDd /GR /Fo"cmTC_0bee0.dir\\Debug\\\\" /Fd"cmTC_0bee0.dir\\Debug\\vc143.pdb" /external:W3 /TP /errorReport:queue "C:\\Program Files\\CMake\\share\\cmake-4.2\\Modules\\CMakeCXXCompilerABI.cpp"
+          Compilador de optimizaci├│n de C/C++ de Microsoft (R) versi├│n 19.44.35222 para x64
+          (C) Microsoft Corporation. Todos los derechos reservados.
+          cl /c /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D _MBCS /D "CMAKE_INTDIR=\\"Debug\\"" /EHsc /RTC1 /MDd /GR /Fo"cmTC_0bee0.dir\\Debug\\\\" /Fd"cmTC_0bee0.dir\\Debug\\vc143.pdb" /external:W3 /TP /errorReport:queue "C:\\Program Files\\CMake\\share\\cmake-4.2\\Modules\\CMakeCXXCompilerABI.cpp"
+          CMakeCXXCompilerABI.cpp
+        Link:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\link.exe /OUT:"G:\\rotatos_potatos\\build\\CMakeFiles\\CMakeScratch\\TryCompile-0t9avz\\Debug\\cmTC_0bee0.exe" /INCREMENTAL /ILK:"cmTC_0bee0.dir\\Debug\\cmTC_0bee0.ilk" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"G:/rotatos_potatos/build/CMakeFiles/CMakeScratch/TryCompile-0t9avz/Debug/cmTC_0bee0.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /IMPLIB:"G:/rotatos_potatos/build/CMakeFiles/CMakeScratch/TryCompile-0t9avz/Debug/cmTC_0bee0.lib" /MACHINE:X64  /machine:x64 cmTC_0bee0.dir\\Debug\\CMakeCXXCompilerABI.obj
+          cmTC_0bee0.vcxproj -> G:\\rotatos_potatos\\build\\CMakeFiles\\CMakeScratch\\TryCompile-0t9avz\\Debug\\cmTC_0bee0.exe
+        FinalizeBuildStatus:
+          Se eliminar├í el archivo "cmTC_0bee0.dir\\Debug\\cmTC_0bee0.tlog\\unsuccessfulbuild".
+          Aplicando tarea Touch a "cmTC_0bee0.dir\\Debug\\cmTC_0bee0.tlog\\cmTC_0bee0.lastbuildstate".
+        Compilaci├│n del proyecto terminada "G:\\rotatos_potatos\\build\\CMakeFiles\\CMakeScratch\\TryCompile-0t9avz\\cmTC_0bee0.vcxproj" (destinos predeterminados).
+        
+        Compilaci├│n correcta.
+            0 Advertencia(s)
+            0 Errores
+        
+        Tiempo transcurrido 00:00:00.45
         
       exitCode: 0
   -
@@ -1817,7 +1313,7 @@ events:
       Parsed CXX implicit link information:
         link line regex: [^( *|.*[/\\])(ld[0-9]*(|\\.[a-rt-z][a-z]*|\\.s[a-np-z][a-z]*|\\.so[a-z]+)|link\\.exe|lld-link(\\.exe)?|CMAKE_LINK_STARTFILE-NOTFOUND|([^/\\]+-)?ld|collect2)[^/\\]*( |$)]
         linker tool regex: [^[ 	]*(->|"|[0-9]+>[ 	-]*Build:[ 	0-9]+ ms[ 	]*)?[ 	]*(([^"]*[/\\])?(ld[0-9]*(|\\.[a-rt-z][a-z]*|\\.s[a-np-z][a-z]*|\\.so[a-z]+)|link\\.exe|lld-link(\\.exe)?))("|,| |$)]
-        linker tool for 'CXX': C:/PROGRA~1/MICROS~1/2022/COMMUN~1/VC/Tools/MSVC/1444~1.352/bin/Hostx64/x64/link.exe
+        linker tool for 'CXX': C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.44.35207/bin/HostX64/x64/link.exe
         implicit libs: []
         implicit objs: []
         implicit dirs: []
@@ -1832,7 +1328,7 @@ events:
       - "C:/Program Files/CMake/share/cmake-4.2/Modules/CMakeTestCXXCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
       - "CMakeLists.txt:3 (project)"
     message: |
-      Running the CXX compiler's linker: "C:/PROGRA~1/MICROS~1/2022/COMMUN~1/VC/Tools/MSVC/1444~1.352/bin/Hostx64/x64/link.exe" "-v"
+      Running the CXX compiler's linker: "C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.44.35207/bin/HostX64/x64/link.exe" "-v"
       Microsoft (R) Incremental Linker Version 14.44.35222.0
       Copyright (C) Microsoft Corporation.  All rights reserved.
 ...

@@ -3,5 +3,5 @@ make:
 
 configure:
 	cmake -S . -B build -G Ninja 
-run: 
-	./build/rp.exe
+run:
+	./build/Debug/rp.exe

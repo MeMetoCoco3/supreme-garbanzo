@@ -7,7 +7,7 @@
 
 constexpr f32 PLAYER_MAX_SPEED = 15.0f;
 constexpr f32 PLAYER_DASH_MAX_SPEED = 25.0f;
-constexpr f32 PLAYER_DASH_LENGTH = 0.01f;
+constexpr f32 PLAYER_DASH_LENGTH = 0.3f;
 constexpr f32 PLAYER_DASH_COOLDOWN = 1.0f;
 constexpr f32 PLAYER_ACCELERATION = 30.0f;
 
@@ -68,19 +68,8 @@ void Game::UpdateOthers(f32 dt) {
     }
     for (auto& cloud: enemy_clouds) {
         cloud.UpdateEnemies(dt);
+        cloud.Shoot(bullets, bullet_count, dt);
     }
-    // if (enemy_cloud.time_till_shoot <= 0) {
-    //     i32 random_entity = rng::randi32(0, Row::ROW_0);
-    //     for (int i = random_entity; i < enemy_cloud.enemies.size(); i++) {
-    //         if (enemy_cloud.enemies[i].is_alive) {
-    //             bullets[bullet_count++] = enemy_cloud.enemies[i].Shoot(e_MovementKind::OUTER, e_EntityDirection::IN, e_Team::BAD_GUYS);
-    //             break;
-    //         }
-    //     }
-    //     enemy_cloud.time_till_shoot = rng::randf32(0.4f, 2.0f);
-    // } else {
-    //     enemy_cloud.time_till_shoot -= dt;
-    // }
 }
 
 void Game::UpdateCamera(f32 dt) {
@@ -181,11 +170,11 @@ void Game::ProcessInput(f32 dt) {
     else player.accelerating = false;
     
     if (IsKeyPressed(KEY_SPACE))
-        bullets[bullet_count++] = player.Shoot(e_MovementKind::OUTER, e_Team::GOOD_GUYS, 1); 
+        bullets[bullet_count++] = player.Shoot(e_MovementKind::OUTER, 0, BULLET_SPEED_OUTER, e_Team::GOOD_GUYS, 1); 
     if (IsKeyPressed(KEY_X))
-        bullets[bullet_count++] = player.Shoot(e_MovementKind::CIRCULAR, e_Team::GOOD_GUYS, -1);
+        bullets[bullet_count++] = player.Shoot(e_MovementKind::CIRCULAR, BULLET_SPEED_CIRCULAR, 0,  e_Team::GOOD_GUYS, -1);
     if (IsKeyPressed(KEY_Z))
-        bullets[bullet_count++] = player.Shoot(e_MovementKind::CIRCULAR, e_Team::GOOD_GUYS, 1);
+        bullets[bullet_count++] = player.Shoot(e_MovementKind::CIRCULAR, BULLET_SPEED_CIRCULAR, 0, e_Team::GOOD_GUYS, 1);
 }
 
 constexpr f32 TIME_BETWEEN_CLOUDS = 4.0f;

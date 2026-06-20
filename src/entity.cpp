@@ -1,6 +1,8 @@
 #include "entity.h"
 #include "raylib.h"
+#include "vstd/vrandom_gen.h"
 
+#include <array>
 #include "vstd/vmath.h"
 #include "vstd/vtypes.h"
 #include <ctime>
@@ -21,6 +23,7 @@ Entity::Entity(f32 radius, Color c, f32 radians, f32 polar_length, e_EntityKind 
 {
     polar.length = polar_length;
     polar.rad = radians;
+    is_alive = true;
 }
 
 Bullet::Bullet(f32 radius, Color c, f32 radians, f32 polar_length, e_EntityKind kind, e_MovementKind movement, i32 dir, e_Team team):
@@ -31,17 +34,17 @@ constexpr f32 Entity::Radius_Speed() {
     return 50.0f;
 }
 
-constexpr f32 Entity::Max_Speed(){
+constexpr f32 Entity::Max_Speed() {
     return 100000.0f / polar.length;
 }
-constexpr f32 Entity::Acceleration(){
+constexpr f32 Entity::Acceleration() {
     return 500.0f;
 }
 
-Bullet Entity::Shoot(e_MovementKind kind, e_Team team, i32 dir) {
+Bullet Entity::Shoot(e_MovementKind kind, f32 speed_rad, f32 speed_length, e_Team team, i32 dir) {
     Bullet bullet = Bullet(BULLET_RADIUS, BULLET_COLOR, polar.rad, polar.length, e_EntityKind::BULLET, kind, dir, team);
-    bullet.speed_polar.length = BULLET_SPEED_OUTER;
-    bullet.speed_polar.rad = BULLET_SPEED_CIRCULAR;
+    bullet.speed_polar.length = speed_length;
+    bullet.speed_polar.rad = speed_rad;
     return bullet;
 }
 
@@ -69,25 +72,53 @@ EnemyCloud::EnemyCloud(size_t enemy_capacity, f32 distance_from_surface, i32 dir
         enemy_capacity = MAX_ENEMIES_PER_CLOUD;
     }
     count = enemy_capacity;
+    initial_count = enemy_capacity;
 
-    EntityFromCloud e1(ENEMY_RADIUS, PINK, 0.0f, distance_from_surface, e_EntityKind::ENEMY, e_MovementKind::CIRCULAR, dir, idx);
-    enemies[0] = e1;
+    i32 enemies_per_row[3] = {0};
+    {
+        i32 enemy_counter = (i32) enemy_capacity;
+        i32 next_row = rng::randi32(0, 2);
 
+        for (int i = 0; i < 3; i++) {
+            i32 enemies_in_next_row;
+            if(i < 2) {
+                enemies_in_next_row = i32(enemy_counter / 2);
+            } else {
+                enemies_in_next_row = enemy_counter;
+            }
+            enemies_per_row[next_row] = enemies_in_next_row;
+            enemy_counter -= enemies_in_next_row;
+
+            next_row = (next_row + 1) % 3;
+        }
+    }
+    
+
+    f32 starting_point_radians = rng::randf32(0.0f, 2.0f * PI);
+    f32 radians_step = GetNextRadians(distance_from_surface, ENEMY_RADIUS, ENEMY_RADIUS);
     i32 row_count = 0;
     i32 entities_in_row = 0;
-    for(int i = 1; i < enemy_capacity; i++) {
-        if (entities_in_row >= Row::rows_length[row_count]){
+    
+    EntityFromCloud e1(ENEMY_RADIUS, PINK, radians_step + starting_point_radians, distance_from_surface, e_EntityKind::ENEMY, e_MovementKind::CIRCULAR, dir, idx);
+    enemies[0] = e1;
+
+    for(int i = 0; i < enemy_capacity; i++) {
+
+        if (entities_in_row >= enemies_per_row[row_count]){
             row_count += 1;
             distance_from_surface += 30;   
             entities_in_row = 0;
+            radians_step = GetNextRadians(distance_from_surface, ENEMY_RADIUS, ENEMY_RADIUS);
+
+            i32 dif_between_rows = enemies_per_row[row_count] - enemies_per_row[row_count - 1];
+            starting_point_radians -= ((f32)dif_between_rows * radians_step) * 0.5f;
         }
 
         entities_in_row +=1;
-
-        f32 radians = GetNextRadians(distance_from_surface, ENEMY_RADIUS, ENEMY_RADIUS);
+        f32 radian_pos = starting_point_radians + radians_step * entities_in_row;
 
         EntityFromCloud current_e (
-            ENEMY_RADIUS, PINK, radians * entities_in_row, 
+            ENEMY_RADIUS, PINK, radian_pos,
             distance_from_surface, e_EntityKind::ENEMY, 
             e_MovementKind::CIRCULAR, dir, idx
         );
@@ -98,18 +129,75 @@ EnemyCloud::EnemyCloud(size_t enemy_capacity, f32 distance_from_surface, i32 dir
 }
 
 
+constexpr f32 ENEMY_BULLET_SPEED_LENGTH = 150.0f;
+constexpr f32 ENEMY_BULLET_SPEED_RAD = 0.3f;
+
+void EnemyCloud::Shoot(std::array<Bullet, NUM_BULLETS>& bullets, size_t& bullet_count, f32 dt)
+{
+    if (time_till_shoot <= 0) {
+        i32 random_entity = rng::randi32(0, (i32)initial_count-1);
+        for (int i = random_entity; i <= (i32)initial_count; i++) {
+            if (enemies[i].is_alive) {
+                bullets[bullet_count++] = 
+                    enemies[i].Shoot(
+                            e_MovementKind::OUTER, ENEMY_BULLET_SPEED_RAD, 
+                            ENEMY_BULLET_SPEED_LENGTH, e_Team::BAD_GUYS, -1);
+                    printf("%s",PolarToCartesian(bullets[bullet_count-1].polar.length, bullets[bullet_count-1].polar.rad).to_string().c_str());
+
+                if (bullets[bullet_count-1].polar.length == 0.0f){
+                    int j = 2;
+                    printf("%d\n", j);
+                }
+                break;
+            }
+        }
+        time_till_shoot = rng::randf32(0.4f, 2.0f);
+    } else {
+        time_till_shoot -= dt;
+    }
+}
+
+constexpr f32 APPROACH_STEP = 50;
 
 void EnemyCloud::UpdateEnemies(f32 dt) {
     switch (action)
     {
+        case APPROACH: {
+            for(int i = 0; i < enemies.size(); i++)
+            {
+                Entity& e = enemies[i];
+                e.polar.length = fLerp(e.polar.length, new_pos[i], lerp_factor);
+            }
+
+            lerp_factor += dt;
+             
+            if (lerp_factor >= 1.0f)
+            {
+                lerp_factor = 0.0f;
+                delay = 0.0f;
+                action = WAITING;
+            }
+            
+        } break;
         case WAITING: {
             if(delay >= E_TIME_STEP) {
                 delay = 0.0f;
-                action = MOVING;
-                for(int i = 0; i < enemies.size(); i++)
-                {
-                    const Entity& e = enemies[i];
-                    new_angle[i] = (direction * E_ANGLE_STEP) + e.polar.rad;
+                if (time_till_approach == 0) {
+                    time_till_approach = ENEMY_CLOUD_DEFAULT_APPROACH_TIMER;
+                    action = APPROACH;
+                    for(int i = 0; i < enemies.size(); i++)
+                    {
+                        const Entity& e = enemies[i];
+                        new_pos[i] = e.polar.length - APPROACH_STEP;
+                    }
+                } else {
+                    time_till_approach -= 1;
+                    action = MOVING;
+                    for(int i = 0; i < enemies.size(); i++)
+                    {
+                        const Entity& e = enemies[i];
+                        new_pos[i] = (direction * E_ANGLE_STEP) + e.polar.rad;
+                    }
                 }
             } else {
                 delay += dt;
@@ -119,11 +207,11 @@ void EnemyCloud::UpdateEnemies(f32 dt) {
             for(int i = 0; i < enemies.size(); i++)
             {
                 Entity& e = enemies[i];
-                e.polar.rad = fLerp(e.polar.rad, new_angle[i], lerp_factor);
+                e.polar.rad = fLerp(e.polar.rad, new_pos[i], lerp_factor);
             }
 
             lerp_factor += dt;
-
+             
             if (lerp_factor >= 1.0f)
             {
                 lerp_factor = 0.0f;
