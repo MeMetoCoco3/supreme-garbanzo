@@ -4,7 +4,29 @@
 #include <cstddef>
 #include <raylib.h>
 #include <vector>
+#include <memory>
 
+struct ExpParticle {
+    fvec2Polar polar = {0}; 
+    fvec2Polar speed = {0};
+
+    // Animation
+    f32 lengths_lerp[2] = {0, 0};
+    f32 t = 0;
+    bool t_direction = 0;
+    bool active = false;
+    bool on_surface = false;
+    void Update(f32 dt);
+    ExpParticle() = default;
+};
+
+constexpr size_t MAX_NUM_EXP_PARTICLES = 1024;
+
+struct ExperienceSystem {
+    void Update(f32 dt);
+    std::array<ExpParticle, MAX_NUM_EXP_PARTICLES> particles;
+    ExperienceSystem() = default;
+};
 
 struct CameraState {
     enum State {
@@ -17,7 +39,9 @@ struct CameraState {
     operator Camera2D&() { return camera; };
 }; 
 
-
+struct Scenario {
+    fvec2Polar polar;  
+};
 
 struct Game {
     vec2 win_size = {};
@@ -30,7 +54,11 @@ struct Game {
 
     CameraState camera_state = {};
 
-    Game(i32 w_width, i32 w_height);
+    Scenario scenario = {0};
+    
+    std::unique_ptr<ExperienceSystem> exp_sys;
+    Game(i32 w_width, i32 w_height, std::unique_ptr<ExperienceSystem> exp_sys);
+
     void UpdatePlayer(f32 dt);
     void UpdateOthers(f32 dt);
     void UpdateCamera(f32 dt);
@@ -46,3 +74,4 @@ struct SpawSystem {
     void Update(f32 dt);
     SpawSystem(Game& game);
 };
+

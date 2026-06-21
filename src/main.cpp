@@ -1,3 +1,5 @@
+#include <cstdio>
+#include <memory>
 #include <raylib.h>
 #include <math.h>
 #include "entity.h"
@@ -15,9 +17,9 @@ int main(void){
     InitWindow(WIN_WIDTH, WIN_HEIGHT, TITLE);
     SetTargetFPS(60);
     
-    Game Game(WIN_WIDTH, WIN_HEIGHT);
+    std::unique_ptr<ExperienceSystem> exp_sys = std::make_unique<ExperienceSystem>();
+    Game Game(WIN_WIDTH, WIN_HEIGHT, std::move(exp_sys));
     f32 dt = 1.0f/60.0f;
-
 
     SpawSystem spawn_sys(Game);
     // Add Debug Balls on World surface.
@@ -25,7 +27,7 @@ int main(void){
     int step = 360 / balls_around;
     for(int i = 0;  i < balls_around; i++)
     {
-        d_balls_around[i].length = CENTER_RADIUS;
+        d_balls_around[i].length = Game.scenario.polar.length;
         d_balls_around[i].rad = f32(step * i);
     }
 
@@ -38,6 +40,7 @@ int main(void){
         Game.Collisions(dt);
         Game.UpdateCamera(dt);
         spawn_sys.Update(dt);
+        
 
         BeginDrawing();
             BeginMode2D(Game.camera_state);
@@ -46,7 +49,11 @@ int main(void){
                 fvec2 p = PolarToCartesian(ball.length, ball.rad * DEG2RAD);
                 DrawCircle((i32)p.x, (i32)p.y, 4, YELLOW);
             }
+               
             EndMode2D();
+            char buff[5];
+            sprintf_s(buff, "%d\n", Game.player.score);
+            DrawText(buff, 20, 20, 50, BLACK);
         EndDrawing();
     }
     return 0;

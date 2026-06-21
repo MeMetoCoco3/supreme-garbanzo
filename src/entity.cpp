@@ -18,12 +18,17 @@ fvec2 PolarToCartesian(f32 length, f32 rad) {
     return {length * cosf(rad), -(length * sinf(rad))};
 }
 
+
+constexpr i32 MIN_POWER_LEVEL = 2;
+constexpr i32 MAX_POWER_LEVEL = 5;
+
 Entity::Entity(f32 radius, Color c, f32 radians, f32 polar_length, e_EntityKind kind, e_MovementKind movement, i32 dir):
         radius(radius), color(c), direction(dir), movement_kind(movement), kind(kind)
 {
     polar.length = polar_length;
     polar.rad = radians;
     is_alive = true;
+    power_level = rng::randi32(MIN_POWER_LEVEL, MAX_POWER_LEVEL);
 }
 
 Bullet::Bullet(f32 radius, Color c, f32 radians, f32 polar_length, e_EntityKind kind, e_MovementKind movement, i32 dir, e_Team team):
@@ -71,6 +76,7 @@ EnemyCloud::EnemyCloud(size_t enemy_capacity, f32 distance_from_surface, i32 dir
     if (enemy_capacity > MAX_ENEMIES_PER_CLOUD) {
         enemy_capacity = MAX_ENEMIES_PER_CLOUD;
     }
+
     count = enemy_capacity;
     initial_count = enemy_capacity;
 
@@ -142,7 +148,6 @@ void EnemyCloud::Shoot(std::array<Bullet, NUM_BULLETS>& bullets, size_t& bullet_
                     enemies[i].Shoot(
                             e_MovementKind::OUTER, ENEMY_BULLET_SPEED_RAD, 
                             ENEMY_BULLET_SPEED_LENGTH, e_Team::BAD_GUYS, -1);
-                    printf("%s",PolarToCartesian(bullets[bullet_count-1].polar.length, bullets[bullet_count-1].polar.rad).to_string().c_str());
 
                 if (bullets[bullet_count-1].polar.length == 0.0f){
                     int j = 2;
@@ -173,6 +178,7 @@ void EnemyCloud::UpdateEnemies(f32 dt) {
              
             if (lerp_factor >= 1.0f)
             {
+                direction = -direction;
                 lerp_factor = 0.0f;
                 delay = 0.0f;
                 action = WAITING;

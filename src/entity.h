@@ -4,17 +4,17 @@
 #include <array>
 #include <cstdio>
 
-constexpr i32 NUM_BULLETS = 100;
+constexpr i32 NUM_BULLETS = 1024;
 constexpr Color E_COLOR = YELLOW;
 constexpr f32 CENTER_RADIUS = 400.0f;
-constexpr f32 FLOOR_FRICTION = 0.90f;
+constexpr f32 FLOOR_FRICTION = 0.85f;
 
 constexpr f32 E_RADIUS = 20.0f;
 constexpr f32 BULLET_RADIUS = E_RADIUS * 0.8f;
 constexpr Color BULLET_COLOR = BLUE;
 constexpr f32 BULLET_SPEED_CIRCULAR = 3.0f;
 constexpr f32 BULLET_SPEED_OUTER = 220.0f;
-constexpr f32 TIME_TO_DIE = 1.0f;
+constexpr f32 TIME_TO_DIE = 12.0f;
 
 constexpr f32 ENEMY_RADIUS = 10.0f;
 constexpr i32 MAX_ENEMIES = 100;
@@ -62,9 +62,12 @@ struct Entity {
 
     bool accelerating = false;
 
+    i32 power_level = 0;
 
     e_MovementKind movement_kind = e_MovementKind::NIL;
     e_EntityKind kind = e_EntityKind::NIL;
+
+    i32 score = 0;
 
     // DASHING
     bool dashing = false;
