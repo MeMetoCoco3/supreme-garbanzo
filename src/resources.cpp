@@ -5,12 +5,6 @@
 
 using namespace Resources;
 
-static constexpr auto TexturePath = RESOURCES_PATH "textures/";
-static constexpr auto MusicPath = RESOURCES_PATH "musics/";
-static constexpr auto FxPath = RESOURCES_PATH "fxs/";
-static constexpr auto ScenesPath = RESOURCES_PATH "scenes/";
-
-
 Texture2D Resources::get_texture(const char* name) {
     auto it = file_to_id.find(name);
     if (it == file_to_id.end())

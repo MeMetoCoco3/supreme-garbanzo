@@ -7,6 +7,12 @@
 
 
 namespace Resources {
+
+    static constexpr auto TexturePath = RESOURCES_PATH "textures/";
+    static constexpr auto MusicPath = RESOURCES_PATH "musics/";
+    static constexpr auto FxPath = RESOURCES_PATH "fxs/";
+    static constexpr auto ScenesPath = RESOURCES_PATH "scenes/";
+
     constexpr u32 MAX_NUM_SCENES = 50;
     constexpr u32 MAX_NUM_TEXTURES = 50;
     constexpr u32 MAX_NUM_SPRITES = 50;

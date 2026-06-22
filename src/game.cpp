@@ -1,5 +1,6 @@
 #include "game.h"
 #include "entity.h"
+#include "raylib.h"
 #include "vstd/vmath.h"
 #include "vstd/vrandom_gen.h"
 #include <cmath>
@@ -7,7 +8,7 @@
 #include <cstdlib>
 #include <utility>
 
-
+constexpr f32 EPSILON = 0.1f;
 constexpr f32 PLAYER_MAX_SPEED = 10.0f;
 constexpr f32 PLAYER_DASH_MAX_SPEED = 14.0f;
 constexpr f32 PLAYER_DASH_LENGTH = 0.3f;
@@ -45,6 +46,10 @@ void Game::NewEnemyCloud(size_t num_enemies, f32 distance_from_surface, i32 dire
 }
 
 void Game::UpdatePlayer(f32 dt) {
+    if (Absf32(player.speed_polar.rad) >= EPSILON){
+        player.t += dt * Absf32(player.speed_polar.rad);
+    }
+
     if (player.dashing) {
         player.dash_time -= dt;
     } else {
@@ -180,9 +185,12 @@ void Game::Draw() {
     // World
     DrawCircle(0, 0, scenario.polar.length, RED);
     DrawCircleLines(0, 0, scenario.polar.length, BLACK);
-    fvec2 player_pos = PolarToCartesian(player.polar.length, player.polar.rad);
-    DrawCircle((i32)player_pos.x, (i32)player_pos.y, player.radius, player.color);
 
+    //Player
+    fvec2 player_pos = PolarToCartesian(player.polar.length, player.polar.rad);
+
+    DrawCircle((i32)player_pos.x, (i32)player_pos.y, player.radius, player.color);
+    
     for (const auto& bullet: bullets){
         if(bullet.is_alive){
             fvec2 bullet_pos = PolarToCartesian(bullet.polar.length, bullet.polar.rad);

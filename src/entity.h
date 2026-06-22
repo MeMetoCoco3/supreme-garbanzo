@@ -68,6 +68,7 @@ struct Entity {
     e_EntityKind kind = e_EntityKind::NIL;
 
     i32 score = 0;
+    f32 t = 0.0f;
 
     // DASHING
     bool dashing = false;

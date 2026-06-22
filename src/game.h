@@ -45,7 +45,6 @@ struct Scenario {
 
 struct Game {
     vec2 win_size = {};
-
     Entity player;
     std::vector<EnemyCloud> enemy_clouds;
     std::array<Bullet, NUM_BULLETS> bullets;
