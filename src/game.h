@@ -1,10 +1,14 @@
 
 #include "entity.h"
 #include "vstd/vtypes.h"
+#include <array>
 #include <cstddef>
+#include <functional>
 #include <raylib.h>
 #include <vector>
 #include <memory>
+
+struct Game;
 
 struct ExpParticle {
     fvec2Polar polar = {0}; 
@@ -20,12 +24,55 @@ struct ExpParticle {
     ExpParticle() = default;
 };
 
+enum class e_UpgradeKind {
+    NIL = -1,
+    STRENGTH = 0,
+    SPEED, 
+    GO_THROUGH,
+    WAVY_SHOOT,
+    COUNT,
+};
+
 constexpr size_t MAX_NUM_EXP_PARTICLES = 1024;
+constexpr size_t MAX_UPGRADES = 6;
+
+struct Upgrade {
+    std::string name = "";
+    e_UpgradeKind kind = e_UpgradeKind::NIL;
+    i32 level = 1;
+    std::function<void(Entity&)> command;
+    Upgrade() = default;
+    Upgrade(e_UpgradeKind kind, std::string name, std::function<void(Entity&)> func);
+};
+
+
+namespace Upgrades {
+    static std::unique_ptr<std::array<Upgrade, (i32) e_UpgradeKind::COUNT>> __load();
+    Upgrade Get(size_t idx);
+};
+
+
 
 struct ExperienceSystem {
-    void Update(f32 dt);
+    inline const static i32 MAX_LEVEL = 6;
+    inline static std::array<i32, MAX_LEVEL> EXP_PER_LEVEL = { 10, 12, 23, 27, 30, 31 };
+
+    i32 exp = 0;
+    i32 level = 0;
+
+    bool adjust = true;
+    std::array<Upgrade, MAX_UPGRADES> PlayerUpgrades;
+    std::array<Upgrade, 3> NewUpgrades;
     std::array<ExpParticle, MAX_NUM_EXP_PARTICLES> particles;
+    std::array<Rectangle, 3> UpgradeRectangle;
+
     ExperienceSystem() = default;
+    void Update(f32 dt);
+    bool ShouldLevelUp(i32 current_score); 
+    void GetNewUpgrades();
+    void UpdateUpgradeRectangle(vec2 win_size);
+    void DrawUpgrades(vec2 win_size);
+
 };
 
 struct CameraState {
@@ -43,7 +90,14 @@ struct Scenario {
     fvec2Polar polar;  
 };
 
+enum class e_GameState{
+    PLAY, 
+    PAUSE, 
+    LEVEL_UP
+};
+
 struct Game {
+    e_GameState state = e_GameState::PLAY;
     vec2 win_size = {};
     Entity player;
     std::vector<EnemyCloud> enemy_clouds;
@@ -73,4 +127,5 @@ struct SpawSystem {
     void Update(f32 dt);
     SpawSystem(Game& game);
 };
+
 

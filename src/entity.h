@@ -55,6 +55,7 @@ struct Entity {
     f32 radius = 0;
 
     fvec2Polar speed_polar = {0,0};
+    f32 max_speed = 0.0f;
 
     Color color;
     bool is_alive = true;
@@ -79,10 +80,6 @@ struct Entity {
     Entity(f32 radius, Color c, f32 radians, f32 polar_length, e_EntityKind kind, e_MovementKind movement, i32 dir);
 
     Bullet Shoot(e_MovementKind kind, f32 speed_rad, f32 speed_length, e_Team team, i32 dir);   
-    
-    constexpr f32 Radius_Speed();
-    constexpr f32 Max_Speed();
-    constexpr f32 Acceleration();
 };
 
 // Entity that knows the state of the cloud it belongs

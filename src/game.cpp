@@ -3,10 +3,14 @@
 #include "raylib.h"
 #include "vstd/vmath.h"
 #include "vstd/vrandom_gen.h"
+#include <array>
 #include <cmath>
 #include <cstddef>
 #include <cstdlib>
+#include <memory>
 #include <utility>
+
+
 
 constexpr f32 EPSILON = 0.1f;
 constexpr f32 PLAYER_MAX_SPEED = 10.0f;
@@ -31,7 +35,7 @@ Game::Game(i32 w_width, i32 w_height, std::unique_ptr<ExperienceSystem> exp) :
     camera_state->target = {0, 0};
     camera_state->offset.x = w_width * 0.5f;
     camera_state->offset.y = w_height * 0.5f;
-    camera_state->zoom = 0.6f;
+    camera_state->zoom = 1.6f;
 
 }
 
@@ -81,7 +85,7 @@ void Game::UpdateOthers(f32 dt) {
     }
     for (auto& cloud: enemy_clouds) {
         cloud.UpdateEnemies(dt);
-        cloud.Shoot(bullets, bullet_count, dt);
+        // cloud.Shoot(bullets, bullet_count, dt);
     }
     for (auto& particle: exp_sys->particles) {
         particle.Update(dt);
@@ -99,7 +103,7 @@ void Game::UpdateCamera(f32 dt) {
 }
 
 f32 GetDistance(fvec2Polar v0, fvec2Polar v1){
-    return (f32)sqrt(pow(v0.length, 2) + pow(v1.length, 2) - 2*v0.length*v1.length * cos(v0.rad - v1.rad));
+    return (f32)sqrt(pow(v0.length, 2) + pow(v1.length, 2) - 2 * v0.length*v1.length * cos(v0.rad - v1.rad));
 }
 
 void Game::Collisions(f32 dt) {
@@ -116,6 +120,11 @@ void Game::Collisions(f32 dt) {
         if (GetDistance(player.polar, particle.polar) < E_RADIUS){
             player.score += 1;
             particle.active = false;
+            if (exp_sys->ShouldLevelUp(player.score)) {
+                player.score = 0;
+                state = e_GameState::LEVEL_UP;
+                exp_sys->GetNewUpgrades();
+            }
         }
     }
 
@@ -142,6 +151,7 @@ void Game::Collisions(f32 dt) {
                         for (int i = 0; i < MAX_NUM_EXP_PARTICLES; i++) {
                             ExpParticle& particle = exp_sys->particles[i];
                             if (!particle.active) {
+                                particle.on_surface = false;
                                 particle.active = true;
                                 particle.polar.length = enemy.polar.length;
                                 particle.polar.rad = enemy.polar.rad;
@@ -219,37 +229,50 @@ void Game::Draw() {
 }
 
 void Game::ProcessInput(f32 dt) {
-    // ZOOM
-    f32 mouse_wheel = GetMouseWheelMove();   
-    if(mouse_wheel != 0){
-        camera_state->zoom += mouse_wheel * dt;
-    }
+    switch (state) {
+        case e_GameState::PAUSE: {
 
-    //DASH
-    if(IsKeyDown(KEY_D) && player.direction != 0 && player.dash_cooldown <= 0) {
-        player.dash_cooldown = PLAYER_DASH_COOLDOWN;
-        player.dash_time = PLAYER_DASH_LENGTH;
-        player.speed_polar.rad = PLAYER_DASH_MAX_SPEED * player.direction;
-        player.dashing = true;
-    }
+        } break;
         
-    // SHOOT
-    if(IsKeyDown(KEY_LEFT)) {
-        player.direction = 1; 
-        player.accelerating = true;
+        case e_GameState::LEVEL_UP: {
+        
+        } break;
+        case e_GameState::PLAY: {
+            // ZOOM
+            f32 mouse_wheel = GetMouseWheelMove();   
+            if(mouse_wheel != 0){
+                camera_state->zoom += mouse_wheel * dt;
+            }
+
+            //DASH
+            if(IsKeyDown(KEY_D) && player.direction != 0 && player.dash_cooldown <= 0) {
+                player.dash_cooldown = PLAYER_DASH_COOLDOWN;
+                player.dash_time = PLAYER_DASH_LENGTH;
+                player.speed_polar.rad = PLAYER_DASH_MAX_SPEED * player.direction;
+                player.dashing = true;
+            }
+                
+            // SHOOT
+            if(IsKeyDown(KEY_LEFT)) {
+                player.direction = 1; 
+                player.accelerating = true;
+            }
+            else if(IsKeyDown(KEY_RIGHT)) {
+                player.direction = -1; 
+                player.accelerating = true;
+            }
+            else player.accelerating = false;
+            
+            if (IsKeyPressed(KEY_SPACE))
+                bullets[bullet_count++] = player.Shoot(e_MovementKind::OUTER, 0, BULLET_SPEED_OUTER, e_Team::GOOD_GUYS, 1); 
+            if (IsKeyPressed(KEY_X))
+                bullets[bullet_count++] = player.Shoot(e_MovementKind::CIRCULAR, BULLET_SPEED_CIRCULAR, 0,  e_Team::GOOD_GUYS, -1);
+            if (IsKeyPressed(KEY_Z))
+                bullets[bullet_count++] = player.Shoot(e_MovementKind::CIRCULAR, BULLET_SPEED_CIRCULAR, 0, e_Team::GOOD_GUYS, 1);
+
+
+        } break;
     }
-    else if(IsKeyDown(KEY_RIGHT)) {
-        player.direction = -1; 
-        player.accelerating = true;
-    }
-    else player.accelerating = false;
-    
-    if (IsKeyPressed(KEY_SPACE))
-        bullets[bullet_count++] = player.Shoot(e_MovementKind::OUTER, 0, BULLET_SPEED_OUTER, e_Team::GOOD_GUYS, 1); 
-    if (IsKeyPressed(KEY_X))
-        bullets[bullet_count++] = player.Shoot(e_MovementKind::CIRCULAR, BULLET_SPEED_CIRCULAR, 0,  e_Team::GOOD_GUYS, -1);
-    if (IsKeyPressed(KEY_Z))
-        bullets[bullet_count++] = player.Shoot(e_MovementKind::CIRCULAR, BULLET_SPEED_CIRCULAR, 0, e_Team::GOOD_GUYS, 1);
 }
 
 constexpr f32 TIME_BETWEEN_CLOUDS = 100000000.0f;
@@ -293,6 +316,105 @@ void ExpParticle::Update(f32 dt) {
         speed.length -= GRAVITY_ACCELERATION;
 
     }
+}
+
+
+bool ExperienceSystem::ShouldLevelUp(i32 current_score){
+    return current_score >= EXP_PER_LEVEL[level]? true : false;
+} 
+
+void ExperienceSystem::UpdateUpgradeRectangle(vec2 win_size) {
+    static i32 horizontal_padding = 20; 
+    static i32 top_padding = 20; 
+    static i32 bottom_padding = 10;
+    static i32 upgrade_padding = 10;
+
+    static i32 upgrade_width = i32(((i32)win_size.x - (horizontal_padding * 2 + upgrade_padding * 2)) / 3.0f);
+    static i32 upgrade_height = (i32)win_size.y - (top_padding + bottom_padding);
+
+    i32 pos_x = horizontal_padding;
+    i32 pos_y = top_padding;
+
+    for(int i = 0; i < 3; i++){      
+        UpgradeRectangle[i] = Rectangle{(f32)pos_x, (f32)pos_y, (f32)upgrade_width, (f32)upgrade_height};
+        pos_x += upgrade_width + upgrade_padding;
+    }
+}
+
+
+void ExperienceSystem::DrawUpgrades(vec2 win_size){
+    if (adjust) {
+        UpdateUpgradeRectangle(win_size);
+        adjust = false;
+    }
+    static i32 title_top_padding = 8;
+    static i32 title_left_padding = 10;
+
+    for(int i = 0; i < 3; i++){
+        const auto& rec = UpgradeRectangle[i];
+        DrawRectangleRec(rec, RAYWHITE);
+        DrawRectangleLines((i32)rec.x, (i32)rec.y, (i32)rec.width, (i32)rec.height, BLACK);
+
+        DrawText(NewUpgrades[i].name.c_str(), i32(rec.x + title_left_padding), i32(rec.y + title_top_padding), 30, BLACK);
+    }
+
+}
+
+void ExperienceSystem::GetNewUpgrades() {
+    for(int i = 0; i < 3; i++){
+        while (true) {
+            Upgrade new_upgrade = Upgrades::Get((size_t) rng::randi32(0, (i32)e_UpgradeKind::COUNT - 1));
+            bool add = true;
+            for(const auto& upgrade: NewUpgrades){
+                if (upgrade.kind == new_upgrade.kind){
+                    add = false;
+                    break;
+                }
+            }
+
+            if (add){
+                NewUpgrades[i] = new_upgrade;
+                break;
+            }
+        }
+    }
+}
+
+// enum class e_UpgradeKind {
+//     NIL = -1,
+//     STRENGTH = 0,
+//     SPEED, 
+//     GO_THROUGH,
+//     WAVY_SHOOT,
+//     COUNT,
+// };
+
+Upgrade::Upgrade(e_UpgradeKind kind, std::string name, std::function<void(Entity&)> func): name(name), kind(kind), command(func){}
+
+std::unique_ptr<std::array<Upgrade, (i32) e_UpgradeKind::COUNT>> Upgrades::__load(){
+    auto upgrades = std::make_unique<std::array<Upgrade, (i32) e_UpgradeKind::COUNT>>();
+
+    upgrades->at((size_t) e_UpgradeKind::STRENGTH) = Upgrade(e_UpgradeKind::STRENGTH, "STRENGTH", [](Entity& e) {
+       e.power_level += 1; 
+    });
+
+    upgrades->at((size_t) e_UpgradeKind::SPEED) = Upgrade(e_UpgradeKind::SPEED, "SPEED", [](Entity& e) {
+       e.max_speed += 1; 
+    });
+
+    upgrades->at((size_t) e_UpgradeKind::GO_THROUGH) = Upgrade(e_UpgradeKind::GO_THROUGH, "GO_THROUGH", [](Entity& e) {
+       e.max_speed += 1; 
+    });
+
+    upgrades->at((size_t) e_UpgradeKind::WAVY_SHOOT) = Upgrade(e_UpgradeKind::WAVY_SHOOT, "WAVY_SHOOT", [](Entity& e) {
+       e.max_speed += 1; 
+    });
     
+    return upgrades;
+}
+
+Upgrade Upgrades::Get(size_t idx){
+    static auto upgrades = __load();
+    return upgrades->at(idx);
 }
 

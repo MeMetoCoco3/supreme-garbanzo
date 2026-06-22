@@ -35,17 +35,6 @@ Bullet::Bullet(f32 radius, Color c, f32 radians, f32 polar_length, e_EntityKind 
     Entity(radius, c, radians, polar_length, kind, movement, dir), team(team) {}
 
 
-constexpr f32 Entity::Radius_Speed() {
-    return 50.0f;
-}
-
-constexpr f32 Entity::Max_Speed() {
-    return 100000.0f / polar.length;
-}
-constexpr f32 Entity::Acceleration() {
-    return 500.0f;
-}
-
 Bullet Entity::Shoot(e_MovementKind kind, f32 speed_rad, f32 speed_length, e_Team team, i32 dir) {
     Bullet bullet = Bullet(BULLET_RADIUS, BULLET_COLOR, polar.rad, polar.length, e_EntityKind::BULLET, kind, dir, team);
     bullet.speed_polar.length = speed_length;

@@ -1,4 +1,3 @@
-#include <cstdio>
 #include <memory>
 #include <raylib.h>
 #include <math.h>
@@ -38,11 +37,13 @@ int main(void){
     while(!WindowShouldClose())
     {
         Game.ProcessInput(dt);
-        Game.UpdatePlayer(dt);
-        Game.UpdateOthers(dt);
-        Game.Collisions(dt);
-        Game.UpdateCamera(dt);
-        spawn_sys.Update(dt);
+        if (Game.state == e_GameState::PLAY){
+            Game.UpdatePlayer(dt);
+            Game.UpdateOthers(dt);
+            Game.Collisions(dt);
+            Game.UpdateCamera(dt);
+            spawn_sys.Update(dt);
+        }
         
 
         BeginDrawing();
@@ -56,6 +57,21 @@ int main(void){
             char buff[5];
             sprintf_s(buff, "%d\n", Game.player.score);
             DrawText(buff, 20, 20, 50, BLACK);
+                
+            Texture2D enemy_texture = Resources::get_texture("enemy");
+            for(const auto& cloud: Game.enemy_clouds) {
+                for (const auto& enemy: cloud.enemies) {
+                if (!enemy.is_alive) continue;
+                fvec2 pos_world = PolarToCartesian(enemy.polar.length, enemy.polar.rad);
+                Vector2 pos_window = GetWorldToScreen2D({pos_world.x, pos_world.y}, Game.camera_state.camera);
+                // f32 el_sin = (f32)sin(Game.player.t) * ANIMATION_INCREMENT;
+                    DrawTexturePro(
+                        enemy_texture, {0, 0, (f32)enemy_texture.width, (f32)enemy_texture.height},
+                        {pos_window.x, pos_window.y, 50.0f, 50.0f},
+                        {50.0f * 0.5f, 50.0f * 0.5f}, 
+                        -(RAD2DEG * (enemy.polar.rad - Game.player.polar.rad)), WHITE);
+                }
+            }
 
             Texture2D pj_texture = Resources::get_texture("character");
 
@@ -63,7 +79,6 @@ int main(void){
             Vector2 player_pos_window = GetWorldToScreen2D(
                     {player_pos_world.x, player_pos_world.y}, Game.camera_state.camera);
             f32 el_sin = (f32)sin(Game.player.t) * ANIMATION_INCREMENT;
-            printf("%02f\n", el_sin);
 
 
             const f32 draw_w = (100.0f * Game.camera_state->zoom) + el_sin;
@@ -76,9 +91,15 @@ int main(void){
                 pj_texture,
                 {0, 0, (f32)pj_texture.width, (f32)pj_texture.height},
                 {corner_x, corner_y, draw_w, draw_h},
-                {0, 0},          // origin zero → dest position *is* the snapped corner
+                {0, 0},          
                 0.0f, WHITE
             );
+
+            if (Game.state == e_GameState::LEVEL_UP){
+                Game.exp_sys->DrawUpgrades(Game.win_size);
+            }
+
+
         EndDrawing();
     }
     return 0;
