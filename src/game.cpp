@@ -1,6 +1,7 @@
 #include "game.h"
 #include "entity.h"
 #include "raylib.h"
+#include "resources.h"
 #include "vstd/vmath.h"
 #include "vstd/vrandom_gen.h"
 #include <array>
@@ -31,12 +32,18 @@ Game::Game(i32 w_width, i32 w_height, std::unique_ptr<ExperienceSystem> exp) :
     player.color = E_COLOR;
     player.polar.rad = PI * 0.5f;
     player.polar.length = scenario.polar.length + E_RADIUS;
+    player.max_speed = PLAYER_MAX_SPEED;
+    player.max_bullet_speed.length = BULLET_SPEED_OUTER;
+    player.max_bullet_speed.rad = BULLET_SPEED_CIRCULAR;
+    player.power_level = 1;
+    player.health = 3;
 
     camera_state->target = {0, 0};
     camera_state->offset.x = w_width * 0.5f;
     camera_state->offset.y = w_height * 0.5f;
     camera_state->zoom = 1.6f;
 
+    exp_sys->UpdateUpgradeRectangle(win_size);
 }
 
 void Game::NewEnemyCloud(size_t num_enemies, f32 distance_from_surface, i32 direction) {
@@ -61,7 +68,7 @@ void Game::UpdatePlayer(f32 dt) {
             player.speed_polar.rad += PLAYER_ACCELERATION *  dt * (f32) player.direction;
         else player.speed_polar.rad *= FLOOR_FRICTION;
 
-        player.speed_polar.rad = Clampf32(player.speed_polar.rad, -PLAYER_MAX_SPEED, PLAYER_MAX_SPEED);
+        player.speed_polar.rad = Clampf32(player.speed_polar.rad, -player.max_speed, player.max_speed);
 
         player.dash_cooldown -= dt;
     }
@@ -81,10 +88,12 @@ void Game::UpdatePlayer(f32 dt) {
 
 void Game::UpdateOthers(f32 dt) {
     for (auto& bullet: bullets) {
-        bullet.UpdateBullet(dt);
+        if(bullet.is_alive)
+            bullet.Update(dt);
     }
     for (auto& cloud: enemy_clouds) {
-        cloud.UpdateEnemies(dt);
+        if(cloud.is_alive)
+            cloud.UpdateEnemies(dt);
         // cloud.Shoot(bullets, bullet_count, dt);
     }
     for (auto& particle: exp_sys->particles) {
@@ -111,7 +120,6 @@ void Game::Collisions(f32 dt) {
         if (!particle.active) continue;
 
         if (!particle.on_surface && scenario.polar.length + E_RADIUS * 0.5f >= particle.polar.length) {
-            printf("HIT!\n");
             particle.on_surface = true;
             particle.lengths_lerp[0] = particle.polar.length;
             particle.lengths_lerp[1] = scenario.polar.length + 30.0f;
@@ -141,29 +149,33 @@ void Game::Collisions(f32 dt) {
                         {bullet_pos.x, bullet_pos.y}, bullet.radius, 
                         {enemy_pos.x, enemy_pos.y}, enemy.radius
                     )){
-                        bullet.is_alive = false;
-                        enemy.is_alive = false;
-                        enemy_clouds[enemy.cloud_idx].count-- ;
-                        printf("KILLED ENEMY, NEW COUT: %zd\n", enemy_clouds[enemy.cloud_idx].count);
+                        i32 temp = bullet.damage;
+                        bullet.damage -= enemy.health;
+                        enemy.health -= temp;
+                    
+                        if (bullet.damage <= 0)
+                            bullet.is_alive = false;
+                        if (enemy.health <= 0){
+                            enemy.is_alive = false;
+                            enemy_clouds[enemy.cloud_idx].count-- ;
+                            // DROP EXP
+                            i32 n_exp_particles = enemy.power_level;
+                            for (int i = 0; i < MAX_NUM_EXP_PARTICLES; i++) {
+                                ExpParticle& particle = exp_sys->particles[i];
+                                if (!particle.active) {
+                                    particle.on_surface = false;
+                                    particle.active = true;
+                                    particle.polar.length = enemy.polar.length;
+                                    particle.polar.rad = enemy.polar.rad;
+                                    particle.speed.length = rng::randf32(-3.0f, 1.0f);
+                                    particle.speed.rad = rng::randf32(-0.2f, 0.2f);
 
-                        // DROP EXP
-                        i32 n_exp_particles = enemy.power_level;
-                        for (int i = 0; i < MAX_NUM_EXP_PARTICLES; i++) {
-                            ExpParticle& particle = exp_sys->particles[i];
-                            if (!particle.active) {
-                                particle.on_surface = false;
-                                particle.active = true;
-                                particle.polar.length = enemy.polar.length;
-                                particle.polar.rad = enemy.polar.rad;
-                                particle.speed.length = rng::randf32(-3.0f, 1.0f);
-                                particle.speed.rad = rng::randf32(-0.2f, 0.2f);
-
-                                printf("%d SL: %02f SR: %02f\n", n_exp_particles, particle.speed.length, particle.speed.rad);
-                                n_exp_particles -= 1;
-                                if (n_exp_particles <= 0) break;
+                                    printf("%d SL: %02f SR: %02f\n", n_exp_particles, particle.speed.length, particle.speed.rad);
+                                    n_exp_particles -= 1;
+                                    if (n_exp_particles <= 0) break;
+                                }
                             }
                         }
-
                         break;
                     }
                 }
@@ -178,7 +190,9 @@ void Game::Collisions(f32 dt) {
                     {bullet_pos.x, bullet_pos.y}, bullet.radius, 
                     {player_pos.x, player_pos.y}, player.radius
                 )){
-                    CloseWindow();
+                    player.health-=1;
+                    if (player.health <= 0)
+                        CloseWindow();
                 }
             }
 
@@ -221,7 +235,6 @@ void Game::Draw() {
     for (const auto& particle: exp_sys->particles){
         if (particle.active){
             fvec2 particle_pos = PolarToCartesian(particle.polar.length, particle.polar.rad);
-            printf("%02f, %02f\n", particle_pos.x, particle_pos.y);
             DrawCircle((i32)particle_pos.x, (i32)particle_pos.y, EXP_RADIUS, YELLOW);
         }
     }
@@ -230,11 +243,23 @@ void Game::Draw() {
 
 void Game::ProcessInput(f32 dt) {
     switch (state) {
-        case e_GameState::PAUSE: {
-
+        case e_GameState::LEVEL_UP: {
+            Vector2 mouse_pos = GetMousePosition();
+            for(int i = 0; i < 3; i++){
+                auto& rec = exp_sys->UpgradeRectangle[i];
+                if (CheckCollisionPointRec(mouse_pos, rec)){
+                    if(IsMouseButtonReleased(MOUSE_LEFT_BUTTON)){
+                        exp_sys->NewUpgrades[i].command(player);
+                        state = e_GameState::PLAY;
+                    }
+                    rec.hovered = true;
+                } else {
+                    rec.hovered = false;
+                }
+            }
         } break;
         
-        case e_GameState::LEVEL_UP: {
+        case e_GameState::PAUSE: {
         
         } break;
         case e_GameState::PLAY: {
@@ -252,7 +277,6 @@ void Game::ProcessInput(f32 dt) {
                 player.dashing = true;
             }
                 
-            // SHOOT
             if(IsKeyDown(KEY_LEFT)) {
                 player.direction = 1; 
                 player.accelerating = true;
@@ -263,12 +287,14 @@ void Game::ProcessInput(f32 dt) {
             }
             else player.accelerating = false;
             
+
+            // SHOOT
             if (IsKeyPressed(KEY_SPACE))
-                bullets[bullet_count++] = player.Shoot(e_MovementKind::OUTER, 0, BULLET_SPEED_OUTER, e_Team::GOOD_GUYS, 1); 
+                bullets[bullet_count++] = player.Shoot(e_MovementKind::OUTER, 0, player.max_bullet_speed.length, e_Team::GOOD_GUYS, 1, player.wavy_shoots); 
             if (IsKeyPressed(KEY_X))
-                bullets[bullet_count++] = player.Shoot(e_MovementKind::CIRCULAR, BULLET_SPEED_CIRCULAR, 0,  e_Team::GOOD_GUYS, -1);
+                bullets[bullet_count++] = player.Shoot(e_MovementKind::CIRCULAR, player.max_bullet_speed.rad, 0,  e_Team::GOOD_GUYS, -1, player.wavy_shoots);
             if (IsKeyPressed(KEY_Z))
-                bullets[bullet_count++] = player.Shoot(e_MovementKind::CIRCULAR, BULLET_SPEED_CIRCULAR, 0, e_Team::GOOD_GUYS, 1);
+                bullets[bullet_count++] = player.Shoot(e_MovementKind::CIRCULAR, player.max_bullet_speed.rad, 0, e_Team::GOOD_GUYS, 1, player.wavy_shoots);
 
 
         } break;
@@ -337,6 +363,7 @@ void ExperienceSystem::UpdateUpgradeRectangle(vec2 win_size) {
 
     for(int i = 0; i < 3; i++){      
         UpgradeRectangle[i] = Rectangle{(f32)pos_x, (f32)pos_y, (f32)upgrade_width, (f32)upgrade_height};
+        UpgradeRectangle[i].hovered = false;
         pos_x += upgrade_width + upgrade_padding;
     }
 }
@@ -352,12 +379,25 @@ void ExperienceSystem::DrawUpgrades(vec2 win_size){
 
     for(int i = 0; i < 3; i++){
         const auto& rec = UpgradeRectangle[i];
-        DrawRectangleRec(rec, RAYWHITE);
+        Color c = rec.hovered ? YELLOW : RAYWHITE;
+        DrawRectangleRec(rec, c);
         DrawRectangleLines((i32)rec.x, (i32)rec.y, (i32)rec.width, (i32)rec.height, BLACK);
 
-        DrawText(NewUpgrades[i].name.c_str(), i32(rec.x + title_left_padding), i32(rec.y + title_top_padding), 30, BLACK);
-    }
+        const Texture2D& tex = NewUpgrades[i].image;
+        f32 min_size = fmin(rec.width - 2.0f * title_left_padding, (f32)tex.height);
+        printf("%02f\n", min_size);
+        Rectangle dst = {
+            rec.x + title_left_padding, rec.y + title_top_padding, 
+            min_size, min_size
+        };
 
+        DrawTexturePro(
+                tex, {0, 0, (f32)tex.width, (f32)tex.height}, dst, 
+                {0,0}, 0.0f, WHITE);
+                // Vector2{dst.x + dst.width * 0.5f,  dst.y + dst.height * 0.5f}, 0.0f, BLACK);
+
+        DrawText(NewUpgrades[i].name.c_str(), i32(rec.x + title_left_padding), i32(rec.y + title_top_padding + dst.height), 20, BLACK);
+    }
 }
 
 void ExperienceSystem::GetNewUpgrades() {
@@ -389,26 +429,26 @@ void ExperienceSystem::GetNewUpgrades() {
 //     COUNT,
 // };
 
-Upgrade::Upgrade(e_UpgradeKind kind, std::string name, std::function<void(Entity&)> func): name(name), kind(kind), command(func){}
+Upgrade::Upgrade(e_UpgradeKind kind, std::string name, std::function<void(Entity&)> func, Texture2D image): name(name), kind(kind), command(func), image(image){}
 
 std::unique_ptr<std::array<Upgrade, (i32) e_UpgradeKind::COUNT>> Upgrades::__load(){
     auto upgrades = std::make_unique<std::array<Upgrade, (i32) e_UpgradeKind::COUNT>>();
 
     upgrades->at((size_t) e_UpgradeKind::STRENGTH) = Upgrade(e_UpgradeKind::STRENGTH, "STRENGTH", [](Entity& e) {
        e.power_level += 1; 
-    });
+    }, Resources::get_texture("upgrade_strength"));
 
     upgrades->at((size_t) e_UpgradeKind::SPEED) = Upgrade(e_UpgradeKind::SPEED, "SPEED", [](Entity& e) {
        e.max_speed += 1; 
-    });
+    }, Resources::get_texture("upgrade_speed"));
 
     upgrades->at((size_t) e_UpgradeKind::GO_THROUGH) = Upgrade(e_UpgradeKind::GO_THROUGH, "GO_THROUGH", [](Entity& e) {
        e.max_speed += 1; 
-    });
+    }, Resources::get_texture("upgrade_strength"));
 
     upgrades->at((size_t) e_UpgradeKind::WAVY_SHOOT) = Upgrade(e_UpgradeKind::WAVY_SHOOT, "WAVY_SHOOT", [](Entity& e) {
-       e.max_speed += 1; 
-    });
+       e.wavy_shoots = true;
+    }, Resources::get_texture("upgrade_wavy"));
     
     return upgrades;
 }

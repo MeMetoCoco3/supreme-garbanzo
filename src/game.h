@@ -41,8 +41,9 @@ struct Upgrade {
     e_UpgradeKind kind = e_UpgradeKind::NIL;
     i32 level = 1;
     std::function<void(Entity&)> command;
+    Texture2D image;
     Upgrade() = default;
-    Upgrade(e_UpgradeKind kind, std::string name, std::function<void(Entity&)> func);
+    Upgrade(e_UpgradeKind kind, std::string name, std::function<void(Entity&)> func, Texture2D image);
 };
 
 
@@ -52,6 +53,14 @@ namespace Upgrades {
 };
 
 
+struct RectangleReac : public Rectangle{
+    bool hovered;
+
+    RectangleReac& operator=(const Rectangle& r) {
+        Rectangle::operator=(r);
+        return *this;
+    }
+};
 
 struct ExperienceSystem {
     inline const static i32 MAX_LEVEL = 6;
@@ -60,11 +69,11 @@ struct ExperienceSystem {
     i32 exp = 0;
     i32 level = 0;
 
-    bool adjust = true;
+    bool adjust = false;
     std::array<Upgrade, MAX_UPGRADES> PlayerUpgrades;
     std::array<Upgrade, 3> NewUpgrades;
     std::array<ExpParticle, MAX_NUM_EXP_PARTICLES> particles;
-    std::array<Rectangle, 3> UpgradeRectangle;
+    std::array<RectangleReac, 3> UpgradeRectangle;
 
     ExperienceSystem() = default;
     void Update(f32 dt);
@@ -72,7 +81,6 @@ struct ExperienceSystem {
     void GetNewUpgrades();
     void UpdateUpgradeRectangle(vec2 win_size);
     void DrawUpgrades(vec2 win_size);
-
 };
 
 struct CameraState {

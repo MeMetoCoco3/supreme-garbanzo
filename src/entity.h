@@ -12,8 +12,8 @@ constexpr f32 FLOOR_FRICTION = 0.85f;
 constexpr f32 E_RADIUS = 20.0f;
 constexpr f32 BULLET_RADIUS = E_RADIUS * 0.8f;
 constexpr Color BULLET_COLOR = BLUE;
-constexpr f32 BULLET_SPEED_CIRCULAR = 3.0f;
-constexpr f32 BULLET_SPEED_OUTER = 220.0f;
+constexpr f32 BULLET_SPEED_CIRCULAR = 0.4f;
+constexpr f32 BULLET_SPEED_OUTER = 180.0f;
 constexpr f32 TIME_TO_DIE = 12.0f;
 
 constexpr f32 ENEMY_RADIUS = 10.0f;
@@ -51,11 +51,14 @@ struct fvec2Polar {
 struct Bullet;
 
 struct Entity {
+    i32 health = 0;
+
     fvec2Polar polar;
     f32 radius = 0;
 
-    fvec2Polar speed_polar = {0,0};
+    fvec2Polar speed_polar = {0, 0};
     f32 max_speed = 0.0f;
+    fvec2Polar max_bullet_speed = {0, 0};
 
     Color color;
     bool is_alive = true;
@@ -64,13 +67,15 @@ struct Entity {
     bool accelerating = false;
 
     i32 power_level = 0;
+    bool wavy_shoots = false;
 
     e_MovementKind movement_kind = e_MovementKind::NIL;
     e_EntityKind kind = e_EntityKind::NIL;
 
     i32 score = 0;
     f32 t = 0.0f;
-
+    f32 t_sin = 0.0f;
+    f32 prev_t_sin = 0.0f;
     // DASHING
     bool dashing = false;
     f32 dash_time = 0.0f;
@@ -79,23 +84,26 @@ struct Entity {
     Entity() = default;
     Entity(f32 radius, Color c, f32 radians, f32 polar_length, e_EntityKind kind, e_MovementKind movement, i32 dir);
 
-    Bullet Shoot(e_MovementKind kind, f32 speed_rad, f32 speed_length, e_Team team, i32 dir);   
+    Bullet Shoot(e_MovementKind kind, f32 speed_rad, f32 speed_length, e_Team team, i32 dir, bool wavy);   
 };
 
 // Entity that knows the state of the cloud it belongs
 struct EntityFromCloud: public Entity {
     size_t cloud_idx;
+    i32 health = 2;
 
     EntityFromCloud() = default;
     EntityFromCloud(f32 radius, Color c, f32 radians, f32 polar_length, e_EntityKind kind, e_MovementKind movement, i32 dir, size_t cloud_idx);
 };
 
 struct Bullet: public Entity {
-    e_Team team;
+    e_Team team = e_Team::NIL;
     f32 time_to_die = 0.0f;
+    i32 damage = 1;
+    bool wavy = false;
     Bullet() = default;
-    Bullet(f32 radius, Color c, f32 radians, f32 polar_length, e_EntityKind kind, e_MovementKind movement, i32 dir, e_Team team);
-    void UpdateBullet(f32 dt);  
+    Bullet(f32 radius, Color c, f32 radians, f32 polar_length, e_EntityKind kind, e_MovementKind movement, i32 dir, e_Team team, bool wavy);
+    void Update(f32 dt);  
 };
 
 

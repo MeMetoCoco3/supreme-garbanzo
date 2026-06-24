@@ -2,10 +2,12 @@
 #include "raylib.h"
 #include "vstd/vrandom_gen.h"
 
+#include <algorithm>
 #include <array>
 #include "vstd/vmath.h"
 #include "vstd/vtypes.h"
 #include <ctime>
+#include <iterator>
 
 
 f32 GetNextRadians(f32 radius_main, f32 radius1, f32 radius2) {
@@ -31,30 +33,47 @@ Entity::Entity(f32 radius, Color c, f32 radians, f32 polar_length, e_EntityKind 
     power_level = rng::randi32(MIN_POWER_LEVEL, MAX_POWER_LEVEL);
 }
 
-Bullet::Bullet(f32 radius, Color c, f32 radians, f32 polar_length, e_EntityKind kind, e_MovementKind movement, i32 dir, e_Team team):
-    Entity(radius, c, radians, polar_length, kind, movement, dir), team(team) {}
+Bullet::Bullet(f32 radius, Color c, f32 radians, f32 polar_length, e_EntityKind kind, e_MovementKind movement, i32 dir, e_Team team, bool wavy):
+    Entity(radius, c, radians, polar_length, kind, movement, dir), team(team), wavy(wavy)  {}
 
 
-Bullet Entity::Shoot(e_MovementKind kind, f32 speed_rad, f32 speed_length, e_Team team, i32 dir) {
-    Bullet bullet = Bullet(BULLET_RADIUS, BULLET_COLOR, polar.rad, polar.length, e_EntityKind::BULLET, kind, dir, team);
+Bullet Entity::Shoot(e_MovementKind kind, f32 speed_rad, f32 speed_length, e_Team team, i32 dir, bool wavy) {
+    Bullet bullet = Bullet(BULLET_RADIUS, BULLET_COLOR, polar.rad, polar.length, e_EntityKind::BULLET, kind, dir, team, wavy);
     bullet.speed_polar.length = speed_length;
     bullet.speed_polar.rad = speed_rad;
+    
     return bullet;
 }
 
-void Bullet::UpdateBullet(f32 dt){
+constexpr f32 WAVY_STRENGTH_LENGTH = 40.0f;
+constexpr f32 WAVY_STRENGTH_RAD = 0.02f;
+constexpr f32 WAVY_OSCILATION_SPEED = 10.0f;
+void Bullet::Update(f32 dt){
+    t += dt * WAVY_OSCILATION_SPEED;
+    prev_t_sin = t_sin;
+    t_sin = sin(t);
     switch (movement_kind) {
         case e_MovementKind::NIL: {
             // V_LOG_WARN("MOVEMENT KIND IS NUL FOR BULLET ON LENGTH %02f, at radian %02f\n", this->polar.length, this->polar.rad);
         } break;
         case e_MovementKind::CIRCULAR:{
             polar.rad += speed_polar.rad * dt * direction;      
+            if(wavy) {
+                printf("LENGTH %02f\n", polar.length);
+                t_sin *= WAVY_STRENGTH_LENGTH;
+                polar.length += t_sin - prev_t_sin;
+            }
         } break;
         case e_MovementKind::OUTER:{
             polar.length += speed_polar.length * dt * direction;
+            if(wavy) {
+                printf("RAD %02f\n", polar.rad);
+
+                t_sin *= WAVY_STRENGTH_RAD;
+                polar.rad += t_sin - prev_t_sin;
+            }
         } break;
     }
-
     time_to_die += dt;
     if (time_to_die >= TIME_TO_DIE) is_alive = false;
 }
@@ -136,7 +155,7 @@ void EnemyCloud::Shoot(std::array<Bullet, NUM_BULLETS>& bullets, size_t& bullet_
                 bullets[bullet_count++] = 
                     enemies[i].Shoot(
                             e_MovementKind::OUTER, ENEMY_BULLET_SPEED_RAD, 
-                            ENEMY_BULLET_SPEED_LENGTH, e_Team::BAD_GUYS, -1);
+                            ENEMY_BULLET_SPEED_LENGTH, e_Team::BAD_GUYS, -1, enemies[i].wavy_shoots);
 
                 if (bullets[bullet_count-1].polar.length == 0.0f){
                     int j = 2;

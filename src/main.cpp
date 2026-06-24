@@ -54,10 +54,17 @@ int main(void){
                 DrawCircle((i32)p.x, (i32)p.y, 4, YELLOW);
             }
             EndMode2D();
-            char buff[5];
-            sprintf_s(buff, "%d\n", Game.player.score);
-            DrawText(buff, 20, 20, 50, BLACK);
-                
+            char buff[30];
+            sprintf_s(buff, "Score: %d\n", Game.player.score);
+            DrawText(buff, 20, 20, 30, BLACK);                         
+
+            sprintf_s(buff, "Bullet speed: %02f\n", Game.player.max_speed);
+            DrawText(buff, 20, 60, 30, BLACK);
+
+            sprintf_s(buff, "Power: %d\n", Game.player.power_level);
+            DrawText(buff, 20, 100, 30, BLACK);
+
+
             Texture2D enemy_texture = Resources::get_texture("enemy");
             for(const auto& cloud: Game.enemy_clouds) {
                 for (const auto& enemy: cloud.enemies) {
@@ -79,7 +86,6 @@ int main(void){
             Vector2 player_pos_window = GetWorldToScreen2D(
                     {player_pos_world.x, player_pos_world.y}, Game.camera_state.camera);
             f32 el_sin = (f32)sin(Game.player.t) * ANIMATION_INCREMENT;
-
 
             const f32 draw_w = (100.0f * Game.camera_state->zoom) + el_sin;
             const f32 draw_h = (100.0f * Game.camera_state->zoom) - el_sin;
