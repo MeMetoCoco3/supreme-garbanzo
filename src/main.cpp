@@ -70,12 +70,17 @@ int main(void){
                 for (const auto& enemy: cloud.enemies) {
                 if (!enemy.is_alive) continue;
                 fvec2 pos_world = PolarToCartesian(enemy.polar.length, enemy.polar.rad);
+                // pos_world.x -= enemy.size;
+                // pos_world.y -= enemy.size;
+
                 Vector2 pos_window = GetWorldToScreen2D({pos_world.x, pos_world.y}, Game.camera_state.camera);
+                pos_window.x -= enemy.size;
+                pos_window.y -= enemy.size;
                 // f32 el_sin = (f32)sin(Game.player.t) * ANIMATION_INCREMENT;
                     DrawTexturePro(
                         enemy_texture, {0, 0, (f32)enemy_texture.width, (f32)enemy_texture.height},
-                        {pos_window.x, pos_window.y, 50.0f, 50.0f},
-                        {50.0f * 0.5f, 50.0f * 0.5f}, 
+                        {pos_window.x, pos_window.y, enemy.size * 2.0f, enemy.size * 2.0f},
+                        {enemy.size * 0.5f, enemy.size * 0.5f}, 
                         -(RAD2DEG * (enemy.polar.rad - Game.player.polar.rad)), WHITE);
                 }
             }

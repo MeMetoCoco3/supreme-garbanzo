@@ -1,7 +1,6 @@
 #include "game.h"
 #include "entity.h"
 #include "raylib.h"
-#include "resources.h"
 #include "vstd/vmath.h"
 #include "vstd/vrandom_gen.h"
 #include <array>
@@ -28,7 +27,7 @@ Game::Game(i32 w_width, i32 w_height, std::unique_ptr<ExperienceSystem> exp) :
     scenario.polar.length = CENTER_RADIUS;
 
     player.movement_kind = e_MovementKind::CIRCULAR;
-    player.radius = E_RADIUS;
+    player.size = E_RADIUS;
     player.color = E_COLOR;
     player.polar.rad = PI * 0.5f;
     player.polar.length = scenario.polar.length + E_RADIUS;
@@ -146,8 +145,8 @@ void Game::Collisions(f32 dt) {
                     if (!enemy.is_alive) continue;
                     fvec2 enemy_pos = PolarToCartesian(enemy.polar.length, enemy.polar.rad);
                     if(CheckCollisionCircles(
-                        {bullet_pos.x, bullet_pos.y}, bullet.radius, 
-                        {enemy_pos.x, enemy_pos.y}, enemy.radius
+                        {bullet_pos.x, bullet_pos.y}, bullet.size, 
+                        {enemy_pos.x, enemy_pos.y}, enemy.size
                     )){
                         i32 temp = bullet.damage;
                         bullet.damage -= enemy.health;
@@ -170,7 +169,6 @@ void Game::Collisions(f32 dt) {
                                     particle.speed.length = rng::randf32(-3.0f, 1.0f);
                                     particle.speed.rad = rng::randf32(-0.2f, 0.2f);
 
-                                    printf("%d SL: %02f SR: %02f\n", n_exp_particles, particle.speed.length, particle.speed.rad);
                                     n_exp_particles -= 1;
                                     if (n_exp_particles <= 0) break;
                                 }
@@ -187,8 +185,8 @@ void Game::Collisions(f32 dt) {
             } else {
                 fvec2 player_pos = PolarToCartesian(player.polar.length, player.polar.rad);
                 if(CheckCollisionCircles(
-                    {bullet_pos.x, bullet_pos.y}, bullet.radius, 
-                    {player_pos.x, player_pos.y}, player.radius
+                    {bullet_pos.x, bullet_pos.y}, bullet.size, 
+                    {player_pos.x, player_pos.y}, player.size
                 )){
                     player.health-=1;
                     if (player.health <= 0)
@@ -213,12 +211,12 @@ void Game::Draw() {
     //Player
     fvec2 player_pos = PolarToCartesian(player.polar.length, player.polar.rad);
 
-    DrawCircle((i32)player_pos.x, (i32)player_pos.y, player.radius, player.color);
+    DrawCircle((i32)player_pos.x, (i32)player_pos.y, player.size, player.color);
     
     for (const auto& bullet: bullets){
         if(bullet.is_alive){
             fvec2 bullet_pos = PolarToCartesian(bullet.polar.length, bullet.polar.rad);
-            DrawCircle((i32)bullet_pos.x, (i32)bullet_pos.y, bullet.radius, bullet.color);
+            DrawCircle((i32)bullet_pos.x, (i32)bullet_pos.y, bullet.size, bullet.color);
         }
     }
 
@@ -227,7 +225,7 @@ void Game::Draw() {
         for (const auto& enemy: cloud.enemies){
             if(enemy.is_alive){
                 fvec2 enemy_pos = PolarToCartesian(enemy.polar.length, enemy.polar.rad);
-                DrawCircle((i32)enemy_pos.x, (i32)enemy_pos.y, enemy.radius, enemy.color);
+                DrawCircle((i32)enemy_pos.x, (i32)enemy_pos.y, enemy.size, enemy.color);
             }
         }
     }
@@ -290,11 +288,11 @@ void Game::ProcessInput(f32 dt) {
 
             // SHOOT
             if (IsKeyPressed(KEY_SPACE))
-                bullets[bullet_count++] = player.Shoot(e_MovementKind::OUTER, 0, player.max_bullet_speed.length, e_Team::GOOD_GUYS, 1, player.wavy_shoots); 
+                bullets[bullet_count++] = player.ShootV();
             if (IsKeyPressed(KEY_X))
-                bullets[bullet_count++] = player.Shoot(e_MovementKind::CIRCULAR, player.max_bullet_speed.rad, 0,  e_Team::GOOD_GUYS, -1, player.wavy_shoots);
+                bullets[bullet_count++] = player.ShootH(-1);
             if (IsKeyPressed(KEY_Z))
-                bullets[bullet_count++] = player.Shoot(e_MovementKind::CIRCULAR, player.max_bullet_speed.rad, 0, e_Team::GOOD_GUYS, 1, player.wavy_shoots);
+                bullets[bullet_count++] = player.ShootH(1);
 
 
         } break;
@@ -403,7 +401,7 @@ void ExperienceSystem::DrawUpgrades(vec2 win_size){
 void ExperienceSystem::GetNewUpgrades() {
     for(int i = 0; i < 3; i++){
         while (true) {
-            Upgrade new_upgrade = Upgrades::Get((size_t) rng::randi32(0, (i32)e_UpgradeKind::COUNT - 1));
+            Upgrade new_upgrade = pbs::upgrades::Get((e_UpgradeKind) rng::randi32(0, (i32)e_UpgradeKind::COUNT - 1));
             bool add = true;
             for(const auto& upgrade: NewUpgrades){
                 if (upgrade.kind == new_upgrade.kind){
@@ -429,32 +427,4 @@ void ExperienceSystem::GetNewUpgrades() {
 //     COUNT,
 // };
 
-Upgrade::Upgrade(e_UpgradeKind kind, std::string name, std::function<void(Entity&)> func, Texture2D image): name(name), kind(kind), command(func), image(image){}
-
-std::unique_ptr<std::array<Upgrade, (i32) e_UpgradeKind::COUNT>> Upgrades::__load(){
-    auto upgrades = std::make_unique<std::array<Upgrade, (i32) e_UpgradeKind::COUNT>>();
-
-    upgrades->at((size_t) e_UpgradeKind::STRENGTH) = Upgrade(e_UpgradeKind::STRENGTH, "STRENGTH", [](Entity& e) {
-       e.power_level += 1; 
-    }, Resources::get_texture("upgrade_strength"));
-
-    upgrades->at((size_t) e_UpgradeKind::SPEED) = Upgrade(e_UpgradeKind::SPEED, "SPEED", [](Entity& e) {
-       e.max_speed += 1; 
-    }, Resources::get_texture("upgrade_speed"));
-
-    upgrades->at((size_t) e_UpgradeKind::GO_THROUGH) = Upgrade(e_UpgradeKind::GO_THROUGH, "GO_THROUGH", [](Entity& e) {
-       e.max_speed += 1; 
-    }, Resources::get_texture("upgrade_strength"));
-
-    upgrades->at((size_t) e_UpgradeKind::WAVY_SHOOT) = Upgrade(e_UpgradeKind::WAVY_SHOOT, "WAVY_SHOOT", [](Entity& e) {
-       e.wavy_shoots = true;
-    }, Resources::get_texture("upgrade_wavy"));
-    
-    return upgrades;
-}
-
-Upgrade Upgrades::Get(size_t idx){
-    static auto upgrades = __load();
-    return upgrades->at(idx);
-}
 

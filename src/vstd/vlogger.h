@@ -25,7 +25,6 @@ class Logger
 	    L_ERROR = 1<<2 
 	};
 
-    private:
     public:
 	inline static u8 m_LogLevel = L_INFO | L_WARN | L_ERROR;
     static Logger* Get() {

@@ -24,35 +24,6 @@ struct ExpParticle {
     ExpParticle() = default;
 };
 
-enum class e_UpgradeKind {
-    NIL = -1,
-    STRENGTH = 0,
-    SPEED, 
-    GO_THROUGH,
-    WAVY_SHOOT,
-    COUNT,
-};
-
-constexpr size_t MAX_NUM_EXP_PARTICLES = 1024;
-constexpr size_t MAX_UPGRADES = 6;
-
-struct Upgrade {
-    std::string name = "";
-    e_UpgradeKind kind = e_UpgradeKind::NIL;
-    i32 level = 1;
-    std::function<void(Entity&)> command;
-    Texture2D image;
-    Upgrade() = default;
-    Upgrade(e_UpgradeKind kind, std::string name, std::function<void(Entity&)> func, Texture2D image);
-};
-
-
-namespace Upgrades {
-    static std::unique_ptr<std::array<Upgrade, (i32) e_UpgradeKind::COUNT>> __load();
-    Upgrade Get(size_t idx);
-};
-
-
 struct RectangleReac : public Rectangle{
     bool hovered;
 
@@ -107,7 +78,7 @@ enum class e_GameState{
 struct Game {
     e_GameState state = e_GameState::PLAY;
     vec2 win_size = {};
-    Entity player;
+    Player player;
     std::vector<EnemyCloud> enemy_clouds;
     std::array<Bullet, NUM_BULLETS> bullets;
 

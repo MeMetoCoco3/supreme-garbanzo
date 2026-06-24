@@ -1,13 +1,14 @@
 #include "entity.h"
 #include "raylib.h"
 #include "vstd/vrandom_gen.h"
+#include "resources.h"
 
-#include <algorithm>
+#include "vstd/vlogger.h"
 #include <array>
 #include "vstd/vmath.h"
 #include "vstd/vtypes.h"
+#include <cstddef>
 #include <ctime>
-#include <iterator>
 
 
 f32 GetNextRadians(f32 radius_main, f32 radius1, f32 radius2) {
@@ -24,8 +25,8 @@ fvec2 PolarToCartesian(f32 length, f32 rad) {
 constexpr i32 MIN_POWER_LEVEL = 2;
 constexpr i32 MAX_POWER_LEVEL = 5;
 
-Entity::Entity(f32 radius, Color c, f32 radians, f32 polar_length, e_EntityKind kind, e_MovementKind movement, i32 dir):
-        radius(radius), color(c), direction(dir), movement_kind(movement), kind(kind)
+Entity::Entity(f32 radius, Color c, f32 radians, f32 polar_length,  e_MovementKind movement, i32 dir):
+       size(radius), direction(dir), color(c), movement_kind(movement)
 {
     polar.length = polar_length;
     polar.rad = radians;
@@ -33,14 +34,10 @@ Entity::Entity(f32 radius, Color c, f32 radians, f32 polar_length, e_EntityKind 
     power_level = rng::randi32(MIN_POWER_LEVEL, MAX_POWER_LEVEL);
 }
 
-Bullet::Bullet(f32 radius, Color c, f32 radians, f32 polar_length, e_EntityKind kind, e_MovementKind movement, i32 dir, e_Team team, bool wavy):
-    Entity(radius, c, radians, polar_length, kind, movement, dir), team(team), wavy(wavy)  {}
 
-
-Bullet Entity::Shoot(e_MovementKind kind, f32 speed_rad, f32 speed_length, e_Team team, i32 dir, bool wavy) {
-    Bullet bullet = Bullet(BULLET_RADIUS, BULLET_COLOR, polar.rad, polar.length, e_EntityKind::BULLET, kind, dir, team, wavy);
-    bullet.speed_polar.length = speed_length;
-    bullet.speed_polar.rad = speed_rad;
+Bullet Entity::Shoot() {
+    Bullet bullet = pbs::bullets::Get(bullet_kind);
+    bullet.polar = polar;
     
     return bullet;
 }
@@ -54,21 +51,20 @@ void Bullet::Update(f32 dt){
     t_sin = sin(t);
     switch (movement_kind) {
         case e_MovementKind::NIL: {
-            // V_LOG_WARN("MOVEMENT KIND IS NUL FOR BULLET ON LENGTH %02f, at radian %02f\n", this->polar.length, this->polar.rad);
+            V_LOG_WARN("MOVEMENT KIND IS NUL FOR BULLET ON LENGTH %02f, at radian %02f\n", this->polar.length, this->polar.rad);
         } break;
         case e_MovementKind::CIRCULAR:{
             polar.rad += speed_polar.rad * dt * direction;      
+            printf("CIRCULAR: %d\n", direction); 
             if(wavy) {
-                printf("LENGTH %02f\n", polar.length);
                 t_sin *= WAVY_STRENGTH_LENGTH;
                 polar.length += t_sin - prev_t_sin;
             }
         } break;
         case e_MovementKind::OUTER:{
             polar.length += speed_polar.length * dt * direction;
+            printf("LENGTH %02f\n", polar.length);
             if(wavy) {
-                printf("RAD %02f\n", polar.rad);
-
                 t_sin *= WAVY_STRENGTH_RAD;
                 polar.rad += t_sin - prev_t_sin;
             }
@@ -81,6 +77,7 @@ void Bullet::Update(f32 dt){
 EnemyCloud::EnemyCloud(size_t enemy_capacity, f32 distance_from_surface, i32 dir, size_t idx):
     direction(dir) 
 {
+    f32 enemy_size = ENEMY_RADIUS * 4.0f;
     if (enemy_capacity > MAX_ENEMIES_PER_CLOUD) {
         enemy_capacity = MAX_ENEMIES_PER_CLOUD;
     }
@@ -107,13 +104,12 @@ EnemyCloud::EnemyCloud(size_t enemy_capacity, f32 distance_from_surface, i32 dir
         }
     }
     
-
     f32 starting_point_radians = rng::randf32(0.0f, 2.0f * PI);
-    f32 radians_step = GetNextRadians(distance_from_surface, ENEMY_RADIUS, ENEMY_RADIUS);
+    f32 radians_step = GetNextRadians(distance_from_surface, enemy_size, enemy_size);
     i32 row_count = 0;
     i32 entities_in_row = 0;
     
-    EntityFromCloud e1(ENEMY_RADIUS, PINK, radians_step + starting_point_radians, distance_from_surface, e_EntityKind::ENEMY, e_MovementKind::CIRCULAR, dir, idx);
+    EntityFromCloud e1(enemy_size, PINK, radians_step + starting_point_radians, distance_from_surface,  e_MovementKind::CIRCULAR, dir, idx);
     enemies[0] = e1;
 
     for(int i = 0; i < enemy_capacity; i++) {
@@ -122,7 +118,7 @@ EnemyCloud::EnemyCloud(size_t enemy_capacity, f32 distance_from_surface, i32 dir
             row_count += 1;
             distance_from_surface += 30;   
             entities_in_row = 0;
-            radians_step = GetNextRadians(distance_from_surface, ENEMY_RADIUS, ENEMY_RADIUS);
+            radians_step = GetNextRadians(distance_from_surface, enemy_size, enemy_size);
 
             i32 dif_between_rows = enemies_per_row[row_count] - enemies_per_row[row_count - 1];
             starting_point_radians -= ((f32)dif_between_rows * radians_step) * 0.5f;
@@ -132,8 +128,7 @@ EnemyCloud::EnemyCloud(size_t enemy_capacity, f32 distance_from_surface, i32 dir
         f32 radian_pos = starting_point_radians + radians_step * entities_in_row;
 
         EntityFromCloud current_e (
-            ENEMY_RADIUS, PINK, radian_pos,
-            distance_from_surface, e_EntityKind::ENEMY, 
+            enemy_size, PINK, radian_pos, distance_from_surface,  
             e_MovementKind::CIRCULAR, dir, idx
         );
         enemies[i] = current_e;
@@ -152,11 +147,7 @@ void EnemyCloud::Shoot(std::array<Bullet, NUM_BULLETS>& bullets, size_t& bullet_
         i32 random_entity = rng::randi32(0, (i32)initial_count-1);
         for (int i = random_entity; i <= (i32)initial_count; i++) {
             if (enemies[i].is_alive) {
-                bullets[bullet_count++] = 
-                    enemies[i].Shoot(
-                            e_MovementKind::OUTER, ENEMY_BULLET_SPEED_RAD, 
-                            ENEMY_BULLET_SPEED_LENGTH, e_Team::BAD_GUYS, -1, enemies[i].wavy_shoots);
-
+                bullets[bullet_count++] = enemies[i].Shoot();
                 if (bullets[bullet_count-1].polar.length == 0.0f){
                     int j = 2;
                     printf("%d\n", j);
@@ -236,6 +227,110 @@ void EnemyCloud::UpdateEnemies(f32 dt) {
     }
 }
 
-EntityFromCloud::EntityFromCloud(f32 radius, Color c, f32 radians, f32 polar_length, e_EntityKind kind, e_MovementKind movement, i32 dir, size_t cloud_idx):
-    Entity(radius, c, radians, polar_length, kind, movement, dir), cloud_idx(cloud_idx)
+EntityFromCloud::EntityFromCloud(f32 size, Color c, f32 radians, f32 polar_length, e_MovementKind movement, i32 dir, size_t cloud_idx):
+    Entity(size, c, radians, polar_length, movement, dir), cloud_idx(cloud_idx)
 {}
+
+Upgrade::Upgrade(e_UpgradeKind kind, std::string name, std::function<void(Entity&)> func, Texture2D image): name(name), kind(kind), command(func), image(image){}
+
+std::unique_ptr<std::array<Upgrade, (i32) e_UpgradeKind::COUNT>> pbs::upgrades::__load(){
+    auto upgrades = std::make_unique<std::array<Upgrade, (i32) e_UpgradeKind::COUNT>>();
+
+    upgrades->at((size_t) e_UpgradeKind::STRENGTH) = Upgrade(e_UpgradeKind::STRENGTH, "STRENGTH", [](Entity& e) {
+       e.power_level += 1; 
+    }, Resources::get_texture("upgrade_strength"));
+
+    upgrades->at((size_t) e_UpgradeKind::SPEED) = Upgrade(e_UpgradeKind::SPEED, "SPEED", [](Entity& e) {
+       e.max_speed += 1; 
+    }, Resources::get_texture("upgrade_speed"));
+
+    upgrades->at((size_t) e_UpgradeKind::GO_THROUGH) = Upgrade(e_UpgradeKind::GO_THROUGH, "GO_THROUGH", [](Entity& e) {
+       e.max_speed += 1; 
+    }, Resources::get_texture("upgrade_strength"));
+
+    upgrades->at((size_t) e_UpgradeKind::WAVY_SHOOT) = Upgrade(e_UpgradeKind::WAVY_SHOOT, "WAVY_SHOOT", [](Entity& e) {
+       e.wavy_shoots = true;
+    }, Resources::get_texture("upgrade_wavy"));
+    
+    return upgrades;
+}
+
+Upgrade pbs::upgrades::Get(e_UpgradeKind idx){
+    static auto upgrades = __load();
+    return upgrades->at((size_t)idx);
+}
+
+std::unique_ptr<std::array<Bullet, (i32)e_BulletKind::COUNT>> pbs::bullets::__load(){
+    auto bullets = std::make_unique<std::array<Bullet, (i32) e_BulletKind::COUNT>>();
+
+    Bullet from_cloud;
+    from_cloud.size = 30.0f;
+    from_cloud.color = RED;
+    from_cloud.movement_kind = e_MovementKind::OUTER;
+    from_cloud.team = e_Team::BAD_GUYS;
+
+    bullets->at((size_t) e_BulletKind::FROM_CLOUD) = from_cloud;
+
+    Bullet from_waver;
+    from_waver.size = 15.0f;
+    from_waver.color = PURPLE;
+    from_waver.movement_kind = e_MovementKind::OUTER;
+    from_waver.team = e_Team::BAD_GUYS;
+    from_waver.wavy = true;
+
+    bullets->at((size_t) e_BulletKind::FROM_WAVER) = Bullet();
+
+
+    Bullet from_buller;
+    from_buller.size = 40.0f;
+    from_buller.color = YELLOW;
+    from_buller.movement_kind = e_MovementKind::CIRCULAR;
+    from_buller.team = e_Team::BAD_GUYS;
+
+    bullets->at((size_t) e_BulletKind::FROM_BULLER) = Bullet();
+       
+    return bullets;
+}
+
+Bullet pbs::bullets::Get(e_BulletKind idx){
+    static auto bullets = __load();
+    return bullets->at((size_t)idx);
+}
+
+
+
+Bullet Player::Shoot() {
+    V_LOG_ERROR("PLAYER SHOULD NOT USE SHOOT.");
+    return Bullet();
+} 
+
+Bullet Player::ShootH(i32 dir){
+    Bullet bul = {};
+    bul.polar = polar;
+    bul.team = e_Team::GOOD_GUYS;
+    bul.wavy = wavy_shoots;
+    bul.color = BLUE;
+    bul.size = size_bullet;
+    bul.is_alive = true;
+    bul.movement_kind = e_MovementKind::CIRCULAR;
+    bul.power_level = power_level;
+    bul.speed_polar.rad = max_bullet_speed.rad;
+    bul.direction = dir;
+    return bul; 
+}
+
+Bullet Player::ShootV(){
+    Bullet bul = {};
+    bul.polar = polar;
+    bul.team = e_Team::GOOD_GUYS;
+    bul.wavy = wavy_shoots;
+    bul.color = BLUE;
+    bul.size = size_bullet;
+    bul.is_alive = true;
+    bul.movement_kind = e_MovementKind::OUTER;
+    bul.power_level = power_level;
+    bul.speed_polar.length = max_bullet_speed.length;
+    bul.direction = 1;
+    return bul; 
+}
+
