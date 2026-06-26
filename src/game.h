@@ -3,10 +3,10 @@
 #include "vstd/vtypes.h"
 #include <array>
 #include <cstddef>
-#include <functional>
 #include <raylib.h>
 #include <vector>
 #include <memory>
+
 
 struct Game;
 
@@ -66,7 +66,8 @@ struct CameraState {
 }; 
 
 struct Scenario {
-    fvec2Polar polar;  
+    Texture2D tex;
+    f32 radius;
 };
 
 enum class e_GameState{
@@ -76,6 +77,9 @@ enum class e_GameState{
 };
 
 struct Game {
+    f32 BABUSKA = 0.0f;
+
+    
     e_GameState state = e_GameState::PLAY;
     vec2 win_size = {};
     Player player;
@@ -86,7 +90,7 @@ struct Game {
 
     CameraState camera_state = {};
 
-    Scenario scenario = {0};
+    Scenario scenario = {};
     
     std::unique_ptr<ExperienceSystem> exp_sys;
     Game(i32 w_width, i32 w_height, std::unique_ptr<ExperienceSystem> exp_sys);
@@ -96,6 +100,8 @@ struct Game {
     void UpdateCamera(f32 dt);
     void Collisions(f32 dt);
     void Draw();
+    void DrawEntities();
+    void DrawUI();
     void ProcessInput(f32 dt);
     void NewEnemyCloud(size_t num_enemies, f32 distance_from_surface, i32 direction);
 };
@@ -107,4 +113,34 @@ struct SpawSystem {
     SpawSystem(Game& game);
 };
 
+enum class e_BuildingKind {
+    NIL,
+    V_SHOT,         // VERTICAL SHOT
+    THORN_FIELD,    // TAKES HEALTH FROM WHOEVER STEPS ON IT
+    DRILL_STATION,  // ALLOWS YOU TO GO TO DRILL STATION ON OPOSITE SIDE.
+    COUNT
+};
 
+struct Building {
+    fvec2Polar polar;
+    e_BuildingKind kind;   
+
+    i32 index;
+    i32 brother_idx; // No problem cause there is no swaps on our ds.
+    Building() = default;
+    Building(fvec2Polar, e_BuildingKind, i32, i32);
+    void Execute();
+};
+
+
+constexpr i32 BUILDING_MAX_COUNT = 1024;
+struct BuildingSystem {
+    std::array<Building, BUILDING_MAX_COUNT> buildings;
+    std::array<i16, BUILDING_MAX_COUNT> __free_list;
+
+    f32 timer;
+    BuildingSystem() = default;
+    void Update();
+};
+
+void DrawOnPolar(Texture2D tex, fvec2Polar position, f32 width, f32 height);

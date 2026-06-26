@@ -8,7 +8,7 @@
 
 constexpr i32 NUM_BULLETS = 1024;
 constexpr Color E_COLOR = YELLOW;
-constexpr f32 CENTER_RADIUS = 400.0f;
+constexpr f32 CENTER_RADIUS = 240.0f;
 constexpr f32 FLOOR_FRICTION = 0.85f;
 
 constexpr f32 E_RADIUS = 20.0f;
@@ -89,7 +89,7 @@ struct Entity {
     
     Entity() = default;
     Entity(f32 size, Color c, f32 radians, f32 polar_length,  e_MovementKind movement, i32 dir);
-
+    void FixRad();
     Bullet Shoot();
 };
 
@@ -116,11 +116,11 @@ constexpr i32 HEALTH_ENTITY_FROM_CLOUD = 3;
 
 struct EntityFromCloud: public Entity {
     i32 health = HEALTH_ENTITY_FROM_CLOUD; 
-
+    f32 size = E_RADIUS;
     size_t cloud_idx;
 
     EntityFromCloud() = default;
-    EntityFromCloud(f32 size, Color c, f32 radians, f32 polar_length, e_MovementKind movement, i32 dir, size_t cloud_idx);
+    EntityFromCloud(Color c, f32 radians, f32 polar_length, e_MovementKind movement, i32 dir, size_t cloud_idx);
 };
 
 struct Bullet: public Entity {
@@ -153,7 +153,7 @@ struct EnemyCloud {
 
     // Shooting
     f32 time_till_shoot = 1.0f;
-
+    
     enum {
         WAITING, 
         MOVING,

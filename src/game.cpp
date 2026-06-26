@@ -2,6 +2,7 @@
 #include "entity.h"
 #include "raylib.h"
 #include "vstd/vmath.h"
+#include "resources.h"
 #include "vstd/vrandom_gen.h"
 #include <array>
 #include <cmath>
@@ -13,24 +14,26 @@
 
 
 constexpr f32 EPSILON = 0.1f;
-constexpr f32 PLAYER_MAX_SPEED = 10.0f;
+constexpr f32 PLAYER_MAX_SPEED = 4.0f;
 constexpr f32 PLAYER_DASH_MAX_SPEED = 14.0f;
 constexpr f32 PLAYER_DASH_LENGTH = 0.3f;
 constexpr f32 PLAYER_DASH_COOLDOWN = 1.0f;
 constexpr f32 PLAYER_ACCELERATION = 40.0f;
+constexpr f32 ANIMATION_INCREMENT = 3.0f;
 
 Game::Game(i32 w_width, i32 w_height, std::unique_ptr<ExperienceSystem> exp) :
     win_size(w_width, w_height)
 {
     exp_sys = std::move(exp);
 
-    scenario.polar.length = CENTER_RADIUS;
+    scenario.tex = Resources::get_texture("planet");
+    scenario.radius = CENTER_RADIUS;
 
     player.movement_kind = e_MovementKind::CIRCULAR;
-    player.size = E_RADIUS;
+    player.size = E_RADIUS * 2.0f;
     player.color = E_COLOR;
     player.polar.rad = PI * 0.5f;
-    player.polar.length = scenario.polar.length + E_RADIUS;
+    player.polar.length = scenario.radius + player.size;
     player.max_speed = PLAYER_MAX_SPEED;
     player.max_bullet_speed.length = BULLET_SPEED_OUTER;
     player.max_bullet_speed.rad = BULLET_SPEED_CIRCULAR;
@@ -68,15 +71,13 @@ void Game::UpdatePlayer(f32 dt) {
         else player.speed_polar.rad *= FLOOR_FRICTION;
 
         player.speed_polar.rad = Clampf32(player.speed_polar.rad, -player.max_speed, player.max_speed);
-
         player.dash_cooldown -= dt;
     }
     
     // Makes movement equal independent of polar length.
     f32 delta = (player.speed_polar.rad / player.polar.length);
     player.polar.rad += delta;
-    player.polar.rad = fmodf(player.polar.rad, 2.0f * PI);
-    if (player.polar.rad < 0) player.polar.rad += 2.0f * PI;
+    player.FixRad();
 
 
     if (player.dash_time <= 0) {
@@ -87,13 +88,14 @@ void Game::UpdatePlayer(f32 dt) {
 
 void Game::UpdateOthers(f32 dt) {
     for (auto& bullet: bullets) {
-        if(bullet.is_alive)
+        if(bullet.is_alive){
             bullet.Update(dt);
+        }
     }
     for (auto& cloud: enemy_clouds) {
         if(cloud.is_alive)
             cloud.UpdateEnemies(dt);
-        // cloud.Shoot(bullets, bullet_count, dt);
+        cloud.Shoot(bullets, bullet_count, dt);
     }
     for (auto& particle: exp_sys->particles) {
         particle.Update(dt);
@@ -118,10 +120,10 @@ void Game::Collisions(f32 dt) {
     for (ExpParticle& particle: exp_sys->particles){
         if (!particle.active) continue;
 
-        if (!particle.on_surface && scenario.polar.length + E_RADIUS * 0.5f >= particle.polar.length) {
+        if (!particle.on_surface && scenario.radius + E_RADIUS * 0.5f >= particle.polar.length) {
             particle.on_surface = true;
             particle.lengths_lerp[0] = particle.polar.length;
-            particle.lengths_lerp[1] = scenario.polar.length + 30.0f;
+            particle.lengths_lerp[1] = scenario.radius + 30.0f;
         }
 
         if (GetDistance(player.polar, particle.polar) < E_RADIUS){
@@ -179,7 +181,7 @@ void Game::Collisions(f32 dt) {
                 }
             }
         } else if (bullet.team == e_Team::BAD_GUYS) {
-            bool collide_planet = bullet.polar.length < scenario.polar.length;
+            bool collide_planet = bullet.polar.length < scenario.radius;
             if (collide_planet) {
                 bullet.is_alive = false;
             } else {
@@ -205,8 +207,7 @@ void Game::Draw() {
     ClearBackground(RAYWHITE);
 
     // World
-    DrawCircle(0, 0, scenario.polar.length, RED);
-    DrawCircleLines(0, 0, scenario.polar.length, BLACK);
+    DrawOnPolar(scenario.tex, {0, 0}, scenario.radius * 2.0f + 40.0f, scenario.radius * 2.0f + 40.0f);   
 
     //Player
     fvec2 player_pos = PolarToCartesian(player.polar.length, player.polar.rad);
@@ -266,7 +267,10 @@ void Game::ProcessInput(f32 dt) {
             if(mouse_wheel != 0){
                 camera_state->zoom += mouse_wheel * dt;
             }
-
+            if(IsKeyDown(KEY_M))
+                BABUSKA += 40.0f * dt;
+            if(IsKeyDown(KEY_N))
+                BABUSKA -= 40.0f * dt;
             //DASH
             if(IsKeyDown(KEY_D) && player.direction != 0 && player.dash_cooldown <= 0) {
                 player.dash_cooldown = PLAYER_DASH_COOLDOWN;
@@ -317,7 +321,7 @@ void SpawSystem::Update(f32 dt){
         f32 distance = rng::randf32(MIN_SPAWN_DISTANCE, MAX_SPAWN_DISTANCE);
         i32 direction = GetRandomDirection();
 
-        game.NewEnemyCloud(num_enemies, distance + game.scenario.polar.length, direction);
+        game.NewEnemyCloud(num_enemies, distance + game.scenario.radius, direction);
 
     } else {
         till_next_cloud -= dt;
@@ -390,9 +394,9 @@ void ExperienceSystem::DrawUpgrades(vec2 win_size){
         };
 
         DrawTexturePro(
-                tex, {0, 0, (f32)tex.width, (f32)tex.height}, dst, 
-                {0,0}, 0.0f, WHITE);
-                // Vector2{dst.x + dst.width * 0.5f,  dst.y + dst.height * 0.5f}, 0.0f, BLACK);
+            tex, {0, 0, (f32)tex.width, (f32)tex.height}, dst, 
+            {0,0}, 0.0f, WHITE
+        );
 
         DrawText(NewUpgrades[i].name.c_str(), i32(rec.x + title_left_padding), i32(rec.y + title_top_padding + dst.height), 20, BLACK);
     }
@@ -418,13 +422,62 @@ void ExperienceSystem::GetNewUpgrades() {
     }
 }
 
-// enum class e_UpgradeKind {
-//     NIL = -1,
-//     STRENGTH = 0,
-//     SPEED, 
-//     GO_THROUGH,
-//     WAVY_SHOOT,
-//     COUNT,
-// };
+
+void Game::DrawUI(){
+    char buff[30];
+    const f32 v_step = 40.0f;
+    f32 v_start = 20.0f;
+    const f32 h_start = 20.0f;
+    const struct {
+        std::string text;
+        f32 value;
+    } Frases[] = {
+        {"Score: %02f\n", f32(player.score)},
+        {"Bullet speed: %02f\n", player.max_speed},
+        {"Power: %02f\n", f32(player.power_level)},
+        {"BABUSKA: %02f\n", f32(BABUSKA)},
+    };
+    
+    for(const auto & s: Frases){
+        sprintf_s(buff, s.text.c_str(), s.value);
+        DrawText(buff, (i32)h_start, (i32)v_start, 30, BLACK);                         
+        v_start += v_step;
+    }
+
+    if (state == e_GameState::LEVEL_UP){
+        exp_sys->DrawUpgrades(win_size);
+    }
+}
+
+void Game::DrawEntities(){
+    Texture2D enemy_texture = Resources::get_texture("enemy");
+
+    for(const auto& cloud: enemy_clouds) {
+        for (const auto& enemy: cloud.enemies) {
+            if (!enemy.is_alive) continue;
+            f32 size = enemy.size * 2.0f;
+            DrawOnPolar(enemy_texture, enemy.polar, size, size);
+        }
+    }
+
+    Texture2D pj_texture = Resources::get_texture("character");
+    
+    f32 el_sin = (f32)sin(player.t) * ANIMATION_INCREMENT;
+    const f32 draw_w = player.size * 2.0f + el_sin;
+    const f32 draw_h = player.size * 2.0f - el_sin;
+
+    DrawOnPolar(pj_texture, player.polar, draw_w, draw_h);
+}
 
 
+void DrawOnPolar(Texture2D tex, fvec2Polar position, f32 width, f32 height) {
+    fvec2 pos_world = PolarToCartesian(position.length, position.rad);
+    f32 rot = (-position.rad * RAD2DEG) + 90.0f;
+
+    DrawTexturePro(
+        tex, {0, 0, (f32)tex.width, (f32)tex.height},
+        {pos_world.x, pos_world.y, width, height},
+        {width * 0.5f, height * 0.5f}, 
+        rot, WHITE
+    );
+}

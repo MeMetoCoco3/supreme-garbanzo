@@ -38,8 +38,13 @@ Entity::Entity(f32 radius, Color c, f32 radians, f32 polar_length,  e_MovementKi
 Bullet Entity::Shoot() {
     Bullet bullet = pbs::bullets::Get(bullet_kind);
     bullet.polar = polar;
-    
+    bullet.is_alive = true;
     return bullet;
+}
+
+void Entity::FixRad(){
+    polar.rad = fmodf(polar.rad, PI * 2.0f);
+    if (polar.rad < 0) polar.rad += PI * 2.0f;
 }
 
 constexpr f32 WAVY_STRENGTH_LENGTH = 40.0f;
@@ -63,7 +68,6 @@ void Bullet::Update(f32 dt){
         } break;
         case e_MovementKind::OUTER:{
             polar.length += speed_polar.length * dt * direction;
-            printf("LENGTH %02f\n", polar.length);
             if(wavy) {
                 t_sin *= WAVY_STRENGTH_RAD;
                 polar.rad += t_sin - prev_t_sin;
@@ -77,7 +81,6 @@ void Bullet::Update(f32 dt){
 EnemyCloud::EnemyCloud(size_t enemy_capacity, f32 distance_from_surface, i32 dir, size_t idx):
     direction(dir) 
 {
-    f32 enemy_size = ENEMY_RADIUS * 4.0f;
     if (enemy_capacity > MAX_ENEMIES_PER_CLOUD) {
         enemy_capacity = MAX_ENEMIES_PER_CLOUD;
     }
@@ -105,32 +108,34 @@ EnemyCloud::EnemyCloud(size_t enemy_capacity, f32 distance_from_surface, i32 dir
     }
     
     f32 starting_point_radians = rng::randf32(0.0f, 2.0f * PI);
-    f32 radians_step = GetNextRadians(distance_from_surface, enemy_size, enemy_size);
     i32 row_count = 0;
     i32 entities_in_row = 0;
     
-    EntityFromCloud e1(enemy_size, PINK, radians_step + starting_point_radians, distance_from_surface,  e_MovementKind::CIRCULAR, dir, idx);
-    enemies[0] = e1;
+    f32 e_size = EntityFromCloud().size;
+    f32 radians_step = GetNextRadians(distance_from_surface, e_size, e_size);
 
     for(int i = 0; i < enemy_capacity; i++) {
+        f32 radian_pos = starting_point_radians + radians_step * entities_in_row;
+        EntityFromCloud current_e (
+            PINK, radian_pos, distance_from_surface,  
+            e_MovementKind::CIRCULAR, dir, idx
+        );
 
         if (entities_in_row >= enemies_per_row[row_count]){
             row_count += 1;
             distance_from_surface += 30;   
             entities_in_row = 0;
-            radians_step = GetNextRadians(distance_from_surface, enemy_size, enemy_size);
+            radians_step = GetNextRadians(distance_from_surface, e_size, e_size);
 
             i32 dif_between_rows = enemies_per_row[row_count] - enemies_per_row[row_count - 1];
             starting_point_radians -= ((f32)dif_between_rows * radians_step) * 0.5f;
         }
 
         entities_in_row +=1;
-        f32 radian_pos = starting_point_radians + radians_step * entities_in_row;
 
-        EntityFromCloud current_e (
-            enemy_size, PINK, radian_pos, distance_from_surface,  
-            e_MovementKind::CIRCULAR, dir, idx
-        );
+        Color c = i == 0? RED: PINK;
+        current_e.color = c;
+        current_e.bullet_kind = e_BulletKind::FROM_CLOUD;
         enemies[i] = current_e;
     }
 
@@ -147,11 +152,11 @@ void EnemyCloud::Shoot(std::array<Bullet, NUM_BULLETS>& bullets, size_t& bullet_
         i32 random_entity = rng::randi32(0, (i32)initial_count-1);
         for (int i = random_entity; i <= (i32)initial_count; i++) {
             if (enemies[i].is_alive) {
-                bullets[bullet_count++] = enemies[i].Shoot();
-                if (bullets[bullet_count-1].polar.length == 0.0f){
-                    int j = 2;
-                    printf("%d\n", j);
-                }
+                Bullet bullet = enemies[i].Shoot();
+                bullet.speed_polar.length = ENEMY_BULLET_SPEED_LENGTH;
+                bullet.direction = -1;
+                bullets[bullet_count++] = bullet;
+                
                 break;
             }
         }
@@ -171,6 +176,7 @@ void EnemyCloud::UpdateEnemies(f32 dt) {
             {
                 Entity& e = enemies[i];
                 e.polar.length = fLerp(e.polar.length, new_pos[i], lerp_factor);
+                e.FixRad();
             }
 
             lerp_factor += dt;
@@ -192,16 +198,18 @@ void EnemyCloud::UpdateEnemies(f32 dt) {
                     action = APPROACH;
                     for(int i = 0; i < enemies.size(); i++)
                     {
-                        const Entity& e = enemies[i];
+                        Entity& e = enemies[i];
                         new_pos[i] = e.polar.length - APPROACH_STEP;
+                        e.FixRad();
                     }
                 } else {
                     time_till_approach -= 1;
                     action = MOVING;
                     for(int i = 0; i < enemies.size(); i++)
                     {
-                        const Entity& e = enemies[i];
+                        Entity& e = enemies[i];
                         new_pos[i] = (direction * E_ANGLE_STEP) + e.polar.rad;
+                        e.FixRad();
                     }
                 }
             } else {
@@ -227,8 +235,8 @@ void EnemyCloud::UpdateEnemies(f32 dt) {
     }
 }
 
-EntityFromCloud::EntityFromCloud(f32 size, Color c, f32 radians, f32 polar_length, e_MovementKind movement, i32 dir, size_t cloud_idx):
-    Entity(size, c, radians, polar_length, movement, dir), cloud_idx(cloud_idx)
+EntityFromCloud::EntityFromCloud(Color c, f32 radians, f32 polar_length, e_MovementKind movement, i32 dir, size_t cloud_idx):
+    Entity(0, c, radians, polar_length, movement, dir), cloud_idx(cloud_idx)
 {}
 
 Upgrade::Upgrade(e_UpgradeKind kind, std::string name, std::function<void(Entity&)> func, Texture2D image): name(name), kind(kind), command(func), image(image){}
@@ -264,7 +272,7 @@ std::unique_ptr<std::array<Bullet, (i32)e_BulletKind::COUNT>> pbs::bullets::__lo
     auto bullets = std::make_unique<std::array<Bullet, (i32) e_BulletKind::COUNT>>();
 
     Bullet from_cloud;
-    from_cloud.size = 30.0f;
+    from_cloud.size = 10.0f;
     from_cloud.color = RED;
     from_cloud.movement_kind = e_MovementKind::OUTER;
     from_cloud.team = e_Team::BAD_GUYS;
@@ -278,7 +286,7 @@ std::unique_ptr<std::array<Bullet, (i32)e_BulletKind::COUNT>> pbs::bullets::__lo
     from_waver.team = e_Team::BAD_GUYS;
     from_waver.wavy = true;
 
-    bullets->at((size_t) e_BulletKind::FROM_WAVER) = Bullet();
+    bullets->at((size_t) e_BulletKind::FROM_WAVER) = from_waver;
 
 
     Bullet from_buller;
@@ -287,7 +295,7 @@ std::unique_ptr<std::array<Bullet, (i32)e_BulletKind::COUNT>> pbs::bullets::__lo
     from_buller.movement_kind = e_MovementKind::CIRCULAR;
     from_buller.team = e_Team::BAD_GUYS;
 
-    bullets->at((size_t) e_BulletKind::FROM_BULLER) = Bullet();
+    bullets->at((size_t) e_BulletKind::FROM_BULLER) = from_buller;
        
     return bullets;
 }

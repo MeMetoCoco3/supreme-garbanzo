@@ -5,6 +5,7 @@
 
 #include "vtypes.h"
 
+
 f32 fLerp(f32 a, f32 b, f32 t);
 fvec2 fVec2Subs(fvec2 v1, fvec2 v2);
 fvec2 fVec2Add(fvec2 v1, fvec2 v2);
