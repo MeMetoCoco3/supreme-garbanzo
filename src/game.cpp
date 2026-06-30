@@ -1,16 +1,16 @@
 #include "game.h"
 #include "entity.h"
 #include "raylib.h"
-#include "vstd/vmath.h"
 #include "resources.h"
+#include "vstd/vmath.h"
 #include "vstd/vrandom_gen.h"
+#include "vstd/vlogger.h"
 #include <array>
 #include <cmath>
 #include <cstddef>
 #include <cstdlib>
 #include <memory>
 #include <utility>
-
 
 
 constexpr f32 EPSILON = 0.1f;
@@ -21,10 +21,11 @@ constexpr f32 PLAYER_DASH_COOLDOWN = 1.0f;
 constexpr f32 PLAYER_ACCELERATION = 40.0f;
 constexpr f32 ANIMATION_INCREMENT = 3.0f;
 
-Game::Game(i32 w_width, i32 w_height, std::unique_ptr<ExperienceSystem> exp) :
+Game::Game(i32 w_width, i32 w_height, std::unique_ptr<ExperienceSystem> exp, std::unique_ptr<BuildingSystem> bs) :
     win_size(w_width, w_height)
 {
     exp_sys = std::move(exp);
+    build_sys = std::move(bs);
 
     scenario.tex = Resources::get_texture("planet");
     scenario.radius = CENTER_RADIUS;
@@ -45,7 +46,7 @@ Game::Game(i32 w_width, i32 w_height, std::unique_ptr<ExperienceSystem> exp) :
     camera_state->offset.y = w_height * 0.5f;
     camera_state->zoom = 1.6f;
 
-    exp_sys->UpdateUpgradeRectangle(win_size);
+    UpdateUpgradeRectangle(win_size);
 }
 
 void Game::NewEnemyCloud(size_t num_enemies, f32 distance_from_surface, i32 direction) {
@@ -159,22 +160,7 @@ void Game::Collisions(f32 dt) {
                         if (enemy.health <= 0){
                             enemy.is_alive = false;
                             enemy_clouds[enemy.cloud_idx].count-- ;
-                            // DROP EXP
-                            i32 n_exp_particles = enemy.power_level;
-                            for (int i = 0; i < MAX_NUM_EXP_PARTICLES; i++) {
-                                ExpParticle& particle = exp_sys->particles[i];
-                                if (!particle.active) {
-                                    particle.on_surface = false;
-                                    particle.active = true;
-                                    particle.polar.length = enemy.polar.length;
-                                    particle.polar.rad = enemy.polar.rad;
-                                    particle.speed.length = rng::randf32(-3.0f, 1.0f);
-                                    particle.speed.rad = rng::randf32(-0.2f, 0.2f);
-
-                                    n_exp_particles -= 1;
-                                    if (n_exp_particles <= 0) break;
-                                }
-                            }
+                            exp_sys->DropXP(enemy.polar, enemy.power_level);
                         }
                         break;
                     }
@@ -240,27 +226,44 @@ void Game::Draw() {
 
 }
 
+size_t GetClickedOption(std::array<RectangleReac, 4> rectangles, e_UIMode mode){
+    i32 n = mode == e_UIMode::THREE ? 3 : 4;
+    size_t return_value = -1;
+    Vector2 mouse_pos = GetMousePosition();
+    for(size_t i = 0; i < n; i++){
+        auto& rec = rectangles[i];
+        if (CheckCollisionPointRec(mouse_pos, rec)){
+            if(IsMouseButtonReleased(MOUSE_LEFT_BUTTON)){
+                return_value = i;
+            }
+            rec.hovered = true;
+        } else {
+            rec.hovered = false;
+        }
+    }
+
+    return return_value;
+}
+
 void Game::ProcessInput(f32 dt) {
     switch (state) {
+        case e_GameState::SELECT_BUILDING: {
+            size_t id = GetClickedOption(UIRectangles, UIMode); 
+            if (id != -1){
+                player.building_points -= 1 ;
+                player.carrying = e_BuildingKind(id + 1);
+                state = e_GameState::PLAY;
+            }
+        } break;
         case e_GameState::LEVEL_UP: {
-            Vector2 mouse_pos = GetMousePosition();
-            for(int i = 0; i < 3; i++){
-                auto& rec = exp_sys->UpgradeRectangle[i];
-                if (CheckCollisionPointRec(mouse_pos, rec)){
-                    if(IsMouseButtonReleased(MOUSE_LEFT_BUTTON)){
-                        exp_sys->NewUpgrades[i].command(player);
-                        state = e_GameState::PLAY;
-                    }
-                    rec.hovered = true;
-                } else {
-                    rec.hovered = false;
-                }
+            size_t id = GetClickedOption(UIRectangles, UIMode); 
+            if (id != -1){
+                exp_sys->NewUpgrades[id].command(player);
+                state = e_GameState::PLAY;
             }
         } break;
         
-        case e_GameState::PAUSE: {
-        
-        } break;
+        case e_GameState::PAUSE: {} break;
         case e_GameState::PLAY: {
             // ZOOM
             f32 mouse_wheel = GetMouseWheelMove();   
@@ -298,6 +301,10 @@ void Game::ProcessInput(f32 dt) {
             if (IsKeyPressed(KEY_Z))
                 bullets[bullet_count++] = player.ShootH(1);
 
+            if (IsKeyPressed(KEY_D) && player.IsCarrying()){
+                printf("Player radian position %02f Index %d\n", player.polar.rad, build_sys->GetIndexGivenRadians(player.polar.rad));
+                build_sys->Create(player.carrying, build_sys->GetIndexGivenRadians(player.polar.rad));
+            }
 
         } break;
     }
@@ -351,7 +358,46 @@ bool ExperienceSystem::ShouldLevelUp(i32 current_score){
     return current_score >= EXP_PER_LEVEL[level]? true : false;
 } 
 
-void ExperienceSystem::UpdateUpgradeRectangle(vec2 win_size) {
+void Game::UpdateRectangle(vec2 win_size) {
+    switch (UIMode) {
+        case e_UIMode::THREE:{
+            UpdateUpgradeRectangle(win_size);
+        }break;
+        case e_UIMode::FOUR:{
+            UpdateBuildingRectangle(win_size);
+        }break;
+        case e_UIMode::NIL:
+        case e_UIMode::COUNT:{}break;
+    };
+}
+
+
+void Game::UpdateBuildingRectangle(vec2 win_size) {
+    static i32 horizontal_padding = 20; 
+    static i32 top_padding = 20; 
+    static i32 bottom_padding = 10;
+    static i32 option_padding = 10;
+
+    static i32 option_width = i32(((i32)win_size.x - (horizontal_padding * 2 + option_padding * 2)) / 2.0f);
+    static i32 option_height = (i32)win_size.y - (top_padding + bottom_padding);
+
+    i32 pos_x = horizontal_padding;
+    i32 pos_y = top_padding;
+
+
+    for(int i = 0; i < 2; i++){      
+        for(int j = 0; j < 2; j++){
+            UIRectangles[i + j] = Rectangle{(f32)pos_x, (f32)pos_y, (f32)option_width, (f32)option_height};
+            UIRectangles[i + j].hovered = false;
+            pos_x += option_width + option_padding;
+        }
+        pos_y += option_height + bottom_padding;
+    }
+
+}
+
+void Game::UpdateUpgradeRectangle(vec2 win_size) {
+
     static i32 horizontal_padding = 20; 
     static i32 top_padding = 20; 
     static i32 bottom_padding = 10;
@@ -364,23 +410,20 @@ void ExperienceSystem::UpdateUpgradeRectangle(vec2 win_size) {
     i32 pos_y = top_padding;
 
     for(int i = 0; i < 3; i++){      
-        UpgradeRectangle[i] = Rectangle{(f32)pos_x, (f32)pos_y, (f32)upgrade_width, (f32)upgrade_height};
-        UpgradeRectangle[i].hovered = false;
+        UIRectangles[i] = Rectangle{(f32)pos_x, (f32)pos_y, (f32)upgrade_width, (f32)upgrade_height};
+        UIRectangles[i].hovered = false;
         pos_x += upgrade_width + upgrade_padding;
     }
 }
 
 
-void ExperienceSystem::DrawUpgrades(vec2 win_size){
-    if (adjust) {
-        UpdateUpgradeRectangle(win_size);
-        adjust = false;
-    }
+void ExperienceSystem::DrawUpgrades(std::array<RectangleReac, 4> rectangles, vec2 win_size){
+    
     static i32 title_top_padding = 8;
     static i32 title_left_padding = 10;
 
     for(int i = 0; i < 3; i++){
-        const auto& rec = UpgradeRectangle[i];
+        const auto& rec = rectangles[i];
         Color c = rec.hovered ? YELLOW : RAYWHITE;
         DrawRectangleRec(rec, c);
         DrawRectangleLines((i32)rec.x, (i32)rec.y, (i32)rec.width, (i32)rec.height, BLACK);
@@ -413,7 +456,6 @@ void ExperienceSystem::GetNewUpgrades() {
                     break;
                 }
             }
-
             if (add){
                 NewUpgrades[i] = new_upgrade;
                 break;
@@ -421,6 +463,25 @@ void ExperienceSystem::GetNewUpgrades() {
         }
     }
 }
+
+void ExperienceSystem::DropXP(fvec2Polar polar, i32 power_level){
+    i32 n_exp_particles = power_level;
+    for (int i = 0; i < MAX_NUM_EXP_PARTICLES; i++) {
+        ExpParticle& particle = particles[i];
+        if (!particle.active) {
+            particle.on_surface = false;
+            particle.active = true;
+            particle.polar.length = polar.length;
+            particle.polar.rad = polar.rad;
+            particle.speed.length = rng::randf32(-3.0f, 1.0f);
+            particle.speed.rad = rng::randf32(-0.2f, 0.2f);
+
+            n_exp_particles -= 1;
+            if (n_exp_particles <= 0) break;
+        }
+    }
+}
+
 
 
 void Game::DrawUI(){
@@ -445,7 +506,9 @@ void Game::DrawUI(){
     }
 
     if (state == e_GameState::LEVEL_UP){
-        exp_sys->DrawUpgrades(win_size);
+        exp_sys->DrawUpgrades(UIRectangles, win_size);
+    } else if (state == e_GameState::SELECT_BUILDING){
+        build_sys->DrawOptions(UIRectangles, win_size);
     }
 }
 
@@ -480,4 +543,105 @@ void DrawOnPolar(Texture2D tex, fvec2Polar position, f32 width, f32 height) {
         {width * 0.5f, height * 0.5f}, 
         rot, WHITE
     );
+}
+
+
+Building BuildingSystem::Destroy(size_t position_on_world){
+    auto b = buildings.at(position_on_world);
+    if(b.kind != e_BuildingKind::NIL){
+        buildings.at(position_on_world) = Building();
+        if (b.brother_idx != -1) {
+            buildings.at(b.brother_idx) = Building();
+        }
+    }
+
+    return b;
+}
+
+
+void BuildingSystem::Create(e_BuildingKind idx, size_t position_on_world){
+    auto& b = buildings.at(position_on_world);
+    if(b.kind == e_BuildingKind::NIL){
+        b = pbs::buildings::Get(idx);
+    }
+}
+
+void BuildingSystem::Update(){
+    for(auto& b: buildings){
+        if(b.kind != e_BuildingKind::NIL){
+            // switch (condition) {
+            //
+            // }
+            //
+            //
+            // b.Execute();
+        }
+    };
+}
+
+Texture2D BuildingSystem::__get_texture(e_BuildingKind kind){
+    switch (kind) {
+        case e_BuildingKind::DRILL_STATION:{return Resources::get_texture("building_drill_station");}break;
+        case e_BuildingKind::THORN_FIELD:{return Resources::get_texture("building_drill_station");}break;
+        case e_BuildingKind::V_SHOT:{return Resources::get_texture("building_drill_station");}break;
+        case e_BuildingKind::COUNT:
+        case e_BuildingKind::NIL:
+        default:
+            V_LOG_ERROR("BUILDING WITH NIL/COUT KIND"); return Resources::get_texture("fallback");
+    }
+    
+}
+
+std::string_view BuildingSystem::__get_name(e_BuildingKind kind){
+    switch (kind) {
+        case e_BuildingKind::DRILL_STATION:{return "Drill Station\n";}break;
+        case e_BuildingKind::THORN_FIELD:{return "Thorn Field\n";}break;
+        case e_BuildingKind::V_SHOT:{return "Laser Tower\n";}break;
+        case e_BuildingKind::COUNT:
+        case e_BuildingKind::NIL:
+        default:
+            V_LOG_ERROR("BUILDING WITH NIL/COUT KIND"); 
+            return "FALLBACK\n";
+    }
+}
+void BuildingSystem::DrawBuildings(){
+    for(auto& b: buildings){
+        if(b.kind != e_BuildingKind::NIL){
+            f32 size = b.size * 2.0f;
+            DrawOnPolar(__get_texture(b.kind), b.polar, size, size);
+        }
+    };
+}
+
+void BuildingSystem::DrawOptions(std::array<RectangleReac, 4> rectangles, vec2 win_size){
+    static i32 title_top_padding = 8;
+    static i32 title_left_padding = 10;
+
+    for(int i = 0; i < 4; i++){
+        const auto& rec = rectangles[i];
+        Color c = rec.hovered ? YELLOW : RAYWHITE;
+        DrawRectangleRec(rec, c);
+        DrawRectangleLines((i32)rec.x, (i32)rec.y, (i32)rec.width, (i32)rec.height, BLACK);
+
+        e_BuildingKind building_id = e_BuildingKind(i + 1);
+
+        const Texture2D& tex = __get_texture(building_id);
+        f32 min_size = fmin(rec.width - 2.0f * title_left_padding, (f32)tex.height);
+        Rectangle dst = {
+            rec.x + title_left_padding, rec.y + title_top_padding, 
+            min_size, min_size
+        };
+
+        DrawTexturePro(
+            tex, {0, 0, (f32)tex.width, (f32)tex.height}, dst, 
+            {0,0}, 0.0f, WHITE
+        );
+
+        DrawText(__get_name(building_id).data(), i32(rec.x + title_left_padding), i32(rec.y + title_top_padding + dst.height), 20, BLACK);
+    }
+}
+
+
+i32 BuildingSystem::GetIndexGivenRadians(f32 rad){
+    return i32(rad / BUILDING_SIZE);
 }

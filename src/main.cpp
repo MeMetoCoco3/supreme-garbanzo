@@ -18,8 +18,10 @@ int main(void){
     Resources::Init();
     SetTargetFPS(60);
     
-    std::unique_ptr<ExperienceSystem> exp_sys = std::make_unique<ExperienceSystem>();
-    Game Game(WIN_WIDTH, WIN_HEIGHT, std::move(exp_sys));
+    auto exp_sys = std::make_unique<ExperienceSystem>();
+    auto build_sys = std::make_unique<BuildingSystem>();
+
+    Game Game(WIN_WIDTH, WIN_HEIGHT, std::move(exp_sys), std::move(build_sys));
     f32 dt = 1.0f/60.0f;
 
     SpawSystem spawn_sys(Game);

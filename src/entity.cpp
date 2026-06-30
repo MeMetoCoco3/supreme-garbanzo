@@ -239,27 +239,33 @@ EntityFromCloud::EntityFromCloud(Color c, f32 radians, f32 polar_length, e_Movem
     Entity(0, c, radians, polar_length, movement, dir), cloud_idx(cloud_idx)
 {}
 
-Upgrade::Upgrade(e_UpgradeKind kind, std::string name, std::function<void(Entity&)> func, Texture2D image): name(name), kind(kind), command(func), image(image){}
+Upgrade::Upgrade(e_UpgradeKind kind, std::string name, std::function<void(Player&)> func, Texture2D image): name(name), kind(kind), command(func), image(image){}
 
 std::unique_ptr<std::array<Upgrade, (i32) e_UpgradeKind::COUNT>> pbs::upgrades::__load(){
     auto upgrades = std::make_unique<std::array<Upgrade, (i32) e_UpgradeKind::COUNT>>();
 
-    upgrades->at((size_t) e_UpgradeKind::STRENGTH) = Upgrade(e_UpgradeKind::STRENGTH, "STRENGTH", [](Entity& e) {
+    upgrades->at((size_t) e_UpgradeKind::STRENGTH) = Upgrade(e_UpgradeKind::STRENGTH, "STRENGTH", [](Player& e) {
        e.power_level += 1; 
     }, Resources::get_texture("upgrade_strength"));
 
-    upgrades->at((size_t) e_UpgradeKind::SPEED) = Upgrade(e_UpgradeKind::SPEED, "SPEED", [](Entity& e) {
+    upgrades->at((size_t) e_UpgradeKind::SPEED) = Upgrade(e_UpgradeKind::SPEED, "SPEED", [](Player& e) {
        e.max_speed += 1; 
     }, Resources::get_texture("upgrade_speed"));
 
-    upgrades->at((size_t) e_UpgradeKind::GO_THROUGH) = Upgrade(e_UpgradeKind::GO_THROUGH, "GO_THROUGH", [](Entity& e) {
+    upgrades->at((size_t) e_UpgradeKind::GO_THROUGH) = Upgrade(e_UpgradeKind::GO_THROUGH, "GO_THROUGH", [](Player& e) {
        e.max_speed += 1; 
     }, Resources::get_texture("upgrade_strength"));
 
-    upgrades->at((size_t) e_UpgradeKind::WAVY_SHOOT) = Upgrade(e_UpgradeKind::WAVY_SHOOT, "WAVY_SHOOT", [](Entity& e) {
+    upgrades->at((size_t) e_UpgradeKind::WAVY_SHOOT) = Upgrade(e_UpgradeKind::WAVY_SHOOT, "WAVY_SHOOT", [](Player& e) {
        e.wavy_shoots = true;
     }, Resources::get_texture("upgrade_wavy"));
+
+    upgrades->at((size_t) e_UpgradeKind::BUILDING_POINT) = Upgrade(e_UpgradeKind::BUILDING_POINT, "BUILDING_POINT", [](Player& e) {
+        e.building_points += 1;
+    }, Resources::get_texture("upgrade_build"));
+
     
+
     return upgrades;
 }
 
@@ -270,32 +276,30 @@ Upgrade pbs::upgrades::Get(e_UpgradeKind idx){
 
 std::unique_ptr<std::array<Bullet, (i32)e_BulletKind::COUNT>> pbs::bullets::__load(){
     auto bullets = std::make_unique<std::array<Bullet, (i32) e_BulletKind::COUNT>>();
+    {
+        auto& bullet = bullets->at((size_t) e_BulletKind::FROM_CLOUD);
+        bullet.size = 10.0f;
+        bullet.color = RED;
+        bullet.movement_kind = e_MovementKind::OUTER;
+        bullet.team = e_Team::BAD_GUYS;
+    }
 
-    Bullet from_cloud;
-    from_cloud.size = 10.0f;
-    from_cloud.color = RED;
-    from_cloud.movement_kind = e_MovementKind::OUTER;
-    from_cloud.team = e_Team::BAD_GUYS;
+    {
+        auto& bullet = bullets->at((size_t) e_BulletKind::FROM_WAVER);
+        bullet.size = 15.0f;
+        bullet.color = PURPLE;
+        bullet.movement_kind = e_MovementKind::OUTER;
+        bullet.team = e_Team::BAD_GUYS;
+        bullet.wavy = true;
+    }
 
-    bullets->at((size_t) e_BulletKind::FROM_CLOUD) = from_cloud;
-
-    Bullet from_waver;
-    from_waver.size = 15.0f;
-    from_waver.color = PURPLE;
-    from_waver.movement_kind = e_MovementKind::OUTER;
-    from_waver.team = e_Team::BAD_GUYS;
-    from_waver.wavy = true;
-
-    bullets->at((size_t) e_BulletKind::FROM_WAVER) = from_waver;
-
-
-    Bullet from_buller;
-    from_buller.size = 40.0f;
-    from_buller.color = YELLOW;
-    from_buller.movement_kind = e_MovementKind::CIRCULAR;
-    from_buller.team = e_Team::BAD_GUYS;
-
-    bullets->at((size_t) e_BulletKind::FROM_BULLER) = from_buller;
+    {
+        auto& bullet = bullets->at((size_t) e_BulletKind::FROM_BULLER);
+        bullet.size = 40.0f;
+        bullet.color = YELLOW;
+        bullet.movement_kind = e_MovementKind::CIRCULAR;
+        bullet.team = e_Team::BAD_GUYS;
+    }
        
     return bullets;
 }
@@ -304,6 +308,33 @@ Bullet pbs::bullets::Get(e_BulletKind idx){
     static auto bullets = __load();
     return bullets->at((size_t)idx);
 }
+// This now does not look necessary, but maybe in the future it does.
+std::unique_ptr<std::array<Building, (i32)e_BuildingKind::COUNT>> pbs::buildings::__load(){
+    auto buildings = std::make_unique<std::array<Building, (i32) e_BuildingKind::COUNT>>();
+    
+    {
+        auto& building = buildings->at((size_t) e_BuildingKind::V_SHOT);  
+        building.kind = e_BuildingKind::V_SHOT;
+    }
+
+    {
+        auto& building = buildings->at((size_t) e_BuildingKind::THORN_FIELD);  
+        building.kind = e_BuildingKind::THORN_FIELD;
+    }
+
+    {
+        auto& building = buildings->at((size_t) e_BuildingKind::DRILL_STATION);  
+        building.kind = e_BuildingKind::DRILL_STATION;
+    }
+
+    return buildings;
+}
+
+Building pbs::buildings::Get(e_BuildingKind idx){
+    static auto buildings = __load();
+    return buildings->at((size_t)idx);
+}
+
 
 
 
@@ -341,4 +372,9 @@ Bullet Player::ShootV(){
     bul.direction = 1;
     return bul; 
 }
+
+bool Player::IsCarrying(){
+    return carrying != e_BuildingKind::NIL;
+}
+
 

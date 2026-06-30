@@ -40,18 +40,16 @@ struct ExperienceSystem {
     i32 exp = 0;
     i32 level = 0;
 
-    bool adjust = false;
     std::array<Upgrade, MAX_UPGRADES> PlayerUpgrades;
     std::array<Upgrade, 3> NewUpgrades;
     std::array<ExpParticle, MAX_NUM_EXP_PARTICLES> particles;
-    std::array<RectangleReac, 3> UpgradeRectangle;
 
     ExperienceSystem() = default;
     void Update(f32 dt);
     bool ShouldLevelUp(i32 current_score); 
     void GetNewUpgrades();
-    void UpdateUpgradeRectangle(vec2 win_size);
-    void DrawUpgrades(vec2 win_size);
+    void DrawUpgrades(std::array<RectangleReac, 4> rectangles, vec2 win_size);
+    void DropXP(fvec2Polar, i32);
 };
 
 struct CameraState {
@@ -73,7 +71,38 @@ struct Scenario {
 enum class e_GameState{
     PLAY, 
     PAUSE, 
-    LEVEL_UP
+    LEVEL_UP,
+    SELECT_BUILDING,
+};
+
+constexpr i32 BUILDING_SIZE = (i32)E_RADIUS * 2;
+constexpr i32 BUILDING_MAX_COUNT = i32((2.0f * PI * CENTER_RADIUS) / (f32)BUILDING_SIZE);
+
+struct BuildingSystem {
+    std::array<Building, BUILDING_MAX_COUNT> buildings;
+    std::array<i16, BUILDING_MAX_COUNT> __free_list;
+
+    f32 timer;
+    BuildingSystem() = default;
+    void Create(e_BuildingKind, size_t);
+    Building Destroy(size_t);
+    Texture2D __get_texture(e_BuildingKind);
+    std::string_view __get_name(e_BuildingKind kind);
+    void Update();
+    void DrawBuildings();
+    void DrawGhost();
+    void DrawOptions(std::array<RectangleReac, 4>, vec2);
+    i32 GetIndexGivenRadians(f32);
+};
+
+
+
+
+enum class e_UIMode {
+    NIL,
+    THREE,
+    FOUR,
+    COUNT,
 };
 
 struct Game {
@@ -85,16 +114,26 @@ struct Game {
     Player player;
     std::vector<EnemyCloud> enemy_clouds;
     std::array<Bullet, NUM_BULLETS> bullets;
-
+    
+    // KILL THIS
     size_t bullet_count = 0;
 
     CameraState camera_state = {};
-
     Scenario scenario = {};
-    
-    std::unique_ptr<ExperienceSystem> exp_sys;
-    Game(i32 w_width, i32 w_height, std::unique_ptr<ExperienceSystem> exp_sys);
 
+
+    bool adjust = false;
+    std::array<RectangleReac, 4> UIRectangles;
+    e_UIMode UIMode = e_UIMode::NIL; 
+
+    std::unique_ptr<BuildingSystem> build_sys;
+    std::unique_ptr<ExperienceSystem> exp_sys;
+
+    Game(i32 w_width, i32 w_height, std::unique_ptr<ExperienceSystem> exp_sys, std::unique_ptr<BuildingSystem> build_sys);
+
+    void UpdateRectangle(vec2 win_size);
+    void UpdateBuildingRectangle(vec2 win_size);
+    void UpdateUpgradeRectangle(vec2 win_size);
     void UpdatePlayer(f32 dt);
     void UpdateOthers(f32 dt);
     void UpdateCamera(f32 dt);
@@ -113,34 +152,5 @@ struct SpawSystem {
     SpawSystem(Game& game);
 };
 
-enum class e_BuildingKind {
-    NIL,
-    V_SHOT,         // VERTICAL SHOT
-    THORN_FIELD,    // TAKES HEALTH FROM WHOEVER STEPS ON IT
-    DRILL_STATION,  // ALLOWS YOU TO GO TO DRILL STATION ON OPOSITE SIDE.
-    COUNT
-};
-
-struct Building {
-    fvec2Polar polar;
-    e_BuildingKind kind;   
-
-    i32 index;
-    i32 brother_idx; // No problem cause there is no swaps on our ds.
-    Building() = default;
-    Building(fvec2Polar, e_BuildingKind, i32, i32);
-    void Execute();
-};
-
-
-constexpr i32 BUILDING_MAX_COUNT = 1024;
-struct BuildingSystem {
-    std::array<Building, BUILDING_MAX_COUNT> buildings;
-    std::array<i16, BUILDING_MAX_COUNT> __free_list;
-
-    f32 timer;
-    BuildingSystem() = default;
-    void Update();
-};
 
 void DrawOnPolar(Texture2D tex, fvec2Polar position, f32 width, f32 height);

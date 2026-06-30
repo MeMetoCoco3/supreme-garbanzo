@@ -60,9 +60,18 @@ enum class e_UpgradeKind {
     SPEED, 
     GO_THROUGH,
     WAVY_SHOOT,
+    BUILDING_POINT,
     COUNT,
 };
 
+
+enum class e_BuildingKind {
+    NIL,
+    V_SHOT,         // VERTICAL SHOT
+    THORN_FIELD,    // TAKES HEALTH FROM WHOEVER STEPS ON IT
+    DRILL_STATION,  // ALLOWS YOU TO GO TO DRILL STATION ON OPOSITE SIDE.
+    COUNT
+};
 
 struct Entity {
     fvec2Polar polar;
@@ -93,11 +102,19 @@ struct Entity {
     Bullet Shoot();
 };
 
+enum class e_PlayerState{
+    SHOOTING,
+    BUILDING
+};
+
+
 struct Player: public Entity {
+    e_PlayerState state = e_PlayerState::SHOOTING;
     fvec2Polar max_bullet_speed;
 
     i32 score = 0;
-
+    i32 building_points = 0;
+    e_BuildingKind carrying = e_BuildingKind::NIL;
     // DASHING
     bool dashing = false;
     f32 dash_time = 0.0f;
@@ -110,6 +127,7 @@ struct Player: public Entity {
     Bullet Shoot();
     Bullet ShootH(i32 dir);
     Bullet ShootV();
+    bool IsCarrying();
 };
 
 constexpr i32 HEALTH_ENTITY_FROM_CLOUD = 3;
@@ -176,13 +194,33 @@ struct Upgrade {
     std::string name = "";
     e_UpgradeKind kind = e_UpgradeKind::NIL;
     i32 level = 1;
-    std::function<void(Entity&)> command;
+    std::function<void(Player&)> command;
     Texture2D image;
     Upgrade() = default;
-    Upgrade(e_UpgradeKind kind, std::string name, std::function<void(Entity&)> func, Texture2D image);
+    Upgrade(e_UpgradeKind kind, std::string name, std::function<void(Player&)> func, Texture2D image);
 };
 
+struct Building {
+    static constexpr f32 size = 0;
+
+    fvec2Polar polar = {0};
+    e_BuildingKind kind = e_BuildingKind::NIL;   
+    i32 index = 0;
+    i32 brother_idx = -1; // No problem cause there is no swaps on our ds.
+    i32 lvl = 0;
+
+
+    Building() = default;
+    Building(fvec2Polar, e_BuildingKind, i32, i32);
+};
+
+
 namespace pbs {
+    namespace buildings{
+        static std::unique_ptr<std::array<Building, (i32)e_BuildingKind::COUNT>> __load();
+        Building Get(e_BuildingKind);
+    };
+
     namespace bullets {
         static std::unique_ptr<std::array<Bullet, (i32)e_BulletKind::COUNT>> __load();
         Bullet Get(e_BulletKind);
